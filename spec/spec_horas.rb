@@ -29,6 +29,6 @@ RSpec.describe ServicioSanitario::Hora do
 
     it "Se espera que se devuleva la alerta en función del tiempo de diferencia entre horas" do 
         nivel = ServicioSanitario.obtener_nivel(@hora, @hora1) 
-        expect(nivel).to eq(ServicioSanitario::AZUL) 
+        expect(nivel).to eq(ServicioSanitario::AZUL)  
     end
 end
