@@ -1,10 +1,12 @@
 require 'spec_helper'
 require 'ServicioSanitario/Fecha'
+require 'ServicioSanitario'
 
 RSpec.describe ServicioSanitario::Fecha do
 
     before(:each) do
         @fecha = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
+        @fecha1 = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
     end
 
     it "Se espera poder crear una instancia de Fecha" do
@@ -18,5 +20,9 @@ RSpec.describe ServicioSanitario::Fecha do
     end
     it "Se espera poder representar la fecha como cadena de manera correcta" do
         expect(@fecha.to_s).to eq("15/11/2024")
+    end
+    it "Se espera poder calcular la diferencia entre dos fechas " do
+        diferencia = ServicioSanitario.diferencia(@fecha, @fecha1)
+        expect(diferencia).to eq("0 años, 0 meses, 0 días")
     end
 end

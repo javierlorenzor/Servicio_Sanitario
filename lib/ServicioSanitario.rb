@@ -24,6 +24,23 @@ module ServicioSanitario
     end
   end
   
+  def self.diferencia(fecha1, fecha2)
+    # Obtener directamente los atributos de los objetos pasados
+    dia1, mes1, anio1 = fecha1.dia, fecha1.mes, fecha1.anio
+    dia2, mes2, anio2 = fecha2.dia, fecha2.mes, fecha2.anio
+
+    # Calcular los días totales
+    total_dias_1 = anio1 * 365 + mes1 * 30 + dia1
+    total_dias_2 = anio2 * 365 + mes2 * 30 + dia2
+
+    diferencia = (total_dias_2 - total_dias_1).abs
+    años = diferencia / 365
+    meses = (diferencia % 365) / 30
+    dias = (diferencia % 365) % 30
+
+    "#{años} años, #{meses} meses, #{dias} días"
+  end
+  
   class Error < StandardError; end
   # Your code goes here...
 end
