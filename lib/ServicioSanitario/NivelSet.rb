@@ -7,5 +7,9 @@ module ServicioSanitario
             @tiempo_atencion = tiempo_atencion
         end
         
+        def to_s
+            "Nivel: #{@nivel}, Categoría: #{@categoria}, Tiempo de atención: #{@tiempo_atencion}"
+        end
+        
     end
 end
