@@ -21,10 +21,14 @@ RSpec.describe ServicioSanitario::Hora do
     it "Se espera que el formato de la hora sea correcto" do
         expect(@hora.to_s).to eq("12:30:45")
     end
-    
+
     it "Se espera poder calcular la diferencia entre dos horas" do 
         diferencia = ServicioSanitario.diferencia_horas(@hora, @hora1) 
         expect(diferencia).to eq("0 horas, 0 minutos, 0 segundos") 
     end
 
+    it "Se espera que se devuleva la alerta en función del tiempo de diferencia entre horas" do 
+        nivel = ServicioSanitario.obtener_nivel(@hora, @hora1) 
+        expect(nivel).to eq(ServicioSanitario::AZUL) 
+    end
 end
