@@ -7,5 +7,8 @@ module ServicioSanitario
             @anio = anio
         end
         
+        def to_s
+            "#{@dia}/#{@mes}/#{@anio}"
+        end
     end
 end  
