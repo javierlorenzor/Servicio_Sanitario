@@ -6,5 +6,6 @@ module ServicioSanitario
             @mes = mes
             @anio = anio
         end
+        
     end
 end  

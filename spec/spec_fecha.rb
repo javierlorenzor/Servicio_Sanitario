@@ -16,4 +16,7 @@ RSpec.describe ServicioSanitario::Fecha do
         expect(@fecha.mes).to eq(11)
         expect(@fecha.anio).to eq(2024)
     end
+    it "Se espera poder representar la fecha como cadena de manera correcta" do
+        expect(@fecha.to_s).to eq("15/11/2024")
+    end
 end
