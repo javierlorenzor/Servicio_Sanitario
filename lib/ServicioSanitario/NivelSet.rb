@@ -1,5 +1,3 @@
-
-
 module ServicioSanitario
     class NivelSet
         attr_reader :nivel, :categoria, :tiempo_atencion
