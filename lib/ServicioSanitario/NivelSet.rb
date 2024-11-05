@@ -1,3 +1,5 @@
+
+
 module ServicioSanitario
     class NivelSet
         attr_reader :nivel, :categoria, :tiempo_atencion
@@ -10,6 +12,6 @@ module ServicioSanitario
         def to_s
             "Nivel: #{@nivel}, Categoría: #{@categoria}, Tiempo de atención: #{@tiempo_atencion}"
         end
-        
+
     end
 end
