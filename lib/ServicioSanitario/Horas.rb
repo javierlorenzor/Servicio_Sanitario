@@ -8,5 +8,8 @@ module ServicioSanitario
             @segundo = segundo
         end
         
+        def to_s
+            format("%02d:%02d:%02d", @hora, @minuto, @segundo)
+        end
     end
 end  
