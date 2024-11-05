@@ -40,6 +40,9 @@ module ServicioSanitario
 
     "#{años} años, #{meses} meses, #{dias} días"
   end
+
+
+
   
   class Error < StandardError; end
   # Your code goes here...
