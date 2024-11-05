@@ -41,7 +41,15 @@ module ServicioSanitario
     "#{años} años, #{meses} meses, #{dias} días"
   end
 
-
+  def self.diferencia_horas(hora1, hora2)
+    total_segundos_1 = hora1.hora * 3600 + hora1.minuto * 60 + hora1.segundo
+    total_segundos_2 = hora2.hora * 3600 + hora2.minuto * 60 + hora2.segundo
+    diferencia = (total_segundos_2 - total_segundos_1).abs
+    horas = diferencia / 3600
+    minutos = (diferencia % 3600) / 60
+    segundos = diferencia % 60
+    "#{horas} horas, #{minutos} minutos, #{segundos} segundos"
+  end
 
   
   class Error < StandardError; end
