@@ -2,6 +2,7 @@
 
 require "ServicioSanitario"
 require_relative 'spec_nivelset'
+require_relative 'spec_fecha'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
