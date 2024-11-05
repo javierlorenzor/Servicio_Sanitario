@@ -30,4 +30,13 @@ RSpec.describe ServicioSanitario::NivelSet do
         expect(ServicioSanitario::VERDE).to eq({ nivel: :IV, categoria: :Menos_urgente, tiempo_atencion: '45 minutos' })
         expect(ServicioSanitario::NEGRO).to eq({ nivel: :V, categoria: :No_urgente, tiempo_atencion: '60 minutos' })
     end
+    
+    it "Se espera que se devuleva la alerta en función del tiempo " do
+        expect(ServicioSanitario::NivelSet.obtener_nivel(5)).to eq(ServicioSanitario::AZUL)
+        expect(ServicioSanitario::NivelSet.obtener_nivel(15)).to eq(ServicioSanitario::ROJO)
+        expect(ServicioSanitario::NivelSet.obtener_nivel(40)).to eq(ServicioSanitario::NARANJA)
+        expect(ServicioSanitario::NivelSet.obtener_nivel(50)).to eq(ServicioSanitario::VERDE)
+        expect(ServicioSanitario::NivelSet.obtener_nivel(70)).to eq(ServicioSanitario::NEGRO)
+    end
+    
 end
