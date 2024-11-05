@@ -10,11 +10,15 @@ RSpec.describe ServicioSanitario::Hora do
     it "Se espera poder crear una instancia de Hora" do
         expect(@hora).not_to be_nil
     end
-    
+
     it "Se espera que se pueda acceder a la hora , minutos y segundos correctamente" do
         expect(@hora.hora).to eq(12)
         expect(@hora.minuto).to eq(30)
         expect(@hora.segundo).to eq(45)
+    end
+
+    it "Se espera que el formato de la hora sea correcto" do
+        expect(@hora.to_s).to eq("12:30:45")
     end
 
 end

@@ -6,7 +6,7 @@ module ServicioSanitario
             @hora = hora
             @minuto = minuto
             @segundo = segundo
-          end
-      
+        end
+        
     end
 end  
