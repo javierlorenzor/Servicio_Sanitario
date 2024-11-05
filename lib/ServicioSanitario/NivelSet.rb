@@ -6,5 +6,6 @@ module ServicioSanitario
             @categoria = categoria
             @tiempo_atencion = tiempo_atencion
         end
+        
     end
 end
