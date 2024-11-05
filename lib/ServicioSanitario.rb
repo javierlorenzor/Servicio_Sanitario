@@ -8,21 +8,6 @@ module ServicioSanitario
   NARANJA = { nivel: :III, categoria: :Urgente, tiempo_atencion: '30 minutos' }
   VERDE = { nivel: :IV, categoria: :Menos_urgente, tiempo_atencion: '45 minutos' }
   NEGRO = { nivel: :V, categoria: :No_urgente, tiempo_atencion: '60 minutos' }
-
-  def self.obtener_nivel(tiempo_de_atencion)
-    case tiempo_de_atencion
-    when 0..6
-      AZUL
-    when 7..30
-      ROJO
-    when 31..45
-      NARANJA
-    when 46..60
-      VERDE
-    else
-      NEGRO
-    end
-  end
   
   def self.diferencia(fecha1, fecha2)
     # Obtener directamente los atributos de los objetos pasados
@@ -51,6 +36,25 @@ module ServicioSanitario
     "#{horas} horas, #{minutos} minutos, #{segundos} segundos"
   end
 
+  def self.obtener_nivel(hora_entrada, hora_actual)
+    total_segundos_entrada = hora_entrada.hora * 3600 + hora_entrada.minuto * 60 + hora_entrada.segundo
+    total_segundos_actual = hora_actual.hora * 3600 + hora_actual.minuto * 60 + hora_actual.segundo
+    diferencia_segundos = (total_segundos_actual - total_segundos_entrada).abs
+    minutos = diferencia_segundos / 60
+
+    case minutos
+    when 0..6
+      AZUL
+    when 7..30
+      ROJO
+    when 31..45
+      NARANJA
+    when 46..60
+      VERDE
+    else
+      NEGRO
+    end
+  end
   
   class Error < StandardError; end
   # Your code goes here...
