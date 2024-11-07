@@ -9,12 +9,15 @@ RSpec.describe ServicioSanitario::Fecha do
     @fecha = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
     @fecha1 = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
     @fecha2 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
+    @fecha3 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2001)
+    @fecha4 = ServicioSanitario::Fecha.new(dia: 8, mes: 11, anio: 2024)
   end
 
   # Verifica que se puede crear una instancia de la clase Fecha
   it "Se espera poder crear una instancia de Fecha" do
     expect(@fecha).not_to be_nil
     expect(@fecha1).not_to be_nil
+    expect(@fecha2).not_to be_nil
   end
 
   # Verifica que los valores de día, mes y año sean accesibles y correctos
@@ -40,7 +43,14 @@ RSpec.describe ServicioSanitario::Fecha do
     diferencia = ServicioSanitario.diferencia(@fecha, @fecha1)
     expect(diferencia).to eq("0 años, 0 meses, 0 días")
     
-    diferencia = ServicioSanitario.diferencia(@fecha, @fecha2)
-    expect(diferencia).to eq("23 años, 3 meses, 26 días")
+    diferencia1 = ServicioSanitario.diferencia(@fecha, @fecha2)
+    expect(diferencia1).to eq("23 años, 3 meses, 26 días")
+
+    diferencia3 = ServicioSanitario.diferencia(@fecha2, @fecha3)
+    expect(diferencia3).to eq("0 años, 2 meses, 4 días")
+
+    diferencia4 = ServicioSanitario.diferencia(@fecha4, @fecha2)
+    expect(diferencia4).to eq("23 años, 3 meses, 19 días")
+
   end
 end

@@ -9,12 +9,16 @@ RSpec.describe ServicioSanitario::Hora do
     # Creación de dos instancias de la clase Hora con los mismos valores de hora, minuto y segundo
     @hora = ServicioSanitario::Hora.new(hora: 12, minuto: 30, segundo: 45)
     @hora1 = ServicioSanitario::Hora.new(hora: 12, minuto: 30, segundo: 45)
+    @hora2 = ServicioSanitario::Hora.new(hora: 10, minuto: 40, segundo: 25)
+    @hora3 = ServicioSanitario::Hora.new(hora: 14, minuto: 50, segundo: 15)
   end
   
   # Prueba para verificar que la instancia de Hora se crea correctamente
   it "Se espera poder crear una instancia de Hora" do
     # Comprobamos que la variable @hora no sea nil, lo que indica que se creó una instancia de la clase
     expect(@hora).not_to be_nil
+    expect(@hora2).not_to be_nil
+    expect(@hora3).not_to be_nil
   end
 
   # Prueba para verificar que los atributos hora, minuto y segundo se pueden acceder correctamente
@@ -23,6 +27,9 @@ RSpec.describe ServicioSanitario::Hora do
     expect(@hora.hora).to eq(12)
     expect(@hora.minuto).to eq(30)
     expect(@hora.segundo).to eq(45)
+    expect(@hora3.hora).to eq(14)
+    expect(@hora2.minuto).to eq(40)
+    expect(@hora3.segundo).to eq(15)
   end
 
   # Prueba para verificar que el formato de la hora es correcto
@@ -37,15 +44,29 @@ RSpec.describe ServicioSanitario::Hora do
   it "Se espera poder calcular la diferencia entre dos horas" do
     # Llamamos al método diferencia_horas para obtener la diferencia entre las dos horas
     diferencia = ServicioSanitario.diferencia_horas(@hora, @hora1)
-    # Comprobamos que la diferencia entre las dos horas sea 0 horas, 0 minutos y 0 segundos
+    # Comprobamos que la diferencia entre las dos horas sea la esperada 
     expect(diferencia).to eq("0 horas, 0 minutos, 0 segundos")
+
+    diferencia1 = ServicioSanitario.diferencia_horas(@hora, @hora2)
+    expect(diferencia1).to eq("1 horas, 50 minutos, 20 segundos")
+
+    diferencia2 = ServicioSanitario.diferencia_horas(@hora, @hora3)
+    expect(diferencia2).to eq("2 horas, 19 minutos, 30 segundos")
   end
 
   # Prueba para verificar que se devuelve la alerta correcta según el tiempo de diferencia entre las horas
   it "Se espera que se devuleva la alerta en función del tiempo de diferencia entre horas" do
     # Llamamos al método obtener_nivel para obtener el nivel de alerta basado en la diferencia entre las dos horas
     nivel = ServicioSanitario.obtener_nivel(@hora, @hora1)
-    # Comprobamos que el nivel devuelto es el nivel AZUL, ya que las horas son iguales
+    # Comprobamos que el nivel devuelto es el nivel esperado
     expect(nivel).to eq(ServicioSanitario::AZUL)
+    expect(nivel).to be_a(Hash)
+
+    nivel1 = ServicioSanitario.obtener_nivel(@hora, @hora2)
+    expect(nivel1).not_to eq(ServicioSanitario::AZUL)
+
+    nivel2 = ServicioSanitario.obtener_nivel(@hora, @hora3)
+    expect(nivel2).to eq(ServicioSanitario::NEGRO)
+    expect(nivel2).to be_a(Hash)
   end
 end
