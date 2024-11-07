@@ -29,6 +29,8 @@ RSpec.describe ServicioSanitario::Hora do
   it "Se espera que el formato de la hora sea correcto" do
     # Comprobamos que el método to_s devuelva el formato correcto
     expect(@hora.to_s).to eq("12:30:45")
+    expect(@hora.to_s).to be_a(String)
+    expect(@hora).not_to be_a(String)
   end
 
   # Prueba para calcular la diferencia entre dos horas

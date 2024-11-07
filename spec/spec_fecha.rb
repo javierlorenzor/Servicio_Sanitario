@@ -30,7 +30,9 @@ RSpec.describe ServicioSanitario::Fecha do
   # Verifica que la fecha se pueda representar correctamente como una cadena
   it "Se espera poder representar la fecha como cadena de manera correcta" do
     expect(@fecha.to_s).to eq("15/11/2024")
+    expect(@fecha.to_s).to be_a(String)
     expect(@fecha2.to_s).to eq("19/7/2001")
+    expect(@fecha2).not_to be_a(String)
   end
 
   # Verifica que se pueda calcular la diferencia entre dos fechas
