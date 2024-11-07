@@ -1,31 +1,59 @@
 # ServicioSanitario
+# Estructura del Proyecto
 
-TODO: Delete this and the text below, and describe your gem
+```plaintext
+.
+├── doc  
+├── Gemfile
+├── Gemfile.lock
+├── lib
+│   ├── ServicioSanitario
+│   │   ├── Fecha.rb
+│   │   ├── Horas.rb
+│   │   ├── NivelSet.rb
+│   │   └── version.rb
+│   └── ServicioSanitario.rb
+├── Rakefile
+├── README.md
+├── ServicioSanitario.gemspec
+├── sig
+│   └── ServicioSanitario.rbs
+└── spec
+    ├── ServicioSanitario_spec.rb
+    ├── spec_fecha.rb
+    ├── spec_helper.rb
+    ├── spec_horas.rb
+    └── spec_nivelset.rb
+```
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ServicioSanitario`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-## Installation
+## Descripción de carpetas y archivos principales
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+- **`doc/`**: Carpeta generada por YARD que contiene la documentación HTML del proyecto.
+- **`lib/`**: Contiene el código fuente del proyecto.
+  - **`ServicioSanitario/`**: Módulo que contiene las clases 
+        - `Fecha`, `Horas`, `NivelSet`
+  - **`ServicioSanitario.rb`**: Archivo principal que carga el módulo `ServicioSanitario`.
+- **`spec/`**: Carpeta de pruebas que incluye archivos de pruebas RSpec para cada clase.
+  - **`spec_helper.rb`**: Configuración común para todas las pruebas.
+- **`Gemfile` y `Gemfile.lock`**: Listan las dependencias del proyecto.
+- **`Rakefile`**: Archivo para tareas automatizadas de Rake.
+- **`README.md`**: Archivo de documentación principal del proyecto.
+- **`ServicioSanitario.gemspec`**: Especificación de la gema `ServicioSanitario`.
 
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+## Proyect
+La gema **ServicioSanitario** implementa un sistema de triaje estructurado, utilizado para priorizar la atención de pacientes según la gravedad y urgencia de sus necesidades. El proceso de "triaje" permite una gestión eficaz del riesgo clínico en situaciones donde la demanda médica supera los recursos disponibles. Para lograr esto, se basa en escalas de prioridad que clasifican a los pacientes en varios niveles de atención.
 
 ## Usage
 
-TODO: Write usage instructions here
+El archivo Rakefile en la raíz del proyecto permite la ejecución de tareas automáticas, como la generación de documentación o la ejecución de pruebas. Este archivo está configurado para simplificar los flujos de trabajo, proporcionando comandos predefinidos que pueden invocarse fácilmente desde la terminal. Para la ejecución usar **rake** 
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+La gema sigue el enfoque de desarrollo orientado a pruebas **(TDD: Test Driven Development)**, donde las pruebas se crean antes de la implementación de las funcionalidades. Esto garantiza que cada parte del código cumpla con los requisitos definidos y ayuda a detectar errores desde las primeras etapas del desarrollo
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+# Documentación 
 
-## Contributing
+La documentación de esta gema se genera con **YARD**, una herramienta para documentar código Ruby de manera estructurada y fácil de entender. Usando YARD, se crean comentarios detallados en el código que luego se convierten en documentación HTML navegable. Esto facilita el acceso a la información sobre las clases, métodos y constantes, permitiendo a los desarrolladores comprender y usar la gema de manera más efectiva.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ServicioSanitario.
+
