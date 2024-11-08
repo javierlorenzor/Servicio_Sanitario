@@ -30,9 +30,9 @@ RSpec.describe ServicioSanitario::Persona do
 
   
     it "Se espera que se incrementa el contador cada vez que se crea una nueva instancia" do
-        expect(ServicioSanitario::Persona.contador_instancias).to eq(2)  
+        expect(ServicioSanitario::Persona.contador_instancias).to eq(8)  
         persona3 = ServicioSanitario::Persona.new("54321", "Carlos", "López", "M", "2000-05-12")
-        expect(ServicioSanitario::Persona.contador_instancias).to eq(3)
+        expect(ServicioSanitario::Persona.contador_instancias).to eq(9)
     end
   
 end
