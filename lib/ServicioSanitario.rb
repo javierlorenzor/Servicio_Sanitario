@@ -81,6 +81,9 @@ module ServicioSanitario
     end
   end
   
+
+
+
   # Definición de una clase Error personalizada que hereda de StandardError
   class Error < StandardError; end
   # Aquí finaliza el código del módulo
