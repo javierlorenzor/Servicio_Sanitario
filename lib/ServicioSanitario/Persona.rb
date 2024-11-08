@@ -6,6 +6,7 @@ module ServicioSanitario
             @apellido = apellido
             @sexo = sexo
             @fecha_nacimiento = fecha_nacimiento
-          end
+        end
+
     end
 end
