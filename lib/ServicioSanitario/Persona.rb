@@ -20,7 +20,9 @@ module ServicioSanitario
             @@instancia_contador
         end
         
-
+        def edad(fecha)
+            fecha.anio - @fecha_nacimiento.anio
+        end
 
         def to_s
             "#{@nombre} #{@apellido}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{@fecha_nacimiento}"
