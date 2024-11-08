@@ -9,3 +9,11 @@
 
 # rspec failure tracking
 .rspec_status
+
+
+*.*~
+*~
+*swp*
+*.log
+*.aux
+*.tgz
