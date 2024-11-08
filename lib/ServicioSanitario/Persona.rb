@@ -7,6 +7,8 @@ module ServicioSanitario
             @sexo = sexo
             @fecha_nacimiento = fecha_nacimiento
         end
-
+        def to_s
+            "#{@nombre} #{@apellido}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{@fecha_nacimiento}"
+        end
     end
 end
