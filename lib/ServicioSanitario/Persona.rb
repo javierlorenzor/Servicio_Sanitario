@@ -14,11 +14,13 @@ module ServicioSanitario
                 @@instancia_contador = 1
             end
         end
-            # Método para obtener el contador de instancias
+        
+        # Método para obtener el contador de instancias
         def self.contador_instancias
             @@instancia_contador
         end
         
+
 
         def to_s
             "#{@nombre} #{@apellido}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{@fecha_nacimiento}"
