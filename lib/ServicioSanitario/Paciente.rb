@@ -3,5 +3,7 @@ require_relative 'NivelSet'
 
 module ServicioSanitario
     class Paciente < Persona
+
+
     end
 end
