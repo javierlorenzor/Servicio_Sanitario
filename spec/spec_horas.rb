@@ -40,6 +40,16 @@ RSpec.describe ServicioSanitario::Hora do
     expect(@hora).not_to be_a(String)
   end
 
+  it "Se espera que la instancia pertenezca a a la clase determinada" do
+    # Comprobamos que el método to_s devuelva el formato correcto
+    expect(@hora).to be_a(ServicioSanitario::Hora)
+    expect(@hora1).to be_a(ServicioSanitario::Hora)
+    expect(@hora.instance_of?(ServicioSanitario::Hora)).to be true
+    expect(@nivel2.instance_of?(ServicioSanitario::Fecha)).to be false
+    expect(ServicioSanitario::Hora.superclass).to eq(Object)
+  end 
+
+
   # Prueba para calcular la diferencia entre dos horas
   it "Se espera poder calcular la diferencia entre dos horas" do
     # Llamamos al método diferencia_horas para obtener la diferencia entre las dos horas

@@ -20,6 +20,14 @@ RSpec.describe ServicioSanitario::Fecha do
     expect(@fecha2).not_to be_nil
   end
 
+  it "Se espera que la instancia pertenezca a a la clase determinada" do
+    # Comprobamos que el método to_s devuelva el formato correcto
+    expect(@fecha).to be_a(ServicioSanitario::Fecha)
+    expect(@fecha).to be_a(ServicioSanitario::Fecha)
+    expect(@fecha.instance_of?(ServicioSanitario::Fecha)).to be true
+    expect(ServicioSanitario::Fecha.superclass).to eq(Object)
+  end
+
   # Verifica que los valores de día, mes y año sean accesibles y correctos
   it "Se espera poder acceder a los atributos de la fecha (getters)" do
     expect(@fecha.dia).to eq(15)

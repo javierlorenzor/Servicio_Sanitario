@@ -14,6 +14,15 @@ RSpec.describe ServicioSanitario::NivelSet do
     @nivel5 = ServicioSanitario::NivelSet.new(:V, 'No Urgente', '60 min')
   end
 
+  it "Se espera que la instancia pertenezca a a la clase determinada" do
+    # Comprobamos que el método to_s devuelva el formato correcto
+    expect(@nivel1).to be_a(ServicioSanitario::NivelSet)
+    expect(@nivel4).to be_a(ServicioSanitario::NivelSet)
+    expect(@nivel2.instance_of?(ServicioSanitario::NivelSet)).to be true
+    expect(@nivel2.instance_of?(ServicioSanitario::Fecha)).to be false
+    expect(ServicioSanitario::NivelSet.superclass).to eq(Object)
+  end
+
   # Verifica que se puede crear una instancia de NivelSet
   it "Se espera poder crear una instancia de NivelSet" do
     expect(@nivel1).not_to be_nil
