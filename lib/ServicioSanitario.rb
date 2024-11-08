@@ -81,7 +81,8 @@ module ServicioSanitario
     end
   end
   
-
+  #Freeze sirve para evitar que se cambie el el valor por accidente 
+  VERSION = '1.0.0'.freeze
 
 
   # Definición de una clase Error personalizada que hereda de StandardError
