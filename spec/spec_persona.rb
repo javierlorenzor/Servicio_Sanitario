@@ -17,7 +17,6 @@ RSpec.describe ServicioSanitario::Persona do
         expect(@persona2).not_to be_nil
     end
     it "Se espera que la instancia pertenezca a a la clase determinada" do
-        # Comprobamos que el método to_s devuelva el formato correcto
         expect(@persona1).to be_a(ServicioSanitario::Persona)
         expect(@persona2).to be_a(ServicioSanitario::Persona)
         expect(@persona1.instance_of?(ServicioSanitario::Persona)).to be true
