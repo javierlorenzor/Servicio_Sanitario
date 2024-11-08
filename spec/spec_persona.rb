@@ -22,10 +22,17 @@ RSpec.describe ServicioSanitario::Persona do
         expect(@persona1.instance_of?(ServicioSanitario::Persona)).to be true
         expect(ServicioSanitario::Fecha.superclass).to eq(Object)
     end
-    
+
     it "Se espera que se devuelve una cadena con la información completa de la persona " do
         expect(@persona1.to_s).to eq("Juan Pérez, ID: 12345, Sexo: M, Fecha de Nacimiento: 19/7/2001")
         expect(@persona2.to_s).to eq("Ana García, ID: 67890, Sexo: F, Fecha de Nacimiento: 23/9/2001")
+    end
+
+  
+    it "Se espera que se incrementa el contador cada vez que se crea una nueva instancia" do
+        expect(ServicioSanitario::Persona.contador_instancias).to eq(2)  
+        persona3 = ServicioSanitario::Persona.new("54321", "Carlos", "López", "M", "2000-05-12")
+        expect(ServicioSanitario::Persona.contador_instancias).to eq(3)
     end
   
 end
