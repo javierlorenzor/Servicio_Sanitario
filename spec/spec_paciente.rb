@@ -4,7 +4,7 @@ require 'ServicioSanitario/NivelSet'
 require 'ServicioSanitario/Paciente'
 require 'ServicioSanitario'
 
-# Descripción de las pruebas para la clase ServicioSanitario::Fecha
+# Descripción de las pruebas para la clase ServicioSanitario::Paciente
 RSpec.describe ServicioSanitario::Paciente do
-    
+
 end
