@@ -49,6 +49,17 @@ RSpec.describe ServicioSanitario::Paciente do
         expect(@paciente1.fecha_nacimiento).to eq(@fecha1)
         expect(@paciente1.prioridad).to eq(ServicioSanitario::AZUL)
     end
+
+    it 'Se debe devolver una cadena con la información completa de la persona  diagnósticos vacíos' do
+        expect(@paciente1.to_s).to eq("Juan Pérez, ID: 12345, Sexo: M, Fecha de Nacimiento: #{@fecha1}, Prioridad: #{ServicioSanitario::AZUL}, Diagnósticos: ")
+        expect(@paciente2.to_s).to eq("Ana García, ID: 67890, Sexo: F, Fecha de Nacimiento: #{@fecha2}, Prioridad: #{ServicioSanitario::NEGRO}, Diagnósticos: ")
+      end
+    
+    it 'Se debe incluir los diagnósticos en el método to_s si se agregan' do
+        @paciente1.diagnosticos << "Diagnóstico 1"
+        @paciente1.diagnosticos << "Diagnóstico 2"
+        expect(@paciente1.to_s).to eq("Juan Pérez, ID: 12345, Sexo: M, Fecha de Nacimiento: #{@fecha1}, Prioridad: #{ServicioSanitario::AZUL}, Diagnósticos: Diagnóstico 1, Diagnóstico 2")
+    end
   
 
 end
