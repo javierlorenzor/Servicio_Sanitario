@@ -9,7 +9,9 @@ module ServicioSanitario
             @prioridad = prioridad
             @diagnosticos = []
         end
-
+        def to_s
+            "#{super()}, Prioridad: #{prioridad}, Diagnósticos: #{diagnosticos.join(', ')}"
+        end
 
     end
 end
