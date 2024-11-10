@@ -3,10 +3,10 @@ require 'ServicioSanitario/Titular'
 require 'ServicioSanitario/NivelSet'
 require 'ServicioSanitario/Persona'
 require 'ServicioSanitario/Paciente'
-require 'ServicioSanitario/Medico'
+require 'ServicioSanitario/Titular'
 require 'ServicioSanitario'
 
-# Descripción de las pruebas para la clase ServicioSanitario::Medico
+# Descripción de las pruebas para la clase ServicioSanitario::titular
 RSpec.describe ServicioSanitario::Titular do
     before(:each) do
         # Creación de fechas
@@ -46,4 +46,30 @@ RSpec.describe ServicioSanitario::Titular do
         expect(@titular1.especialidad).to eq("Pediatría")
         expect(@titular1.maximo_pacientes).to eq(5)
     end
+
+    it 'retorna false cuando el número de pacientes es menor que el máximo' do
+        @titular1.pacientes << @paciente1
+        @titular1.pacientes << @paciente2
+        expect(@titular1.carga_maxima_alcanzada?).to be_falsey
+      end
+  
+      it 'retorna true cuando el número de pacientes es igual o mayor que el máximo' do
+        @titular2.pacientes << @paciente1
+        @titular2.pacientes << @paciente2
+        expect(@titular2.carga_maxima_alcanzada?).to be_truthy
+      end
+
+      it 'debe mostrar la información correcta del médico titular' do
+        @titular1.pacientes << @paciente1
+        @titular1.pacientes << @paciente2
+        expected_output = "#{super()}, Máximo de Pacientes: 5, Carga Máxima Alcanzada: false"
+        expect(@titular1.to_s).to eq(expected_output)
+      end
+  
+      it 'debe mostrar la información correcta cuando la carga máxima es alcanzada' do
+        @titular2.pacientes << @paciente1
+        @titular2.pacientes << @paciente2
+        expected_output = "#{super()}, Máximo de Pacientes: 3, Carga Máxima Alcanzada: true"
+        expect(@titular2.to_s).to eq(expected_output)
+      end
 end 
