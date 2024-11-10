@@ -1,5 +1,6 @@
 module ServicioSanitario
     class Persona
+        attr_accessor :numero_identificacion, :nombre, :apellido, :sexo, :fecha_nacimiento
         def initialize(numero_identificacion, nombre, apellido, sexo, fecha_nacimiento)
             @numero_identificacion = numero_identificacion
             @nombre = nombre

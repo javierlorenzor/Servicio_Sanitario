@@ -28,26 +28,26 @@ RSpec.describe ServicioSanitario::Paciente do
   
     it 'Se debe devolver nil si no hay diagnósticos' do
         expect(@paciente1.diagnosticos).to be_empty 
-        expect(@paciente2.diagnosticos).to be_nil
+        expect(@paciente2.diagnosticos).to be_empty
     end
 
-    it 'debe permitir agregar un diagnóstico a la variable diagnosticos' do
+    it 'Se debe permitir agregar un diagnóstico a la variable diagnosticos' do
         @paciente1.diagnosticos << "Diagnóstico inicial"
         expect(@paciente1.diagnosticos).to include("Diagnóstico inicial")
     end
     
-    it 'debe tener la variable diagnosticos no vacía después de añadir un diagnóstico' do
+    it 'Se debe tener la variable diagnosticos no vacía después de añadir un diagnóstico' do
         @paciente1.diagnosticos << "Diagnóstico inicial"
         expect(@paciente1.diagnosticos).not_to be_empty
     end
 
-    it 'debe tener acceso de lectura para numero_identificacion' do
+    it 'Se debe tener acceso de lectura para los atributos' do
         expect(@paciente1.numero_identificacion).to eq("12345")
         expect(@paciente1.nombre).to eq("Juan")
-        expect(@paciente.apellido).to eq("Pérez")
-        expect(@paciente.sexo).to eq("M")
-        expect(@paciente.fecha_nacimiento).to eq(@fecha1)
-        expect(@paciente.prioridad).to eq(ServicioSanitario::AZUL)
+        expect(@paciente1.apellido).to eq("Pérez")
+        expect(@paciente1.sexo).to eq("M")
+        expect(@paciente1.fecha_nacimiento).to eq(@fecha1)
+        expect(@paciente1.prioridad).to eq(ServicioSanitario::AZUL)
     end
   
 
