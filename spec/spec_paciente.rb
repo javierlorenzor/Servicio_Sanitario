@@ -62,8 +62,9 @@ RSpec.describe ServicioSanitario::Paciente do
     end
 
     it 'Se debe devolver nil cuando no hay diagnósticos' do
-        expect(@paciente1.ultimo_diagnostico).to be_empty
-      end
+        expect(@paciente1.ultimo_diagnostico).to be_nil
+        expect(@paciente2.ultimo_diagnostico).to be_nil
+    end
   
     it 'Se debe devolver el último diagnóstico cuando hay uno o más diagnósticos' do
         @paciente1.diagnosticos << "Diagnóstico 1"
@@ -71,6 +72,13 @@ RSpec.describe ServicioSanitario::Paciente do
   
         @paciente1.diagnosticos << "Diagnóstico 2"
         expect(@paciente1.ultimo_diagnostico).to eq("Diagnóstico 2")
+
+        @paciente2.diagnosticos << "Diagnóstico 1"
+        @paciente2.diagnosticos << "Diagnóstico 2"
+        @paciente2.diagnosticos << "Diagnóstico 3"
+        
+        expect(@paciente2.ultimo_diagnostico).to eq("Diagnóstico 3")
+
     end
   
 
