@@ -50,15 +50,27 @@ RSpec.describe ServicioSanitario::Medico do
         expect(@medico2.pacientes).not_to be_empty
     end
   
-    it "debe estar vacío antes de agregar pacientes" do
+    it "Se debe de tener un array vacío antes de agregar pacientes" do
         expect(@medico1.pacientes).to be_empty
     end
   
-    it "debe eliminar un paciente del array" do
+    it "Se debe poder eliminar un paciente del array" do
         @medico1.pacientes << @paciente1
         @medico1.pacientes.delete(@paciente1)
         expect(@medico1.pacientes).not_to include(@paciente1)
     end
+
+    it "Se debe devolver una cadena con la información del médico y el número de pacientes" do
+        @medico1.pacientes << @paciente1
+        @medico1.pacientes << @paciente2
+        expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 2")
+      end
+    
+      it "Se debe devolver la información correctamente cuando no hay pacientes asignados" do
+        expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 0")
+      end
+
+
 
 
 end 
