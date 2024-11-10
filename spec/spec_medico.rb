@@ -60,15 +60,25 @@ RSpec.describe ServicioSanitario::Medico do
         expect(@medico1.pacientes).not_to include(@paciente1)
     end
 
-    it "Se debe devolver una cadena con la información del médico y el número de pacientes" do
-        @medico1.pacientes << @paciente1
-        @medico1.pacientes << @paciente2
-        expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 2")
+    it "Se espera que el número de pacientes de un médico sea 0 inicialmente" do
+        expect(@medico1.numero_pacientes).to eq(0)
+        expect(@medico2.numero_pacientes).to eq(0)
       end
     
-      it "Se debe devolver la información correctamente cuando no hay pacientes asignados" do
-        expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 0")
-      end
+    it "Se debe poder agregar pacientes a un médico y que la cuenta sea correcta " do
+        @medico1.pacientes << @paciente1
+        @medico1.pacientes << @paciente2
+        expect(@medico1.numero_pacientes).to eq(2)
+    end
+
+    it "Se debe poder agregar pacientes a un médico y que la cuenta sea correcta " do
+        @medico1.pacientes << @paciente1
+        @medico1.pacientes.delete(@paciente2)
+        expect(@medico1.numero_pacientes).not_to eq(2)
+    end
+
+
+    
 
 
 

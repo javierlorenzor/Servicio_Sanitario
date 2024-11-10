@@ -10,6 +10,7 @@ module ServicioSanitario
             @especialidad = especialidad
             @pacientes = []
         end
-    
+
+
     end 
 end
