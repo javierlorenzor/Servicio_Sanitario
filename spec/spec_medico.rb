@@ -77,10 +77,4 @@ RSpec.describe ServicioSanitario::Medico do
         expect(@medico1.numero_pacientes).not_to eq(2)
     end
 
-
-    
-
-
-
-
 end 

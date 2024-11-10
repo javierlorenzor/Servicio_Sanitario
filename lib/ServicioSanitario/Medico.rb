@@ -11,6 +11,10 @@ module ServicioSanitario
             @pacientes = []
         end
 
+        def numero_pacientes
+            @pacientes.size
+        end
+        
 
     end 
 end
