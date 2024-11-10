@@ -9,9 +9,10 @@ RSpec.describe ServicioSanitario::Paciente do
     before(:each) do
         @fecha1 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
         @fecha2 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2004)
-        @paciente1 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, "Alta")
-        @paciente2 = ServicioSanitario::Paciente.new("67890", "Ana", "García", "F", @fecha2, "Urgente")
+        @paciente1 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, ServicioSanitario::AZUL)
+        @paciente2 = ServicioSanitario::Paciente.new("67890", "Ana", "García", "F", @fecha2, ServicioSanitario::NEGRO)
     end
+
     it "Se espera que se pueda inicializar persona correctamente con valores válidos" do
         expect(@paciente1).not_to be_nil
         expect(@paciente2).not_to be_nil
@@ -23,6 +24,30 @@ RSpec.describe ServicioSanitario::Paciente do
         expect(@paciente2).to be_a(ServicioSanitario::Paciente)
         expect(@paciente1.instance_of?(ServicioSanitario::Paciente)).to be true
         expect(ServicioSanitario::Paciente.superclass).to eq(ServicioSanitario::Persona)
+    end
+  
+    it 'Se debe devolver nil si no hay diagnósticos' do
+        expect(@paciente1.diagnosticos).to be_empty 
+        expect(@paciente2.diagnosticos).to be_nil
+    end
+
+    it 'debe permitir agregar un diagnóstico a la variable diagnosticos' do
+        @paciente1.diagnosticos << "Diagnóstico inicial"
+        expect(@paciente1.diagnosticos).to include("Diagnóstico inicial")
+    end
+    
+    it 'debe tener la variable diagnosticos no vacía después de añadir un diagnóstico' do
+        @paciente1.diagnosticos << "Diagnóstico inicial"
+        expect(@paciente1.diagnosticos).not_to be_empty
+    end
+
+    it 'debe tener acceso de lectura para numero_identificacion' do
+        expect(@paciente1.numero_identificacion).to eq("12345")
+        expect(@paciente1.nombre).to eq("Juan")
+        expect(@paciente.apellido).to eq("Pérez")
+        expect(@paciente.sexo).to eq("M")
+        expect(@paciente.fecha_nacimiento).to eq(@fecha1)
+        expect(@paciente.prioridad).to eq(ServicioSanitario::AZUL)
     end
   
 
