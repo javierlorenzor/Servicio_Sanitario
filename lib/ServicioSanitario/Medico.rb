@@ -15,6 +15,9 @@ module ServicioSanitario
             @pacientes.size
         end
         
+        def to_s
+            "#{super()}, Especialidad: #{@especialidad}, Número de Pacientes: #{numero_pacientes}"
+        end
 
     end 
 end
