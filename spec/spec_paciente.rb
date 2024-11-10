@@ -11,11 +11,16 @@ RSpec.describe ServicioSanitario::Paciente do
         @fecha2 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2004)
         @paciente1 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, ServicioSanitario::AZUL)
         @paciente2 = ServicioSanitario::Paciente.new("67890", "Ana", "García", "F", @fecha2, ServicioSanitario::NEGRO)
+        
     end
 
     it "Se espera que se pueda inicializar persona correctamente con valores válidos" do
         expect(@paciente1).not_to be_nil
         expect(@paciente2).not_to be_nil
+    end
+
+    it "Se espera que dos pacientes con la misma información no sean el mismo objeto usando equal?" do
+        expect(@paciente1).not_to equal(@paciente3)  # Usamos equal? para verificar que no sean el mismo objeto
     end
 
     it "Se espera que la instancia pertenezca a la clase determinada" do
