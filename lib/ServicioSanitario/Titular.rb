@@ -1,7 +1,8 @@
-require_relative 'Persona'
+require_relative 'Medico'
 require_relative 'NivelSet'
 
 module ServicioSanitario
-    class Titular < Persona
+    class Titular < Medico
+        
     end 
 end 
