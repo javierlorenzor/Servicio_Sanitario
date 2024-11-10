@@ -26,4 +26,24 @@ RSpec.describe ServicioSanitario::Titular do
         expect(@titular2).not_to be_nil
     end
 
+    it "Se espera que la instancia pertenezca a la clase determinada" do
+        # Comprobamos que el método to_s devuelva el formato correcto
+        expect(@titular1).to be_a(ServicioSanitario::Titular)
+        expect(@titular2).to be_a(ServicioSanitario::Titular)
+        expect(@titular1.instance_of?(ServicioSanitario::Titular)).to be true
+        expect(ServicioSanitario::Titular.superclass).to eq(ServicioSanitario::Medico)
+        expect(ServicioSanitario::Medico.superclass).to eq(ServicioSanitario::Persona)
+        expect(ServicioSanitario::Persona.superclass).to eq(Object)
+        expect(Object.superclass).to eq(BasicObject)
+    end
+
+    it "Se espera que devuelva el valor esperado" do
+        expect(@titular1.numero_identificacion).to eq("12345")
+        expect(@titular1.nombre).to eq("Alba")
+        expect(@titular1.apellido).to eq("Perez")
+        expect(@titular1.sexo).to eq("F")
+        expect(@titular1.fecha_nacimiento).to eq(@fecha1)
+        expect(@titular1.especialidad).to eq("Pediatría")
+        expect(@titular1.maximo_pacientes).to eq(5)
+    end
 end 
