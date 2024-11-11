@@ -14,6 +14,8 @@ module ServicioSanitario
         def carga_max?
             numero_pacientes >= maximo_pacientes
         end
-       
+        def to_s
+            "#{super()}, Máximo de Pacientes: #{@maximo_pacientes}, Carga Máxima Alcanzada: #{carga_max?}"
+        end
     end 
 end 
