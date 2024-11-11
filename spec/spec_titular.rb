@@ -62,6 +62,35 @@ RSpec.describe ServicioSanitario::Titular do
     expect(@titular2.carga_max?).to be true 
   end
 
+  it 'Se espara que se muestre la información en forma de cadena cuando la carga máxima no es alcanzada' do
+    @titular1.pacientes << @paciente1  # Añadimos un paciente (menos que el máximo)
+    expected_output = "Nombre: Alba Pérez, Sexo: F, Fecha de Nacimiento: 1980-01-01, Especialidad: Pediatría, Máximo de Pacientes: 5, Carga Máxima Alcanzada: false"
+    expect(@titular1.to_s).to eq(expected_output)
+  end
+
+  it 'Se espara que se muestre la información en forma de cadenacuando la carga máxima es alcanzada' do
+    @titular2.pacientes << @paciente1
+    @titular2.pacientes << @paciente2  # Llenamos la carga máxima
+    expected_output = "Nombre: Ana Gómez, Sexo: F, Fecha de Nacimiento: 1975-05-10, Especialidad: Geriatría, Máximo de Pacientes: 2, Carga Máxima Alcanzada: true"
+    expect(@titular2.to_s).to eq(expected_output)
+  end
+
+  it 'Se espera que se muestre correctamente la información del titular sin carga máxima alcanzada' do
+    # Añadimos algunos pacientes al titular1, pero sin alcanzar el máximo
+    @titular1.pacientes << @paciente1
+    @titular1.pacientes << @paciente2
+    expected_output = "Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: #{@fecha1}, Especialidad: Pediatría, Máximo de Pacientes: 5, Carga Máxima Alcanzada: false"
+    expect(@titular1.to_s).to eq(expected_output)
+  end
+
+  it 'Se espera que se muestre correctamente la información del titular con carga máxima alcanzada' do
+    # Añadimos pacientes al titular2 para alcanzar la carga máxima
+    @titular2.pacientes << @paciente1
+    @titular2.pacientes << @paciente2
+    @titular2.pacientes << @paciente3
+    expected_output = "Miguel Tadeo, ID: 56789, Sexo: M, Fecha de Nacimiento: #{@fecha2}, Especialidad: Geriatría, Máximo de Pacientes: 3, Carga Máxima Alcanzada: true"
+    expect(@titular2.to_s).to eq(expected_output)
+  end
 
 
 

@@ -83,8 +83,6 @@ RSpec.describe ServicioSanitario::Paciente do
         @paciente2.diagnosticos << "Diagnóstico 3"
         
         expect(@paciente2.ultimo_diagnostico).to eq("Diagnóstico 3")
-
     end
-  
 
 end
