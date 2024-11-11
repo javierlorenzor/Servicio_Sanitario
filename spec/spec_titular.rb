@@ -46,5 +46,19 @@ RSpec.describe ServicioSanitario::Titular do
     expect(@titular1.maximo_pacientes).to eq(5)
   end
 
+  it 'Se espera retornar false cuando el número de pacientes es menor que el máximo' do
+    @titular1.pacientes << @paciente1
+    @titular1.pacientes << @paciente2
+    expect(@titular1.carga_maxima_alcanzada?).to be false 
+  end
+
+  it 'Se espera retornar true cuando el número de pacientes es igual o mayor que el máximo' do
+    @titular2.pacientes << @paciente1
+    @titular2.pacientes << @paciente2
+    expect(@titular2.carga_maxima_alcanzada?).to be true 
+  end
+
+
+
 
 end 
