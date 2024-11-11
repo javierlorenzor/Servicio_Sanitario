@@ -11,6 +11,8 @@ RSpec.describe ServicioSanitario::Paciente do
         @fecha2 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2004)
         @paciente1 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, ServicioSanitario::AZUL)
         @paciente2 = ServicioSanitario::Paciente.new("67890", "Ana", "García", "F", @fecha2, ServicioSanitario::NEGRO)
+        @paciente3 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, ServicioSanitario::AZUL)
+        @paciente4 = @paciente1
         
     end
 
@@ -85,4 +87,34 @@ RSpec.describe ServicioSanitario::Paciente do
         expect(@paciente2.ultimo_diagnostico).to eq("Diagnóstico 3")
     end
 
+    context "Igualdad de objetos" do
+        it "Se espera verificar la igualdad utilizando ==" do
+          expect(@paciente1).to eq(@paciente4) # Los atributos son iguales, por lo tanto deberían ser iguales
+        end
+    
+        it "Se espera verificar la igualdad utilizando eql?" do
+          expect(@paciente1).to eql(@paciente4) # Igualdad estricta, se espera que sean iguales
+        end
+    
+        it "Se espera verificar que los objetos con la misma referencia son iguales utilizando equal?" do
+          expect(@paciente1).to equal(@paciente4) # Mismo objeto en memoria, por lo que equal? debe devolver true
+        end
+    
+        it "Se espera verificar que dos objetos con atributos iguales pero diferente referencia no son iguales utilizando equal?" do
+          expect(@paciente1).not_to equal(@paciente3) # Aunque los atributos sean iguales, son objetos diferentes en memoria
+        end
+    
+        it "Se espera verificar que === no se usa comúnmente para la comparación de objetos directos" do
+          expect(@paciente1 === @paciente3).to be false  # `===` se usa más comúnmente para casos como la comparación de clases, no tanto de igualdad de objetos
+        end
+    end
+
+    context "Métodos públicos de la clase Persona" do
+        it "Se espera poder verificar los métodos públicos en Paciente" do
+          expect(@paciente1.public_methods).to include(:to_s)
+          expect(@paciente1.public_methods).to include(:==)
+          expect(@paciente1.public_methods).to include(:instance_of?)
+          expect(@paciente1.public_methods).to include(:equal?)
+        end
+    end
 end

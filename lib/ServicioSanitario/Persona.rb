@@ -23,7 +23,6 @@ module ServicioSanitario
         end
 
         public
-        
         def edad(fecha)
             fecha.anio - @fecha_nacimiento.anio
         end
