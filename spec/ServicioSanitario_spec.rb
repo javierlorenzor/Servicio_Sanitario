@@ -2,7 +2,7 @@
 
 RSpec.describe ServicioSanitario do
 
-  it "Se espera que la gema haga algo uutil" do
+  it "Se espera que la gema haga algo útil" do
     expect(true).to eq(true)
   end
   
