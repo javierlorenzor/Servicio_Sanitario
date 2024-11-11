@@ -29,6 +29,21 @@ RSpec.describe ServicioSanitario::Paciente do
         end
     end
 
+    context "Pruebas getters" do
+        
+        it "Se espera que se devuelva el valor esperado " do
+            expect(@paciente1.numero_identificacion).to eq("12345")
+            expect(@paciente2.numero_identificacion).to eq("67890")
+            expect(@paciente1.nombre).to eq("Juan")
+            expect(@paciente1.apellido).to eq("Pérez")
+            expect(@paciente1.sexo).to eq("M")
+            expect(@paciente1.fecha_nacimiento).to eq(@fecha1)
+            expect(@paciente1.prioridad).to eq(ServicioSanitario::AZUL)
+            expect(@paciente1.diagnosticos).to eq([])
+        end
+
+    end
+
     context "Igualdad de objetos" do
         it "Se espera que dos pacientes con la misma información no sean el mismo objeto usando equal?" do
             expect(@paciente1).not_to equal(@paciente3)
