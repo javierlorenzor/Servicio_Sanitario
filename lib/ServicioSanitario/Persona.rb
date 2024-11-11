@@ -16,15 +16,19 @@ module ServicioSanitario
             end
         end
         
+        protected
         # Método para obtener el contador de instancias
         def self.contador_instancias
             @@instancia_contador
         end
+
+        public
         
         def edad(fecha)
             fecha.anio - @fecha_nacimiento.anio
         end
 
+     
         def to_s
             "#{@nombre} #{@apellido}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{@fecha_nacimiento}"
         end
