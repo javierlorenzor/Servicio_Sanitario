@@ -11,6 +11,9 @@ module ServicioSanitario
             @maximo_pacientes = maximo_pacientes
         end
 
+        def carga_max?
+            numero_pacientes >= maximo_pacientes
+        end
        
     end 
 end 

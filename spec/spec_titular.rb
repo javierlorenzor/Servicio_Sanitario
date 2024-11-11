@@ -17,8 +17,10 @@ RSpec.describe ServicioSanitario::Titular do
     @titular1 = ServicioSanitario::Titular.new("12345", "Alba", "Perez", "F", @fecha1, "Pediatría", 5)
     @titular2 = ServicioSanitario::Titular.new("56789", "Miguel", "Tadeo", "M", @fecha2, "Geriatría", 3)
   
-    @paciente1 = ServicioSanitario::Paciente.new("54321", "Maria", "Gomez", "F", @fecha1, "Rojo")
-    @paciente2 = ServicioSanitario::Paciente.new("67890", "Carlos", "Ruiz", "M", @fecha2, "Azul")
+    @paciente1 = ServicioSanitario::Paciente.new("54321", "Maria", "Gomez", "F", @fecha1, ServicioSanitario::AZUL)
+    @paciente2 = ServicioSanitario::Paciente.new("67890", "Carlos", "Ruiz", "M", @fecha2, ServicioSanitario::AZUL)
+    @paciente1 = ServicioSanitario::Paciente.new("54321", "Juan", "Marrero", "F", @fecha1, ServicioSanitario::AZUL)
+    @paciente2 = ServicioSanitario::Paciente.new("67890", "Ana", "Dorta", "M", @fecha2, ServicioSanitario::AZUL)
   end
 
   it "Se espera que se pueda inicializar persona correctamente con valores válidos" do
@@ -49,13 +51,15 @@ RSpec.describe ServicioSanitario::Titular do
   it 'Se espera retornar false cuando el número de pacientes es menor que el máximo' do
     @titular1.pacientes << @paciente1
     @titular1.pacientes << @paciente2
-    expect(@titular1.carga_maxima_alcanzada?).to be false 
+    expect(@titular1.carga_max?).to be false 
   end
 
   it 'Se espera retornar true cuando el número de pacientes es igual o mayor que el máximo' do
     @titular2.pacientes << @paciente1
     @titular2.pacientes << @paciente2
-    expect(@titular2.carga_maxima_alcanzada?).to be true 
+    @titular2.pacientes << @paciente3
+    @titular2.pacientes << @paciente4
+    expect(@titular2.carga_max?).to be true 
   end
 
 
