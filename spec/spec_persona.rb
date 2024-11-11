@@ -28,7 +28,7 @@ RSpec.describe ServicioSanitario::Persona do
   end
 
   context "Acceso a atributos" do
-    it 'Se debe tener acceso de lectura a los atributos' do
+    it "Se debe tener acceso de lectura a los atributos" do
       expect(@persona1.numero_identificacion).to eq("12345")
       expect(@persona2.numero_identificacion).to eq("67890")
       expect(@persona1.nombre).to eq("Juan")
@@ -42,7 +42,7 @@ RSpec.describe ServicioSanitario::Persona do
     end
   end
 
-  context "Método 'to_s'" do
+  context "Método to_s " do
     it "Se espera que se devuelva una cadena con la información completa de la persona" do
       expect(@persona1.to_s).to eq("Juan Pérez, ID: 12345, Sexo: M, Fecha de Nacimiento: 19/7/2001")
       expect(@persona2.to_s).to eq("Ana García, ID: 67890, Sexo: F, Fecha de Nacimiento: 23/9/2004")
@@ -69,8 +69,8 @@ RSpec.describe ServicioSanitario::Persona do
     end
   end
 
-  context "Método 'edad'" do
-    it 'Se espera poder calcular correctamente la edad de la persona' do
+  context "Método edad " do
+    it "Se espera poder calcular correctamente la edad de la persona" do
       expect(@persona1.edad(@fecha3)).to eq(23)
       expect(@persona2.edad(@fecha3)).to eq(20)
     end
@@ -104,7 +104,7 @@ RSpec.describe ServicioSanitario::Persona do
   end
 
   context "Métodos públicos de la clase Persona" do
-    it 'Se espera poder verificar los métodos públicos en Persona' do
+    it "Se espera poder verificar los métodos públicos en Persona" do
       expect(@persona.public_methods).to include(:to_s)
       expect(@persona.public_methods).to include(:==)
       expect(@persona.public_methods).to include(:instance_of?)
