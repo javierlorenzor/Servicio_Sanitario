@@ -43,10 +43,6 @@ RSpec.describe ServicioSanitario::Titular do
       expect(Object.superclass).to eq(BasicObject)
     end
 
-  end
-
-  context "Uso getters" do
-
     it "Se espera que devuelva el valor esperado" do
       expect(@titular1.numero_identificacion).to eq("12345")
       expect(@titular1.nombre).to eq("Alba")
@@ -58,6 +54,7 @@ RSpec.describe ServicioSanitario::Titular do
     end
 
   end
+
 
   context "Comprobaciones metodo maximo" do
 
@@ -96,11 +93,12 @@ RSpec.describe ServicioSanitario::Titular do
 
   context "Métodos públicos de la clase Persona" do
 
-    it "Se espera poder verificar los métodos públicos en Persona" do
+    it "Se espera poder verificar los métodos públicos en Titular" do
       expect(@titular.public_methods).to include(:to_s)
       expect(@titular.public_methods).to include(:==)
       expect(@titular.public_methods).to include(:instance_of?)
       expect(@titular.public_methods).to include(:equal?)
+      expect(ServicioSanitario::Titular.public_instance_methods).to include(:carga_max?)
     end
 
   end
@@ -122,8 +120,8 @@ RSpec.describe ServicioSanitario::Titular do
       expect(@titular1).not_to equal(@titular3) # Aunque los atributos sean iguales, son objetos diferentes en memoria
     end
 
-    it "Se espera verificar que === no se usa comúnmente para la comparación de objetos directos" do
-      expect(@titular1 === @titular3).to be false  # `===` se usa más comúnmente para casos como la comparación de clases, no tanto de igualdad de objetos
+    it "Se espera verificar la igualdad con  === " do
+      expect(@titular1 === @titular3).to be false 
     end
   end
 
