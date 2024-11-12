@@ -3,11 +3,17 @@
 RSpec.describe ServicioSanitario do
 
   before(:each) do
-    # Creación de dos instancias de la clase Hora con los mismos valores de hora, minuto y segundo
+
     @hora = ServicioSanitario::Hora.new(hora: 12, minuto: 30, segundo: 45)
     @hora1 = ServicioSanitario::Hora.new(hora: 12, minuto: 30, segundo: 45)
     @hora2 = ServicioSanitario::Hora.new(hora: 10, minuto: 40, segundo: 25)
     @hora3 = ServicioSanitario::Hora.new(hora: 14, minuto: 50, segundo: 15)
+
+    @fecha = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
+    @fecha1 = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
+    @fecha2 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
+    @fecha3 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2001)
+    @fecha4 = ServicioSanitario::Fecha.new(dia: 8, mes: 11, anio: 2024)
   end
 
   context "Pruebas por defecto gema" do
@@ -72,6 +78,22 @@ RSpec.describe ServicioSanitario do
       expect(ServicioSanitario::VERDE).to eq({ nivel: :IV, categoria: :Menos_urgente, tiempo_atencion: '45 minutos' })
       expect(ServicioSanitario::NEGRO).to be_a(Hash)
       expect(ServicioSanitario::NEGRO).to eq({ nivel: :V, categoria: :No_urgente, tiempo_atencion: '60 minutos' })
+    end
+  end 
+
+  context "Pruebas metodo DIFERENCIA FECHAS " do
+    it "Se espera poder calcular la diferencia entre dos fechas" do
+      diferencia = ServicioSanitario.diferencia(@fecha, @fecha1)
+      expect(diferencia).to eq("0 años, 0 meses, 0 días")
+      
+      diferencia1 = ServicioSanitario.diferencia(@fecha, @fecha2)
+      expect(diferencia1).to eq("23 años, 3 meses, 26 días")
+
+      diferencia3 = ServicioSanitario.diferencia(@fecha2, @fecha3)
+      expect(diferencia3).to eq("0 años, 2 meses, 4 días")
+
+      diferencia4 = ServicioSanitario.diferencia(@fecha4, @fecha2)
+      expect(diferencia4).to eq("23 años, 3 meses, 19 días")
     end
   end 
 

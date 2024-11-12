@@ -50,22 +50,6 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(@fecha2.to_s).to eq("19/7/2001")
       expect(@fecha2).not_to be_a(String)
     end
-  
-    # Verifica que se pueda calcular la diferencia entre dos fechas
-    it "Se espera poder calcular la diferencia entre dos fechas" do
-      diferencia = ServicioSanitario.diferencia(@fecha, @fecha1)
-      expect(diferencia).to eq("0 años, 0 meses, 0 días")
-      
-      diferencia1 = ServicioSanitario.diferencia(@fecha, @fecha2)
-      expect(diferencia1).to eq("23 años, 3 meses, 26 días")
-
-      diferencia3 = ServicioSanitario.diferencia(@fecha2, @fecha3)
-      expect(diferencia3).to eq("0 años, 2 meses, 4 días")
-
-      diferencia4 = ServicioSanitario.diferencia(@fecha4, @fecha2)
-      expect(diferencia4).to eq("23 años, 3 meses, 19 días")
-
-    end
   end 
 
   context "Métodos públicos de la clase Fecha" do

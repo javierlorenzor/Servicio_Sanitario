@@ -5,6 +5,7 @@ require_relative "ServicioSanitario/version"
 
 # El módulo ServicioSanitario define diferentes constantes y métodos relacionados con la atención médica.
 module ServicioSanitario
+  
   # Definición de constantes para los diferentes niveles de atención, cada una con su nivel, categoría y tiempo de atención
   AZUL = { nivel: :I, categoria: :Reanimacion, tiempo_atencion: :Inmediato }
   ROJO = { nivel: :II, categoria: :Emergencia, tiempo_atencion: '7 minutos' }
