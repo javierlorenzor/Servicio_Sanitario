@@ -91,7 +91,7 @@ RSpec.describe ServicioSanitario::Titular do
 
   end 
 
-  context "Métodos públicos de la clase Persona" do
+  context "Métodos públicos de la clase Titular" do
 
     it "Se espera poder verificar los métodos públicos en Titular" do
       expect(@titular.public_methods).to include(:to_s)

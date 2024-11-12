@@ -68,6 +68,17 @@ RSpec.describe ServicioSanitario::Fecha do
     end
   end 
 
+  context "Métodos públicos de la clase Fecha" do
+
+    it "Se espera poder verificar los métodos públicos en Fecha" do
+      expect(@titular.public_methods).to include(:to_s)
+      expect(@titular.public_methods).to include(:==)
+      expect(@titular.public_methods).to include(:instance_of?)
+      expect(@titular.public_methods).to include(:equal?)
+    end
+
+  end
+
   context "Igualdad de objetos" do
     it "Se espera verificar la igualdad utilizando ==" do
       expect(@fecha).to eq(@fecha5) # Los atributos son iguales, por lo tanto deberían ser iguales
