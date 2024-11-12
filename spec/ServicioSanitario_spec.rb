@@ -32,7 +32,6 @@ RSpec.describe ServicioSanitario do
 
   end 
   
-
   context "Pruebas metodo DIFERENCIA HORAS " do
  
     it "Se espera poder calcular la diferencia entre dos horas" do
@@ -60,4 +59,20 @@ RSpec.describe ServicioSanitario do
       expect(nivel2).to be_a(Hash)
     end
   end 
+
+  context "Pruebas CONSTANTES " do
+    it "Se espera que las constantes esten correctamente definidas" do
+      expect(ServicioSanitario::AZUL).to be_a(Hash)
+      expect(ServicioSanitario::AZUL).to eq({ nivel: :I, categoria: :Reanimacion, tiempo_atencion: :Inmediato })
+      expect(ServicioSanitario::ROJO).to be_a(Hash)
+      expect(ServicioSanitario::ROJO).to eq({ nivel: :II, categoria: :Emergencia, tiempo_atencion: '7 minutos' })
+      expect(ServicioSanitario::NARANJA).to be_a(Hash)
+      expect(ServicioSanitario::NARANJA).to eq({ nivel: :III, categoria: :Urgente, tiempo_atencion: '30 minutos' })
+      expect(ServicioSanitario::VERDE).to be_a(Hash)
+      expect(ServicioSanitario::VERDE).to eq({ nivel: :IV, categoria: :Menos_urgente, tiempo_atencion: '45 minutos' })
+      expect(ServicioSanitario::NEGRO).to be_a(Hash)
+      expect(ServicioSanitario::NEGRO).to eq({ nivel: :V, categoria: :No_urgente, tiempo_atencion: '60 minutos' })
+    end
+  end 
+
 end
