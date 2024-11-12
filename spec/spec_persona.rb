@@ -14,7 +14,7 @@ RSpec.describe ServicioSanitario::Persona do
     @persona4 = @persona1
   end
 
-  context "Inicialización y clases" do
+  context "Inicialización y herencia " do
     it "Se espera que se pueda inicializar persona correctamente con valores válidos" do
       expect(@persona1).not_to be_nil
       expect(@persona2).not_to be_nil

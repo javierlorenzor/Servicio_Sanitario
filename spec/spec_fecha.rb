@@ -11,54 +11,82 @@ RSpec.describe ServicioSanitario::Fecha do
     @fecha2 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
     @fecha3 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2001)
     @fecha4 = ServicioSanitario::Fecha.new(dia: 8, mes: 11, anio: 2024)
+    @fecha5 = @fecha
   end
 
-  # Verifica que se puede crear una instancia de la clase Fecha
-  it "Se espera poder crear una instancia de Fecha" do
-    expect(@fecha).not_to be_nil
-    expect(@fecha1).not_to be_nil
-    expect(@fecha2).not_to be_nil
-  end
+  context "Inicialización y herencia " do
+    # Verifica que se puede crear una instancia de la clase Fecha
+    it "Se espera poder crear una instancia de Fecha" do
+      expect(@fecha).not_to be_nil
+      expect(@fecha1).not_to be_nil
+      expect(@fecha2).not_to be_nil
+    end
 
-  it "Se espera que la instancia pertenezca a a la clase determinada" do
-    # Comprobamos que el método to_s devuelva el formato correcto
-    expect(@fecha).to be_a(ServicioSanitario::Fecha)
-    expect(@fecha).to be_a(ServicioSanitario::Fecha)
-    expect(@fecha.instance_of?(ServicioSanitario::Fecha)).to be true
-    expect(ServicioSanitario::Fecha.superclass).to eq(Object)
-  end
+    it "Se espera que la instancia pertenezca a a la clase determinada" do
+      # Comprobamos que el método to_s devuelva el formato correcto
+      expect(@fecha).to be_a(ServicioSanitario::Fecha)
+      expect(@fecha).to be_a(ServicioSanitario::Fecha)
+      expect(@fecha.instance_of?(ServicioSanitario::Fecha)).to be true
+      expect(ServicioSanitario::Fecha.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end
 
-  # Verifica que los valores de día, mes y año sean accesibles y correctos
-  it "Se espera poder acceder a los atributos de la fecha (getters)" do
-    expect(@fecha.dia).to eq(15)
-    expect(@fecha.mes).to eq(11)
-    expect(@fecha.anio).to eq(2024)
-    expect(@fecha2.dia).to eq(19)
-    expect(@fecha2.mes).to eq(07)
-    expect(@fecha2.anio).to eq(2001)
-  end
+    it "Se espera poder acceder a los atributos de la fecha (getters)" do
+      expect(@fecha.dia).to eq(15)
+      expect(@fecha.mes).to eq(11)
+      expect(@fecha.anio).to eq(2024)
+      expect(@fecha2.dia).to eq(19)
+      expect(@fecha2.mes).to eq(07)
+      expect(@fecha2.anio).to eq(2001)
+    end
 
-  # Verifica que la fecha se pueda representar correctamente como una cadena
-  it "Se espera poder representar la fecha como cadena de manera correcta" do
-    expect(@fecha.to_s).to eq("15/11/2024")
-    expect(@fecha.to_s).to be_a(String)
-    expect(@fecha2.to_s).to eq("19/7/2001")
-    expect(@fecha2).not_to be_a(String)
-  end
+  end 
 
-  # Verifica que se pueda calcular la diferencia entre dos fechas
-  it "Se espera poder calcular la diferencia entre dos fechas" do
-    diferencia = ServicioSanitario.diferencia(@fecha, @fecha1)
-    expect(diferencia).to eq("0 años, 0 meses, 0 días")
-    
-    diferencia1 = ServicioSanitario.diferencia(@fecha, @fecha2)
-    expect(diferencia1).to eq("23 años, 3 meses, 26 días")
+  context "Metodos" do
+    # Verifica que la fecha se pueda representar correctamente como una cadena
+    it "Se espera poder representar la fecha como cadena de manera correcta" do
+      expect(@fecha.to_s).to eq("15/11/2024")
+      expect(@fecha.to_s).to be_a(String)
+      expect(@fecha2.to_s).to eq("19/7/2001")
+      expect(@fecha2).not_to be_a(String)
+    end
+  
+    # Verifica que se pueda calcular la diferencia entre dos fechas
+    it "Se espera poder calcular la diferencia entre dos fechas" do
+      diferencia = ServicioSanitario.diferencia(@fecha, @fecha1)
+      expect(diferencia).to eq("0 años, 0 meses, 0 días")
+      
+      diferencia1 = ServicioSanitario.diferencia(@fecha, @fecha2)
+      expect(diferencia1).to eq("23 años, 3 meses, 26 días")
 
-    diferencia3 = ServicioSanitario.diferencia(@fecha2, @fecha3)
-    expect(diferencia3).to eq("0 años, 2 meses, 4 días")
+      diferencia3 = ServicioSanitario.diferencia(@fecha2, @fecha3)
+      expect(diferencia3).to eq("0 años, 2 meses, 4 días")
 
-    diferencia4 = ServicioSanitario.diferencia(@fecha4, @fecha2)
-    expect(diferencia4).to eq("23 años, 3 meses, 19 días")
+      diferencia4 = ServicioSanitario.diferencia(@fecha4, @fecha2)
+      expect(diferencia4).to eq("23 años, 3 meses, 19 días")
 
+    end
+  end 
+
+  context "Igualdad de objetos" do
+    it "Se espera verificar la igualdad utilizando ==" do
+      expect(@fecha).to eq(@fecha5) # Los atributos son iguales, por lo tanto deberían ser iguales
+    end
+
+    it "Se espera verificar la igualdad utilizando eql?" do
+      expect(@fecha).to eql(@fecha5) # Igualdad estricta, se espera que sean iguales
+    end
+
+    it "Se espera verificar que los objetos con la misma referencia son iguales utilizando equal?" do
+      expect(@fecha).to equal(@fecha5) # Mismo objeto en memoria, por lo que equal? debe devolver true
+    end
+
+    it "Se espera verificar que dos objetos con atributos iguales pero diferente referencia no son iguales utilizando equal?" do
+      expect(@fecha).not_to equal(@fecha1) # Aunque los atributos sean iguales, son objetos diferentes en memoria
+    end
+
+    it "Se espera verificar la igualdad usando === " do
+      expect(@fecha === @fecha1).to be false  
+    end
   end
 end

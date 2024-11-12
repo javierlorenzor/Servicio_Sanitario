@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Dependency of the gem
-  gemspec
+  # gemspec
 
   gem "rake", "~> 13.0"
 
