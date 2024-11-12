@@ -11,6 +11,10 @@
 │   │   ├── Fecha.rb
 │   │   ├── Horas.rb
 │   │   ├── NivelSet.rb
+│   │   ├── Persona.rb
+│   │   ├── Paciente.rb
+│   │   ├── Medico.rb
+│   │   ├── Titular.rb
 │   │   └── version.rb
 │   └── ServicioSanitario.rb
 ├── Rakefile
@@ -23,6 +27,10 @@
     ├── spec_fecha.rb
     ├── spec_helper.rb
     ├── spec_horas.rb
+    ├── spec_persona.rb
+    ├── spec_medico.rb
+    ├── spec_paciente.rb
+    ├── spec_titular.rb
     └── spec_nivelset.rb
 ```
 
@@ -32,8 +40,8 @@
 - **`doc/`**: Carpeta generada por YARD que contiene la documentación HTML del proyecto.
 - **`lib/`**: Contiene el código fuente del proyecto.
   - **`ServicioSanitario/`**: Módulo que contiene las clases 
-        - `Fecha`, `Horas`, `NivelSet`
-  - **`ServicioSanitario.rb`**: Archivo principal que carga el módulo `ServicioSanitario`.
+        - `Fecha`, `Horas`, `NivelSet`, `Persona` , `Medico` , `Titular` , `Paciente`
+  - **`ServicioSanitario.rb`**: Archivo principal que carga el módulo `ServicioSanitario` y contiene constantes y metodos.
 - **`spec/`**: Carpeta de pruebas que incluye archivos de pruebas RSpec para cada clase.
   - **`spec_helper.rb`**: Configuración común para todas las pruebas.
 - **`Gemfile` y `Gemfile.lock`**: Listan las dependencias del proyecto.
