@@ -21,6 +21,7 @@ RSpec.describe ServicioSanitario::NivelSet do
     expect(@nivel2.instance_of?(ServicioSanitario::NivelSet)).to be true
     expect(@nivel2.instance_of?(ServicioSanitario::Fecha)).to be false
     expect(ServicioSanitario::NivelSet.superclass).to eq(Object)
+    expect(Object.superclass).to eq(BasicObject)
   end
 
   # Verifica que se puede crear una instancia de NivelSet
