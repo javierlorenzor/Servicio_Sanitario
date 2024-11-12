@@ -97,4 +97,35 @@ RSpec.describe ServicioSanitario do
     end
   end 
 
+  context "Pruebas metodo OBTENER NIVEL " do
+    it " Se espera que retorne nivel AZUL para una diferencia de 0 a 6 minutos" do
+      resultado = ServicioSanitario.obtener_nivel(@hora, @hora1)
+      expect(resultado).to eq(ServicioSanitario::AZUL)
+    end
+
+    it "Se espera que retorne nivel ROJO para una diferencia de 7 a 30 minutos" do
+      hora_actual = ServicioSanitario::Hora.new(hora: 12, minuto: 37, segundo: 45)
+      resultado = ServicioSanitario.obtener_nivel(@hora, hora_actual)
+      expect(resultado).to eq(ServicioSanitario::ROJO)
+    end
+
+    it "Se espera que retorne nivel NARANJA para una diferencia de 31 a 45 minutos" do
+      hora_actual = ServicioSanitario::Hora.new(hora: 13, minuto: 1, segundo: 45)
+      resultado = ServicioSanitario.obtener_nivel(@hora, hora_actual)
+      expect(resultado).to eq(ServicioSanitario::NARANJA)
+    end
+
+    it "Se espera que retorne nivel VERDE para una diferencia de 46 a 60 minutos" do
+      hora_actual = ServicioSanitario::Hora.new(hora: 13, minuto: 16, segundo: 45)
+      resultado = ServicioSanitario.obtener_nivel(@hora, hora_actual)
+      expect(resultado).to eq(ServicioSanitario::VERDE)
+    end
+
+    it "Se espera que retorne nivel NEGRO para una diferencia mayor a 60 minutos" do
+      hora_actual = ServicioSanitario::Hora.new(hora: 13, minuto: 31, segundo: 45)
+      resultado = ServicioSanitario.obtener_nivel(@hora, hora_actual)
+      expect(resultado).to eq(ServicioSanitario::NEGRO)
+    end
+  end 
+
 end
