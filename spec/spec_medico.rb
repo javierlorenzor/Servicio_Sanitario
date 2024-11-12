@@ -35,11 +35,9 @@ RSpec.describe ServicioSanitario::Medico do
             expect(@medico2).to be_a(ServicioSanitario::Medico)
             expect(@medico1.instance_of?(ServicioSanitario::Medico)).to be true
             expect(ServicioSanitario::Medico.superclass).to eq(ServicioSanitario::Persona)
+            expect(ServicioSanitario::Persona.superclass).to eq(Object)
+            expect(Object.superclass).to eq(BasicObject)
         end
-    end 
-
-    context "Pruebas getters" do
-
         it "Se debe inicializar con los atributos correctos" do
             expect(@medico2.numero_identificacion).to eq("56789")
             expect(@medico2.nombre).to eq("Miguel")
@@ -49,8 +47,9 @@ RSpec.describe ServicioSanitario::Medico do
             expect(@medico2.especialidad).to eq("Pediatría")
             expect(@medico2.pacientes).to be_empty
         end
-    end
+    end 
 
+   
     context "Manipular hash pacientes " do 
 
         it "Se debe permitir agregar pacientes al array de pacientes" do
@@ -73,6 +72,20 @@ RSpec.describe ServicioSanitario::Medico do
             expect(@medico1.pacientes).not_to include(@paciente1)
         end
 
+    end
+
+    context "Métodos de la clase " do
+
+        it "Se debe devolver una cadena con la información del médico y el número de pacientes" do
+            @medico1.pacientes << @paciente1
+            @medico1.pacientes << @paciente2
+            expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 2")
+        end
+    
+        it "Se debe devolver la información correctamente cuando no hay pacientes asignados" do
+            expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 0")
+        end
+
         it "Se espera que el número de pacientes de un médico sea 0 inicialmente" do
             expect(@medico1.numero_pacientes).to eq(0)
             expect(@medico2.numero_pacientes).to eq(0)
@@ -89,20 +102,6 @@ RSpec.describe ServicioSanitario::Medico do
             @medico1.pacientes.delete(@paciente2)
             expect(@medico1.numero_pacientes).not_to eq(2)
         end
-    end
-
-    context "Método to_s" do
-
-        it "Se debe devolver una cadena con la información del médico y el número de pacientes" do
-            @medico1.pacientes << @paciente1
-            @medico1.pacientes << @paciente2
-            expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 2")
-        end
-    
-        it "Se debe devolver la información correctamente cuando no hay pacientes asignados" do
-            expect(@medico1.to_s).to eq("Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: 10/5/1980, Especialidad: Pediatría, Número de Pacientes: 0")
-        end
-
     end
 
     context "Métodos públicos de la clase Persona" do
