@@ -104,9 +104,9 @@ RSpec.describe ServicioSanitario::Medico do
         end
     end
 
-    context "Métodos públicos de la clase Persona" do
+    context "Métodos públicos de la clase medico" do
 
-        it "Se espera poder verificar los métodos públicos en Persona" do
+        it "Se espera poder verificar los métodos públicos en medico" do
             expect(@persona.public_methods).to include(:to_s)
             expect(@persona.public_methods).to include(:==)
             expect(@persona.public_methods).to include(:instance_of?)
@@ -137,7 +137,7 @@ RSpec.describe ServicioSanitario::Medico do
             expect(@medico1).not_to equal(@medico3)
         end
 
-        it "Se espera verificar que === no se usa comúnmente para la comparación de objetos directos" do
+        it "Se espera verificar la igualdad usando === " do
             expect(@medico1 === @medico3).to be false
         end
     end
