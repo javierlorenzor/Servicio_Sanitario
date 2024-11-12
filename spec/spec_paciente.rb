@@ -26,11 +26,10 @@ RSpec.describe ServicioSanitario::Paciente do
             expect(@paciente2).to be_a(ServicioSanitario::Paciente)
             expect(@paciente1.instance_of?(ServicioSanitario::Paciente)).to be true
             expect(ServicioSanitario::Paciente.superclass).to eq(ServicioSanitario::Persona)
+            expect(ServicioSanitario::Persona.superclass).to eq(Object)
+            expect(Object.superclass).to eq(BasicObject)
         end
-    end
 
-    context "Pruebas getters" do
-        
         it "Se espera que se devuelva el valor esperado " do
             expect(@paciente1.numero_identificacion).to eq("12345")
             expect(@paciente2.numero_identificacion).to eq("67890")
@@ -41,7 +40,6 @@ RSpec.describe ServicioSanitario::Paciente do
             expect(@paciente1.prioridad).to eq(ServicioSanitario::AZUL)
             expect(@paciente1.diagnosticos).to eq([])
         end
-
     end
 
     context "Igualdad de objetos" do
@@ -65,7 +63,7 @@ RSpec.describe ServicioSanitario::Paciente do
             expect(@paciente1).not_to equal(@paciente3)
         end
 
-        it "Se espera verificar que === no se usa comúnmente para la comparación de objetos directos" do
+        it "Se espera verificar la igualad usando  === " do
             expect(@paciente1 === @paciente3).to be false
         end
     end
@@ -106,7 +104,7 @@ RSpec.describe ServicioSanitario::Paciente do
         end
     end
 
-    context "Métodos públicos de la clase Persona" do
+    context "Métodos públicos de la clase Paciente" do
         it "Se espera poder verificar los métodos públicos en Paciente" do
             expect(@paciente1.public_methods).to include(:to_s)
             expect(@paciente1.public_methods).to include(:==)
