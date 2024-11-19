@@ -20,7 +20,7 @@ module ServicioSanitario
         end
 
         def to_s
-            "#{super()}, Prioridad: #{prioridad}, Diagnósticos: #{diagnosticos.join(', ')}"
+            "#{nombre_completo}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{obtener_fecha}, Prioridad: #{prioridad}, Diagnósticos: #{diagnosticos.join(', ')}"
         end
     end
 end

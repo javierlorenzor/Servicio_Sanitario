@@ -109,4 +109,35 @@ RSpec.describe ServicioSanitario::Persona do
       expect(@persona.public_methods).to include(:equal?)
     end
   end
+
+  context "Visibilidad de las clases" do
+    it "Se espera poder acceder a métodos públicos" do
+      expect(@persona1.nombre_completo).to eq("Juan Pérez")
+      expect(@persona1.to_s).to include("12345")
+    end
+
+    it "Se espera no poder acceder a métodos privados directamente" do
+      expect { @persona1.set_nombre("Pedro") }.to raise_error(NoMethodError)
+      expect { @persona1.set_apellido("Lopez") }.to raise_error(NoMethodError)
+    end
+
+    it "Se espera no poder acceder a métodos protegidos directamente" do
+      expect { @persona1.fecha_nacimiento }.to raise_error(NoMethodError)
+    end
+
+    it "Se espera verificar que los métodos privados son utilizados internamente" do
+      @persona1.set_nombre_completo("Carlos López")
+      expect(@persona1.nombre_completo).to eq("Carlos López")
+    end
+
+    it "Se espera poder compartir la misma referencia de objeto" do
+      expect(@persona4).to equal(@persona1) # misma referencia de objeto
+    end
+
+    it "Se espera poder comparar correctamente dos instancias con los mismos valores" do
+      expect(@persona1).not_to equal(@persona3) # diferentes objetos
+      expect(@persona1.nombre_completo).to eq(@persona3.nombre_completo)
+    end
+
+  end 
  end

@@ -14,9 +14,9 @@ RSpec.describe ServicioSanitario::Titular do
     @fecha2 = ServicioSanitario::Fecha.new(dia: 20, mes: 6, anio: 1990)
   
     # Creación de médicos y pacientes
-    @titular1 = ServicioSanitario::Titular.new("12345", "Alba", "Perez", "F", @fecha1, "Pediatría", 5)
+    @titular1 = ServicioSanitario::Titular.new("12345", "Alba", "Pérez", "F", @fecha1, "Pediatría", 5)
     @titular2 = ServicioSanitario::Titular.new("56789", "Miguel", "Tadeo", "M", @fecha2, "Geriatría", 3)
-    @titular3 = ServicioSanitario::Titular.new("12345", "Alba", "Perez", "F", @fecha1, "Pediatría", 5)
+    @titular3 = ServicioSanitario::Titular.new("12345", "Alba", "Pérez", "F", @fecha1, "Pediatría", 5)
     @titular4 = @titular1
 
   
@@ -45,10 +45,9 @@ RSpec.describe ServicioSanitario::Titular do
 
     it "Se espera que devuelva el valor esperado" do
       expect(@titular1.numero_identificacion).to eq("12345")
-      expect(@titular1.nombre).to eq("Alba")
-      expect(@titular1.apellido).to eq("Perez")
+      expect(@titular1.nombre_completo).to eq("Alba Pérez")
       expect(@titular1.sexo).to eq("F")
-      expect(@titular1.fecha_nacimiento).to eq(@fecha1)
+      expect(@titular1.obtener_fecha).to eq(@fecha1)
       expect(@titular1.especialidad).to eq("Pediatría")
       expect(@titular1.maximo_pacientes).to eq(5)
     end
@@ -76,7 +75,7 @@ RSpec.describe ServicioSanitario::Titular do
       # Añadimos algunos pacientes al titular1, pero sin alcanzar el máximo
       @titular1.pacientes << @paciente1
       @titular1.pacientes << @paciente2
-      expected_output = "Alba Perez, ID: 12345, Sexo: F, Fecha de Nacimiento: #{@fecha1}, Especialidad: Pediatría, Número de Pacientes: 2, Máximo de Pacientes: 5, Carga Máxima Alcanzada: false"
+      expected_output = "Alba Pérez, ID: 12345, Sexo: F, Fecha de Nacimiento: #{@fecha1}, Especialidad: Pediatría, Número de Pacientes: 2, Máximo de Pacientes: 5, Carga Máxima Alcanzada: false"
       expect(@titular1.to_s).to eq(expected_output)
     end
 
