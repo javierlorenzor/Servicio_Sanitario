@@ -40,8 +40,7 @@ RSpec.describe ServicioSanitario::Medico do
         end
         it "Se debe inicializar con los atributos correctos" do
             expect(@medico2.numero_identificacion).to eq("56789")
-            expect(@medico2.nombre).to eq("Miguel")
-            expect(@medico2.apellido).to eq("Tadeo")
+            expect(@medico2.nombre_completo).to eq("Miguel Tadeo")
             expect(@medico2.sexo).to eq("M")
             expect(@medico2.especialidad).to eq("Pediatría")
             expect(@medico2.pacientes).to be_empty

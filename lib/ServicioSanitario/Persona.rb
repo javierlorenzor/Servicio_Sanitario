@@ -3,18 +3,12 @@ module ServicioSanitario
     # Clase que representa una persona en el sistema sanitario.
     # Esta clase sirve como clase base para otras entidades del sistema que comparten atributos comunes.
     class Persona
-        attr_accessor :numero_identificacion, :nombre, :apellido, :sexo, :fecha_nacimiento
-        #Inicializa un nuevo objeto `Persona`.
-        #
-        # @param numero_identificacion [String] Número de identificación de la persona.
-        # @param nombre [String] Nombre de la persona.
-        # @param apellido [String] Apellido de la persona.
-        # @param sexo [String] Sexo de la persona.
-        # @param fecha_nacimiento [Date] Fecha de nacimiento de la persona.
+        attr_accessor :numero_identificacion, :sexo , :fecha_nacimiento
+       
         def initialize(numero_identificacion, nombre, apellido, sexo, fecha_nacimiento)
             @numero_identificacion = numero_identificacion
-            @nombre = nombre
-            @apellido = apellido
+            #set_nombre_completo(nombre_completo)
+            set_nombre_completo("#{nombre} #{apellido}")
             @sexo = sexo
             @fecha_nacimiento = fecha_nacimiento
 
@@ -26,28 +20,56 @@ module ServicioSanitario
             end
         end
         
-        protected
-       # Método de clase para obtener el número total de instancias creadas de `Persona`.
-        #
-        # @return [Integer] El contador de instancias de la clase `Persona`.
+        def nombre_completo
+            @nombre + ' ' + @apellido
+        end
+      
+        def obtener_fecha
+            @fecha_nacimiento
+        end
+        
+        def edad(fecha_actual)
+            # Usamos el método obtener_fecha para acceder a la fecha de nacimiento
+            fecha_nacimiento = obtener_fecha
+        
+            # Calculamos la edad
+            edad = fecha_actual.anio - fecha_nacimiento.anio
+        
+            # Si la fecha actual aún no ha llegado al mes o día de nacimiento, restamos un año
+            if fecha_actual.mes < fecha_nacimiento.mes || (fecha_actual.mes == fecha_nacimiento.mes && fecha_actual.dia < fecha_nacimiento.dia)
+                edad -= 1
+            end
+        
+            edad
+        end
+        
+        def to_s
+            "Nombre: #{nombre_completo}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de nacimiento: #{@fecha_nacimiento}"
+        end
+      
+        def set_nombre_completo(nombre_completo)
+            nombre, apellido = nombre_completo.split(/\s+/)
+            set_nombre(nombre)
+            set_apellido(apellido)
+        end
+
         def self.contador_instancias
             @@instancia_contador
         end
+              
+        private
 
-        # Calcula la edad de la persona en función de una fecha específica.
-        #
-        # @param fecha [Date] La fecha con respecto a la cual calcular la edad.
-        # @return [Integer] La edad de la persona en años.
-        public
-        def edad(fecha)
-            fecha.anio - @fecha_nacimiento.anio
+        def set_nombre(nombre)
+            @nombre = nombre
         end
 
-        # Representación en cadena de la persona.
-        #
-        # @return [String] Una descripción detallada de la persona.
-        def to_s
-            "#{@nombre} #{@apellido}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{@fecha_nacimiento}"
+        def set_apellido(apellido)
+            @apellido = apellido
         end
+        
+        public :nombre_completo, :obtener_fecha, :edad, :to_s, :set_nombre_completo
+        protected :fecha_nacimiento
+        private :set_nombre, :set_apellido
+
     end
 end
