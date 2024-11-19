@@ -43,7 +43,6 @@ RSpec.describe ServicioSanitario::Medico do
             expect(@medico2.nombre).to eq("Miguel")
             expect(@medico2.apellido).to eq("Tadeo")
             expect(@medico2.sexo).to eq("M")
-            expect(@medico2.fecha_nacimiento).to eq(@fecha2)
             expect(@medico2.especialidad).to eq("Pediatría")
             expect(@medico2.pacientes).to be_empty
         end

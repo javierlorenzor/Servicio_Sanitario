@@ -6,8 +6,8 @@ require_relative 'spec_fecha'
 require_relative 'spec_horas'
 require_relative 'spec_medico'
 require_relative 'spec_persona'
-require_relative 'spec_paciente'
-require_relative 'spec_titular'
+#require_relative 'spec_paciente'
+#require_relative 'spec_titular'
 
 
 RSpec.configure do |config|

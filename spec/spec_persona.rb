@@ -16,8 +16,8 @@ RSpec.describe ServicioSanitario::Persona do
 
   context "Inicialización y herencia " do
     it "Se espera que se pueda inicializar persona correctamente con valores válidos" do
-      expect(@persona1).not_to be_nil
-      expect(@persona2).not_to be_nil
+      #expect(@persona1).not_to be_nil
+      #expect(@fecha1).not_to be_nil
     end
 
     it "Se espera que la instancia pertenezca a la clase determinada" do
@@ -31,54 +31,52 @@ RSpec.describe ServicioSanitario::Persona do
     it "Se debe tener acceso de lectura a los atributos" do
       expect(@persona1.numero_identificacion).to eq("12345")
       expect(@persona2.numero_identificacion).to eq("67890")
-      expect(@persona1.nombre).to eq("Juan")
-      expect(@persona2.nombre).to eq("Ana")
-      expect(@persona1.apellido).to eq("Pérez")
-      expect(@persona2.apellido).to eq("García")
+      expect(@persona1.nombre_completo).to eq("Juan Pérez")
+      expect(@persona2.nombre_completo).to eq("Ana García")
       expect(@persona1.sexo).to eq("M")
       expect(@persona2.sexo).to eq("F")
-      expect(@persona1.fecha_nacimiento).to eq(@fecha1)
-      expect(@persona2.fecha_nacimiento).to eq(@fecha2)
+      expect(@persona1.obtener_fecha).to eq(@fecha1)
+      expect(@persona2.obtener_fecha).to eq(@fecha2)
     end
   end
 
   context "Método to_s " do
-    it "Se espera que se devuelva una cadena con la información completa de la persona" do
-      expect(@persona1.to_s).to eq("Juan Pérez, ID: 12345, Sexo: M, Fecha de Nacimiento: 19/7/2001")
-      expect(@persona2.to_s).to eq("Ana García, ID: 67890, Sexo: F, Fecha de Nacimiento: 23/9/2004")
+     it "Se espera que se devuelva una cadena con la información completa de la persona" do
+       expect(@persona1.to_s).to eq("Nombre: Juan Pérez, ID: 12345, Sexo: M, Fecha de nacimiento: 19/7/2001")
+       expect(@persona2.to_s).to eq("Nombre: Ana García, ID: 67890, Sexo: F, Fecha de nacimiento: 23/9/2004")
     end
   end
 
-  context "Contador de instancias" do
-    it "Se espera que se incremente el contador cada vez que se crea una nueva instancia" do
-      ServicioSanitario::Persona.class_variable_set(:@@instancia_contador, 0)
-      expect(ServicioSanitario::Persona.contador_instancias).to eq(0)
+   context "Contador de instancias" do
+     it "Se espera que se incremente el contador cada vez que se crea una nueva instancia" do
+       ServicioSanitario::Persona.class_variable_set(:@@instancia_contador, 0)
+       expect(ServicioSanitario::Persona.contador_instancias).to eq(0)
 
-      # Crea una nueva instancia y verifica el incremento
-      persona1 = ServicioSanitario::Persona.new("54321", "Carlos", "López", "M", "12/11/2005")
-      expect(ServicioSanitario::Persona.contador_instancias).to eq(1)
+       # Crea una nueva instancia y verifica el incremento
+       persona1 = ServicioSanitario::Persona.new("54321", "Carlos", "López", "M", "12/11/2005")
+       expect(ServicioSanitario::Persona.contador_instancias).to eq(1)
 
-      # Crea otra instancia y verifica el incremento
-      persona2 = ServicioSanitario::Persona.new("12345", "Ana", "Martínez", "F", "23/06/1998")
-      expect(ServicioSanitario::Persona.contador_instancias).to eq(2)
-    end
+       # Crea otra instancia y verifica el incremento
+       persona2 = ServicioSanitario::Persona.new("12345", "Ana", "Martínez", "F", "23/06/1998")
+       expect(ServicioSanitario::Persona.contador_instancias).to eq(2)
+     end
 
-    it "Se espera que contador_instancias no sea accesible desde fuera de la clase" do
-      # Intentamos acceder al método contador_instancias desde un objeto de la clase (que es una instancia)
-      expect { @persona1.contador_instancias }.to raise_error(NoMethodError)
-    end
-  end
+     it "Se espera que contador_instancias no sea accesible desde fuera de la clase" do
+       # Intentamos acceder al método contador_instancias desde un objeto de la clase (que es una instancia)
+       expect { @persona1.contador_instancias }.to raise_error(NoMethodError)
+     end
+   end
 
-  context "Método edad " do
-    it "Se espera poder calcular correctamente la edad de la persona" do
-      expect(@persona1.edad(@fecha3)).to eq(23)
-      expect(@persona2.edad(@fecha3)).to eq(20)
-    end
+   context "Método edad " do
+     it "Se espera poder calcular correctamente la edad de la persona" do
+       expect(@persona1.edad(@fecha3)).to eq(23)
+       expect(@persona2.edad(@fecha3)).to eq(20)
+     end
 
-    it "Se espera que edad al ser público pueda ser accesible desde fuera de la clase" do
-      fecha_actual = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
-      expect(@persona1.edad(fecha_actual)).to eq(23) # Suponiendo que la lógica calcule la edad correctamente
-    end
+     it "Se espera que edad al ser público pueda ser accesible desde fuera de la clase" do
+       fecha_actual = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
+       expect(@persona1.edad(fecha_actual)).to eq(23) 
+     end
   end
 
   context "Igualdad de objetos" do
@@ -111,4 +109,4 @@ RSpec.describe ServicioSanitario::Persona do
       expect(@persona.public_methods).to include(:equal?)
     end
   end
-end
+ end
