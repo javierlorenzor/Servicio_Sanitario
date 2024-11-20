@@ -132,7 +132,6 @@ RSpec.describe ServicioSanitario::Paciente do
           expect(ServicioSanitario::Paciente.included_modules).to include(Comparable)
           expect(@paciente1.is_a?(Module)).to be(false)
           expect(@paciente1).to be_a(Comparable)
-          expect(@paciente1).not_to be_a(Enumerable ) 
         end 
     
         it "Se espera que la herencia sea correcta" do 

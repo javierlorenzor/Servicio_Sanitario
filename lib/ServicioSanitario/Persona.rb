@@ -4,6 +4,7 @@ module ServicioSanitario
     # Esta clase sirve como clase base para otras entidades del sistema que comparten atributos comunes.
     class Persona
         include Comparable
+        include Enumerable
         attr_accessor :numero_identificacion, :sexo , :fecha_nacimiento   
        
         def initialize(numero_identificacion, nombre, apellido, sexo, fecha_nacimiento)
