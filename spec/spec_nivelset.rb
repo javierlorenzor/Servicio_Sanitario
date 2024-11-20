@@ -96,10 +96,9 @@ RSpec.describe ServicioSanitario::NivelSet do
 
   context "Igualdad de objetos (COMPRABLE)" do
     it "Se espera que una fecha incluye el módulo Comparable" do 
-      expect(ServicioSanitario::Hora.included_modules).to include(Comparable)
+      expect(ServicioSanitario::NivelSet.included_modules).to include(Comparable)
       expect(@nivel.is_a?(Module)).to be(false)
       expect(@nivel).to be_a(Comparable)
-      expect(@nivel).not_to be_a(Enumerable ) 
     end
 
     it "Se espera que la herencia sea correcta" do 
@@ -143,5 +142,19 @@ RSpec.describe ServicioSanitario::NivelSet do
       expect(@nivel1 >= @nivel2).to be true
       expect(@nivel1 >= @nivel).to be true
     end
+  end 
+
+  context "Igualdad de objetos (ENUMERABLE)" do
+    it "Se espera que una fecha incluye el módulo Enumerable" do 
+      expect(ServicioSanitario::NivelSet.included_modules).to include(Enumerable)
+      expect(@nivel1.is_a?(Module)).to be(false)
+      expect(@nivel1).to be_a(Enumerable ) 
+    end 
+
+    it "Se espera que la herencia sea correcta" do 
+      expect(Enumerable.class).to eq(Module)
+      expect(Module.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end  
   end 
 end
