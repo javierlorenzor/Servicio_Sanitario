@@ -90,7 +90,6 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(ServicioSanitario::Fecha.included_modules).to include(Comparable)
       expect(@fecha.is_a?(Module)).to be(false)
       expect(@fecha).to be_a(Comparable)
-      expect(@fecha).not_to be_a(Enumerable ) 
     end 
 
     it "se espera que la herencia sea correcta" do 
@@ -136,4 +135,17 @@ RSpec.describe ServicioSanitario::Fecha do
 
   end 
 
+  context "Igualdad de objetos (ENUMERABLE)" do
+    it "Se espera que una fecha incluye el módulo Enumerable" do 
+      expect(ServicioSanitario::Fecha.included_modules).to include(Enumerable)
+      expect(@fecha1.is_a?(Module)).to be(false)
+      expect(@fecha1).to be_a(Enumerable ) 
+    end 
+
+    it "Se espera que la herencia sea correcta" do 
+      expect(Enumerable.class).to eq(Module)
+      expect(Module.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end  
+  end 
 end
