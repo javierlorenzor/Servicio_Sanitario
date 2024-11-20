@@ -125,4 +125,20 @@ RSpec.describe ServicioSanitario::Paciente do
             expect(@paciente1.to_s).to eq("Juan Pérez, ID: 12345, Sexo: M, Fecha de Nacimiento: #{@fecha1}, Prioridad: #{ServicioSanitario::AZUL}, Diagnósticos: Diagnóstico 1, Diagnóstico 2")
         end
     end
+
+    context "Igualdad de objetos (COMPRABLE)" do
+        it "Se espera que una fecha incluye el módulo Comparable" do 
+          expect(ServicioSanitario::Paciente.included_modules).to include(Comparable)
+          expect(@paciente1.is_a?(Module)).to be(false)
+          expect(@paciente1).to be_a(Comparable)
+          expect(@paciente1).not_to be_a(Enumerable ) 
+        end 
+    
+        it "Se espera que la herencia sea correcta" do 
+          expect(Comparable.class).to eq(Module)
+          expect(Module.superclass).to eq(Object)
+          expect(Object.superclass).to eq(BasicObject)
+        end  
+    end 
+    
 end
