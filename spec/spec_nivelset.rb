@@ -94,4 +94,12 @@ RSpec.describe ServicioSanitario::NivelSet do
     end
   end
 
+  context "Igualdad de objetos (COMPRABLE)" do
+    it "Se espera que una fecha incluye el módulo Comparable" do 
+      expect(ServicioSanitario::Hora.included_modules).to include(Comparable)
+      expect(@hora.is_a?(Module)).to be(false)
+      expect(@hora).to be_a(Comparable)
+      expect(@hora).not_to be_a(Enumerable ) 
+    end 
+  end 
 end

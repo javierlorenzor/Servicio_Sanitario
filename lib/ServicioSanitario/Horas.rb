@@ -17,6 +17,11 @@ module ServicioSanitario
         # Usamos format para dar formato a la hora en dos dígitos (con ceros a la izquierda si es necesario)
         format("%02d:%02d:%02d", @hora, @minuto, @segundo)
       end
+
+      def <=>(other)
+        [hora, minuto, segundo] <=> [other.hora, other.minuto, other.segundo]
+      end
+      
     end
   end
   
