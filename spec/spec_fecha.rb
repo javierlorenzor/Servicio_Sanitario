@@ -147,5 +147,42 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(Module.superclass).to eq(Object)
       expect(Object.superclass).to eq(BasicObject)
     end  
+
+    it "Se espera poder iterar sobre cada elemento con each" do
+      result = []
+      @fecha.each { |element| result << element }
+      expect(result).to eq([15, 11, 2024])  # Día, mes y año
+    end
+
+    it "Se espera poder mapear los elementos usando map" do
+      result = [@fecha, @fecha1, @fecha2].map { |fecha| fecha.dia }  # Extraemos el día
+      expect(result).to eq([15, 15, 19])  # Los días de cada instancia
+    end
+
+    it "Se espera poder seleccionar fechas específicas usando select" do
+      result = [@fecha, @fecha1, @fecha2, @fecha3].select { |fecha| fecha.anio == 2024 }
+      expect(result).to eq([@fecha, @fecha1, @fecha4])  # Seleccionamos las fechas de 2024
+    end
+
+    it "Se espera poder rechazar fechas específicas usando reject" do
+      result = [@fecha, @fecha1, @fecha2, @fecha3].reject { |fecha| fecha.mes == 11 }
+      expect(result).to eq([@fecha2, @fecha3])  # Rechazamos las fechas de noviembre
+    end
+
+    it "Se espera poder encontrar una fecha usando find" do
+      result = [@fecha, @fecha1, @fecha2, @fecha3].find { |fecha| fecha.dia == 8 }
+      expect(result).to eq(@fecha4)  # Debería encontrar la fecha con el día 8
+    end
+
+    it "Se espera poder devolver true si existe alguna fecha con cierto atributo usando any?" do
+      result = [@fecha, @fecha1, @fecha2, @fecha3].any? { |fecha| fecha.anio == 2001 }
+      expect(result).to be true  # Existen fechas con el año 2001
+    end
+
+    it "dSe espera poder  devolver false si no existe alguna fecha con cierto atributo usando any?" do
+      result = [@fecha, @fecha1, @fecha2, @fecha3].any? { |fecha| fecha.dia == 31 }
+      expect(result).to be false  # No existe ninguna fecha con el día 31
+    end
+
   end 
 end
