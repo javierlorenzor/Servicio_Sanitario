@@ -58,7 +58,12 @@ module ServicioSanitario
             @@instancia_contador
         end
         
-
+        def <=>(other)
+            return nil unless other.is_a?(Persona)
+            fecha_actual = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
+            self.edad(fecha_actual) <=> other.edad(fecha_actual)
+            #self.edad(self.obtener_fecha) <=> other.edad(other.obtener_fecha)
+        end
 
   
         private
