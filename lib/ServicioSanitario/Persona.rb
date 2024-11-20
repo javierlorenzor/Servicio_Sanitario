@@ -66,7 +66,12 @@ module ServicioSanitario
             #self.edad(self.obtener_fecha) <=> other.edad(other.obtener_fecha)
         end
 
-      
+        def each
+            yield @numero_identificacion
+            yield nombre_completo # Accedemos a través de nombre_completo
+            yield @sexo
+            yield obtener_fecha # Accedemos a través de obtener_fecha
+        end
   
         private
 
