@@ -155,7 +155,41 @@ RSpec.describe ServicioSanitario::Hora do
       expect(Object.superclass).to eq(BasicObject)
     end  
 
+    it "Se espera que se itere sobre cada elemento con each" do
+      result = []
+      @hora.each { |element| result << element }
+      expect(result).to eq([12, 30, 45])  # Hora, minuto, segundo
+    end
 
+    it "Se espera mapear los elementos usando map" do
+      result = [@hora, @hora1, @hora2].map { |hora| hora.hora }  # Extraemos la hora
+      expect(result).to eq([12, 12, 10])  # Las horas de cada instancia
+    end
+
+    it "Se espera seleccionar horas específicas usando select" do
+      result = [@hora, @hora1, @hora2, @hora3].select { |hora| hora.hora == 12 }
+      expect(result).to eq([@hora, @hora1])  # Seleccionamos las horas que son 12
+    end
+
+    it "Se espera rechazar horas específicas usando reject" do
+      result = [@hora, @hora1, @hora2, @hora3].reject { |hora| hora.hora == 12 }
+      expect(result).to eq([@hora2, @hora3])  # Rechazamos las horas que son 12
+    end
+
+    it "Se espera encontrar una hora usando find" do
+      result = [@hora, @hora1, @hora2, @hora3].find { |hora| hora.hora == 14 }
+      expect(result).to eq(@hora3)  # Debería encontrar la hora 14
+    end
+
+    it "Se espera devolver true si existe alguna hora con cierto atributo usando any?" do
+      result = [@hora, @hora1, @hora2, @hora3].any? { |hora| hora.hora == 10 }
+      expect(result).to be true  # Existen horas con hora igual a 10
+    end
+
+    it "Se espera devolver false si no existe alguna hora con cierto atributo usando any?" do
+      result = [@hora, @hora1, @hora2, @hora3].any? { |hora| hora.hora == 20 }
+      expect(result).to be false  # No existe ninguna hora con hora igual a 20
+    end
 
   end 
 end
