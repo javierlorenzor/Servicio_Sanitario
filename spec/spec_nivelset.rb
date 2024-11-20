@@ -107,6 +107,42 @@ RSpec.describe ServicioSanitario::NivelSet do
       expect(Module.superclass).to eq(Object)
       expect(Object.superclass).to eq(BasicObject)
     end  
-    
+
+    it "Se espera verificar la igualdad (==)" do
+      expect(@nivel1 == @nivel).to be true
+      expect(@nivel1 == @nivel2).to be false
+    end
+
+    it "Se espera verificar la igualdadmenor que (<)" do
+      expect(@nivel1 < @nivel2).to be true
+      expect(@nivel2 < @nivel3).to be true
+      expect(@nivel3 < @nivel4).to be true
+      expect(@nivel4 < @nivel5).to be true
+      expect(@nivel5 < @nivel1).to be false
+    end
+
+    it "Se espera verificar la igualdad mayor que (>)" do
+      expect(@nivel5 > @nivel4).to be true
+      expect(@nivel4 > @nivel3).to be true
+      expect(@nivel3 > @nivel2).to be true
+      expect(@nivel2 > @nivel1).to be true
+      expect(@nivel1 > @nivel5).to be false
+    end
+
+    it "Se espera verificar la igualdad menor o igual que (<=)" do
+      expect(@nivel1 <= @nivel).to be true
+      expect(@nivel1 <= @nivel2).to be true
+      expect(@nivel2 <= @nivel3).to be true
+      expect(@nivel3 <= @nivel4).to be true
+      expect(@nivel4 <= @nivel5).to be true
+    end
+
+    it "Se espera verificar la igualdad mayor o igual que (>=)" do
+      expect(@nivel5 >= @nivel4).to be true
+      expect(@nivel4 >= @nivel3).to be true
+      expect(@nivel3 >= @nivel2).to be true
+      expect(@nivel2 >= @nivel1).to be true
+      expect(@nivel1 >= @nivel).to be true
+    end
   end 
 end
