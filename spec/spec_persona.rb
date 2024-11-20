@@ -182,4 +182,18 @@ RSpec.describe ServicioSanitario::Persona do
     end
 
   end 
+
+  context "Igualdad de objetos (ENUMERABLE)" do
+    it "Se espera que una fecha incluye el módulo Enumerable" do 
+      expect(ServicioSanitario::Persona.included_modules).to include(Enumerable)
+      expect(@persona1.is_a?(Module)).to be(false)
+      expect(@persona1).to be_a(Enumerable) 
+    end 
+
+    it "Se espera que la herencia sea correcta" do 
+      expect(Enumerable.class).to eq(Module)
+      expect(Module.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end  
+  end 
  end
