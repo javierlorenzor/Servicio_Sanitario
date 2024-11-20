@@ -143,10 +143,10 @@ RSpec.describe ServicioSanitario::Persona do
 
   context "Igualdad de objetos (COMPRABLE)" do
     it "Se espera que una fecha incluye el módulo Comparable" do 
-      expect(ServicioSanitario::Hora.included_modules).to include(Comparable)
-      expect(@persona.is_a?(Module)).to be(false)
-      expect(@persona).to be_a(Comparable)
-      expect(@persona).not_to be_a(Enumerable ) 
+      expect(ServicioSanitario::Persona.included_modules).to include(Comparable)
+      expect(@persona1.is_a?(Module)).to be(false)
+      expect(@persona1).to be_a(Comparable)
+      expect(@persona1).not_to be_a(Enumerable ) 
     end 
 
     it "Se espera que la herencia sea correcta" do 

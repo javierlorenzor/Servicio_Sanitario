@@ -3,7 +3,8 @@ module ServicioSanitario
     # Clase que representa una persona en el sistema sanitario.
     # Esta clase sirve como clase base para otras entidades del sistema que comparten atributos comunes.
     class Persona
-        attr_accessor :numero_identificacion, :sexo , :fecha_nacimiento
+        include Comparable
+        attr_accessor :numero_identificacion, :sexo , :fecha_nacimiento   
        
         def initialize(numero_identificacion, nombre, apellido, sexo, fecha_nacimiento)
             @numero_identificacion = numero_identificacion
