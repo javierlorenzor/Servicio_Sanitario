@@ -124,4 +124,70 @@ RSpec.describe ServicioSanitario::Titular do
     end
   end
 
+  context "Igualdad de objetos (COMPRABLE)" do
+    it "Se espera que una fecha incluye el módulo Comparable" do 
+      expect(ServicioSanitario::Titular.included_modules).to include(Comparable)
+      expect(@titular1.is_a?(Module)).to be(false)
+      expect(@titular1).to be_a(Comparable)
+      expect(@titular1).not_to be_a(Enumerable ) 
+    end 
+
+    it "Se espera que la herencia sea correcta" do 
+      expect(Comparable.class).to eq(Module)
+      expect(Module.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end  
+    it "Se espera que un titular con menos pacientes sea menor que otro con más pacientes" do
+      # Agregar pacientes
+      @titular1.pacientes << @paciente1
+      @titular2.pacientes << @paciente3 << @paciente4
+  
+      expect(@titular1 < @titular2).to be true
+    end
+  
+    it "Se espera que un titular con el mismo número de pacientes sea igual a otro con el mismo número de pacientes" do
+      # Agregar pacientes
+      @titular1.pacientes << @paciente1
+      @titular2.pacientes << @paciente3
+  
+      expect(@titular1 == @titular2).to be true
+    end
+  
+    it "Se espera que un titular con más pacientes sea mayor o igual que otro con menos pacientes" do
+      # Agregar pacientes
+      @titular1.pacientes << @paciente1 << @paciente2
+      @titular2.pacientes << @paciente3
+  
+      expect(@titular1 >= @titular2).to be true
+    end
+  
+    it "Se espera que un titular con menos pacientes sea menor o igual que otro con más pacientes" do
+      # Agregar pacientes
+      @titular1.pacientes << @paciente1
+      @titular2.pacientes << @paciente3 << @paciente4
+  
+      expect(@titular1 <= @titular2).to be true
+    end
+  
+    it "Se espera que el mismo titular comparado consigo mismo sea igual" do
+      expect(@titular1 == @titular1).to be true
+    end
+  
+    it "Se espera que un titular con el mismo número de pacientes sea igual a otro mismo titular" do
+      expect(@titular1 == @titular3).to be true
+    end
+  
+    it "Se espera que el titular con más pacientes sea mayor que el titular con menos pacientes" do
+      @titular1.pacientes << @paciente1 << @paciente2
+      @titular2.pacientes << @paciente3
+      expect(@titular1 > @titular2).to be true
+    end
+  
+    it "Se espera que el titular con menos pacientes sea menor que el titular con más pacientes" do
+      @titular1.pacientes << @paciente1
+      @titular2.pacientes << @paciente3 << @paciente4
+      expect(@titular1 < @titular2).to be true
+    end
+  end
+
 end 
