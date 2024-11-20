@@ -190,4 +190,17 @@ RSpec.describe ServicioSanitario::Titular do
     
   end
 
+  context "Recorrer objetos (ENUMERABLE)" do
+    it "Se espera que una fecha incluye el módulo Enumerable" do 
+      expect(ServicioSanitario::Titular.included_modules).to include(Enumerable)
+      expect(@titular1.is_a?(Module)).to be(false)
+      expect(@titular1).to be_a(Enumerable) 
+    end 
+
+    it "Se espera que la herencia sea correcta" do 
+      expect(Enumerable.class).to eq(Module)
+      expect(Module.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end  
+  end 
 end 
