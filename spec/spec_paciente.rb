@@ -178,6 +178,52 @@ RSpec.describe ServicioSanitario::Paciente do
           expect(Module.superclass).to eq(Object)
           expect(Object.superclass).to eq(BasicObject)
         end  
+
+        it 'itera sobre la prioridad y los diagnósticos de un paciente' do
+            @paciente1.diagnosticos = ["Diagnóstico 1", "Diagnóstico 2"]
+            result = []
+            @paciente1.each { |item| result << item }
+            # Comprobamos que la prioridad se encuentra en la primera posición
+            expect(result.first).to eq(ServicioSanitario::AZUL)
+            # Comprobamos que los diagnósticos están incluidos después de la prioridad
+            expect(result.last).to eq("Diagnóstico 2")
+          end
+        
+        #   it 'aplica una transformación a cada diagnóstico' do
+        #     @paciente1.diagnosticos = ["Diagnóstico 1", "Diagnóstico 2"]
+        #     result = @paciente1.map { |diagnostico| "Tratado: #{diagnostico}" }
+        #     expect(result).to eq(["Tratado: Diagnóstico 1", "Tratado: Diagnóstico 2"])
+        #   end
+        
+          it 'filtra diagnósticos según una condición' do
+            @paciente1.diagnosticos = ["Diagnóstico 1", "Diagnóstico 2", "Diagnóstico 3"]
+            result = @paciente1.select { |diagnostico| diagnostico.include?("1") }
+            expect(result).to eq(["Diagnóstico 1"])
+          end
+        
+        #   it 'rechaza diagnósticos según una condición' do
+        #     @paciente1.diagnosticos = ["Diagnóstico 1", "Diagnóstico 2", "Diagnóstico 3"]
+        #     result = @paciente1.reject { |diagnostico| diagnostico.include?("1") }
+        #     expect(result).to eq(["Diagnóstico 2", "Diagnóstico 3"])
+        #   end
+        
+          it 'encuentra un diagnóstico que cumpla una condición' do
+            @paciente1.diagnosticos = ["Diagnóstico 1", "Diagnóstico 2", "Diagnóstico 3"]
+            result = @paciente1.find { |diagnostico| diagnostico.include?("2") }
+            expect(result).to eq("Diagnóstico 2")
+          end
+        
+          it 'devuelve true si algún diagnóstico cumple una condición' do
+            @paciente1.diagnosticos = ["Diagnóstico 1", "Diagnóstico 2", "Diagnóstico 3"]
+            result = @paciente1.any? { |diagnostico| diagnostico.include?("3") }
+            expect(result).to be true
+          end
+        
+          it 'devuelve false si ningún diagnóstico cumple la condición' do
+            @paciente1.diagnosticos = ["Diagnóstico 1", "Diagnóstico 2"]
+            result = @paciente1.any? { |diagnostico| diagnostico.include?("4") }
+            expect(result).to be false
+          end
     end 
     
 end
