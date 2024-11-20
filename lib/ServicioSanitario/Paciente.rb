@@ -23,9 +23,7 @@ module ServicioSanitario
             "#{nombre_completo}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{obtener_fecha}, Prioridad: #{prioridad}, Diagnósticos: #{diagnosticos.join(', ')}"
         end
 
-        def <=>(other)
-            prioridad <=> other.prioridad
-        end
+   
         
     end
 end

@@ -12,6 +12,7 @@ RSpec.describe ServicioSanitario::Paciente do
         @paciente1 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, ServicioSanitario::AZUL)
         @paciente2 = ServicioSanitario::Paciente.new("67890", "Ana", "García", "F", @fecha2, ServicioSanitario::NEGRO)
         @paciente3 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, ServicioSanitario::AZUL)
+        @paciente5 = ServicioSanitario::Paciente.new("12345", "Juan", "Pérez", "M", @fecha1, ServicioSanitario::VERDE)
         @paciente4 = @paciente1
     end
 
@@ -145,12 +146,11 @@ RSpec.describe ServicioSanitario::Paciente do
           end
       
           it "Se espera poder comparar pacientes con diferente prioridad" do
-            expect(@paciente1 > @paciente2).to be true
-            expect(@paciente2 > @paciente1).to be true
+            expect(@paciente5 < @paciente2).to be true
           end
       
           it "Se espera poder ser mayor si la prioridad del paciente actual es mayor que la del otro" do
-            expect(@paciente3 < @paciente2).to be false
+            expect(@paciente2 > @paciente5).to be true 
           end
       
           it "Se espera poder ser menor si la prioridad del paciente actual es menor que la del otro" do
