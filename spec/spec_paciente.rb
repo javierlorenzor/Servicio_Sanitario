@@ -139,6 +139,32 @@ RSpec.describe ServicioSanitario::Paciente do
           expect(Module.superclass).to eq(Object)
           expect(Object.superclass).to eq(BasicObject)
         end  
+
+        it "Se espera poder comparar correctamente pacientes con la misma prioridad" do
+            expect(@paciente1 <=> @paciente3).to eq(0)
+          end
+      
+          it "Se espera poder comparar pacientes con diferente prioridad" do
+            expect(@paciente1 > @paciente2).to be true
+            expect(@paciente2 > @paciente1).to be true
+          end
+      
+          it "Se espera poder ser mayor si la prioridad del paciente actual es mayor que la del otro" do
+            expect(@paciente3 < @paciente2).to be false
+          end
+      
+          it "Se espera poder ser menor si la prioridad del paciente actual es menor que la del otro" do
+            expect(@paciente2 < @paciente1).to be false
+          end
+      
+          it "Se espera poder comparar correctamente pacientes con la misma prioridad y atributos idénticos" do
+            expect(@paciente1 == @paciente3).to be true
+          end
+      
+          it "Se espera poder comparar pacientes con atributos diferentes" do
+            expect(@paciente1 == @paciente2).to be false
+          end
+
     end 
     
 end
