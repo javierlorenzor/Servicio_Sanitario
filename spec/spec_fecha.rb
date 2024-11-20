@@ -98,6 +98,34 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(Class.superclass).to eq(Module)
     end 
 
+    it "Se espera poder verificar la  igualdad (==)" do
+      expect(@fecha == @fecha1).to be true
+      expect(@fecha == @fecha2).to be false
+    end
+
+    it "Se espera poder verificar menor que (<)" do
+      expect(@fecha2 < @fecha3).to be true
+      expect(@fecha3 < @fecha4).to be true
+      expect(@fecha < @fecha4).to be false
+    end
+
+    it "Se espera poder verificar mayor que (>)" do
+      expect(@fecha > @fecha3).to be true
+      expect(@fecha4 > @fecha2).to be true
+      expect(@fecha2 > @fecha).to be false
+    end
+
+    it "Se espera poder verificar menor o igual que (<=)" do
+      expect(@fecha <= @fecha1).to be true
+      expect(@fecha2 <= @fecha3).to be true
+      expect(@fecha3 <= @fecha2).to be false
+    end
+
+    it "Se espera poder verificar mayor o igual que (>=)" do
+      expect(@fecha >= @fecha1).to be true
+      expect(@fecha >= @fecha3).to be true
+      expect(@fecha3 >= @fecha).to be false
+    end
 
   end 
 
