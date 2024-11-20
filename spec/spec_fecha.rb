@@ -84,4 +84,12 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(@fecha === @fecha1).to be false  
     end
   end
+
+  context "Igualdad de objetos" do
+    it "Se espera que una fecha incluye el módulo Comparable" do 
+      expect(ServicioSanitario::Fecha.included_modules).to include(Comparable)
+    end 
+
+  end 
+
 end

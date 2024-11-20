@@ -1,6 +1,7 @@
 module ServicioSanitario
     # Clase que representa una fecha (día, mes, año)
     class Fecha
+      
       # Atributos: día, mes y año
       attr_accessor :dia, :mes, :anio
   
