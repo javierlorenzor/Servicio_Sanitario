@@ -66,6 +66,7 @@ module ServicioSanitario
             #self.edad(self.obtener_fecha) <=> other.edad(other.obtener_fecha)
         end
 
+      
   
         private
 

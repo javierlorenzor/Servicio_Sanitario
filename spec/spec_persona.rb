@@ -194,5 +194,42 @@ RSpec.describe ServicioSanitario::Persona do
       expect(Module.superclass).to eq(Object)
       expect(Object.superclass).to eq(BasicObject)
     end  
+
+    it "Se espera  iterar sobre los atributos de la persona" do
+      atributos = []
+      @persona1.each { |attr| atributos << attr }
+      expect(atributos).to contain_exactly("12345", "Juan Pérez", "M", @fecha1)
+    end
+
+    # Prueba para el método `map`
+    it "Se espera poder mapear los atributos de la persona a una lista de strings" do
+      atributos = @persona1.map { |attr| attr.to_s }
+      expect(atributos).to eq(["12345", "Juan Pérez", "M", @fecha1.to_s])
+    end
+
+    # Prueba para el método `select`
+    it "Se espera poder seleccionar los atributos que sean cadenas" do
+      atributos = @persona1.select { |attr| attr.is_a?(String) }
+      expect(atributos).to eq(["12345", "Juan Pérez", "M"])
+    end
+
+    # Prueba para el método `reject`
+    it "Se espera rechazar los atributos que no sean cadenas" do
+      atributos = @persona1.reject { |attr| attr.is_a?(String) }
+      expect(atributos).to eq([@fecha1])
+    end
+
+    # Prueba para el método `find`
+    it "Se espera encontrar un atributo específico de la persona" do
+      atributo = @persona1.find { |attr| attr == "Juan Pérez" }
+      expect(atributo).to eq("Juan Pérez")
+    end
+
+    # Prueba para el método `any?`
+    it "Se espera devolver true si algún atributo cumple con la condición" do
+      resultado = @persona1.any? { |attr| attr == "Juan Pérez" }
+      expect(resultado).to be true
+    end
+
   end 
  end
