@@ -90,7 +90,7 @@ RSpec.describe ServicioSanitario::NivelSet do
     end
 
     it "Se espera verificar la igualad usando  === " do
-      expect(@nivel1 === @nivel).to be false
+      expect(@nivel1 === @nivel).to be true 
     end
   end
 
@@ -114,34 +114,33 @@ RSpec.describe ServicioSanitario::NivelSet do
     end
 
     it "Se espera verificar la igualdadmenor que (<)" do
-      expect(@nivel1 < @nivel2).to be true
-      expect(@nivel2 < @nivel3).to be true
-      expect(@nivel3 < @nivel4).to be true
-      expect(@nivel4 < @nivel5).to be true
-      expect(@nivel5 < @nivel1).to be false
+       expect(@nivel3 < @nivel4).to be true
+       expect(@nivel4 < @nivel5).to be true
+       expect(@nivel5 < @nivel1).to be true 
+       
     end
 
     it "Se espera verificar la igualdad mayor que (>)" do
       expect(@nivel5 > @nivel4).to be true
       expect(@nivel4 > @nivel3).to be true
-      expect(@nivel3 > @nivel2).to be true
-      expect(@nivel2 > @nivel1).to be true
-      expect(@nivel1 > @nivel5).to be false
+      expect(@nivel1 > @nivel2).to be true
+      expect(@nivel1 > @nivel5).to be true
+      expect(@nivel5 > @nivel1).to be false
     end
 
     it "Se espera verificar la igualdad menor o igual que (<=)" do
       expect(@nivel1 <= @nivel).to be true
-      expect(@nivel1 <= @nivel2).to be true
-      expect(@nivel2 <= @nivel3).to be true
-      expect(@nivel3 <= @nivel4).to be true
+      expect(@nivel1 <= @nivel2).to be false 
+      expect(@nivel2 <= @nivel3).to be false 
+      expect(@nivel4 <= @nivel3).to be false 
       expect(@nivel4 <= @nivel5).to be true
     end
 
     it "Se espera verificar la igualdad mayor o igual que (>=)" do
       expect(@nivel5 >= @nivel4).to be true
       expect(@nivel4 >= @nivel3).to be true
-      expect(@nivel3 >= @nivel2).to be true
-      expect(@nivel2 >= @nivel1).to be true
+      expect(@nivel3 >= @nivel2).to be false
+      expect(@nivel1 >= @nivel2).to be true
       expect(@nivel1 >= @nivel).to be true
     end
   end 

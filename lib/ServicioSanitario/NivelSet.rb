@@ -16,6 +16,9 @@ module ServicioSanitario
         "Nivel: #{@nivel}, Categoría: #{@categoria}, Tiempo de atención: #{@tiempo_atencion}"
       end
 
+      def <=>(other)
+        tiempo_atencion <=> other.tiempo_atencion
+      end
       
     end
 end
