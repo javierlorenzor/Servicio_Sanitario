@@ -19,8 +19,12 @@ module ServicioSanitario
       tiempo_atencion <=> other.tiempo_atencion
     end
 
- 
-    
+    def each
+      yield nivel
+      yield categoria
+      yield tiempo_atencion
+    end
+
   end
 end
   
