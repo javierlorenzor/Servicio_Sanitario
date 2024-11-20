@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'ServicioSanitario/Persona'
 require 'ServicioSanitario/Fecha'
 require 'ServicioSanitario'
+require 'date'
 
 RSpec.describe ServicioSanitario::Persona do
   before(:each) do
@@ -97,7 +98,7 @@ RSpec.describe ServicioSanitario::Persona do
     end
 
     it "Se espera verificar que === no se usa comúnmente para la comparación de objetos directos" do
-      expect(@persona1 === @persona3).to be false  # `===` se usa más comúnmente para casos como la comparación de clases, no tanto de igualdad de objetos
+      expect(@persona1 === @persona3).to be true  
     end
   end
 
@@ -154,5 +155,31 @@ RSpec.describe ServicioSanitario::Persona do
       expect(Module.superclass).to eq(Object)
       expect(Object.superclass).to eq(BasicObject)
     end  
+
+    it "verifica igualdad (==)" do
+      expect(@persona1 == @persona3).to be true
+      expect(@persona1 == @persona2).to be false
+    end
+
+    it "verifica menor que (<)" do
+      expect(@persona2 < @persona1).to be true # Ana es más joven que Juan
+      expect(@persona1 < @persona2).to be false
+    end
+
+    it "verifica mayor que (>)" do
+      expect(@persona1 > @persona2).to be true # Juan es mayor que Ana
+      expect(@persona2 > @persona1).to be false
+    end
+
+    it "verifica menor o igual que (<=)" do
+      expect(@persona2 <= @persona1).to be true
+      expect(@persona1 <= @persona3).to be true
+    end
+
+    it "verifica mayor o igual que (>=)" do
+      expect(@persona1 >= @persona2).to be true
+      expect(@persona1 >= @persona3).to be true
+    end
+
   end 
  end

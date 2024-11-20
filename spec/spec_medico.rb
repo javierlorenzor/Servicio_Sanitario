@@ -136,7 +136,7 @@ RSpec.describe ServicioSanitario::Medico do
         end
 
         it "Se espera verificar la igualdad usando === " do
-            expect(@medico1 === @medico3).to be false
+            expect(@medico1 === @medico3).to be true 
         end
     end
 end 

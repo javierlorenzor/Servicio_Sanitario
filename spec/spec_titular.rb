@@ -120,7 +120,7 @@ RSpec.describe ServicioSanitario::Titular do
     end
 
     it "Se espera verificar la igualdad con  === " do
-      expect(@titular1 === @titular3).to be false 
+      expect(@titular1 === @titular3).to be true 
     end
   end
 

@@ -57,7 +57,10 @@ module ServicioSanitario
         def self.contador_instancias
             @@instancia_contador
         end
-              
+        
+
+
+  
         private
 
         def set_nombre(nombre)
