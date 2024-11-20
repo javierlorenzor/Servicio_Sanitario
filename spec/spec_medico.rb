@@ -139,4 +139,54 @@ RSpec.describe ServicioSanitario::Medico do
             expect(@medico1 === @medico3).to be true 
         end
     end
+
+    
+    context "Igualdad de objetos (COMPRABLE)" do
+        it "Se espera que una fecha incluye el módulo Comparable" do 
+          expect(ServicioSanitario::Medico.included_modules).to include(Comparable)
+          expect(@medico1.is_a?(Module)).to be(false)
+          expect(@medico1).to be_a(Comparable)
+          expect(@medico1).not_to be_a(Enumerable) 
+        end 
+    
+        it "Se espera que la herencia sea correcta" do 
+          expect(Comparable.class).to eq(Module)
+          expect(Module.superclass).to eq(Object)
+          expect(Object.superclass).to eq(BasicObject)
+        end  
+        it "Se espera que los médicos con el mismo número de pacientes sean iguales" do
+            @medico1.pacientes << @paciente1
+            @medico3.pacientes << @paciente1
+            expect(@medico1 == @medico3).to be true  # Mismo número de pacientes
+        end
+      
+        it "Se espera que el médico con menos pacientes sea considerado menor" do
+            @medico1.pacientes << @paciente1
+            @medico2.pacientes << @paciente2
+            expect(@medico2 < @medico1).to be true  # Médico 2 tiene 1 paciente, médico 1 tiene 2
+        end
+      
+          it "Se espera que el médico con más pacientes sea considerado mayor" do
+            @medico1.pacientes << @paciente1
+            @medico1.pacientes << @paciente2
+            expect(@medico1 > @medico2).to be true  # Médico 1 tiene 2 pacientes, médico 2 tiene 1
+        end
+      
+        it "Se espera que el médico con el mismo número de pacientes sea considerado igual" do
+            @medico1.pacientes << @paciente1
+            @medico1.pacientes << @paciente2
+            expect(@medico1 == @medico4).to be true  # Ambos médicos tienen 2 pacientes
+        end
+      
+        it "Se espera que el médico con el mismo número de pacientes sea considerado mayor o igual" do
+            @medico1.pacientes << @paciente1
+            @medico1.pacientes << @paciente2
+            expect(@medico1 >= @medico4).to be true  # Ambos médicos tienen 2 pacientes
+        end
+      
+        it "Se espera que el médico con menos pacientes sea considerado menor o igual" do
+            @medico2.pacientes << @paciente2
+            expect(@medico2 <= @medico1).to be true  # Médico 2 tiene 1 paciente, médico 1 tiene 2
+        end
+    end
 end 
