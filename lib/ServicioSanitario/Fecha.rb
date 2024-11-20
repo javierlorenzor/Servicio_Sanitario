@@ -14,6 +14,11 @@ module ServicioSanitario
       def to_s
         "#{@dia}/#{@mes}/#{@anio}"
       end
+      
+      def <=>(other)
+        [anio, mes, dia] <=> [other.anio, other.mes, other.dia]
+      end
+
     end
 end
   

@@ -81,7 +81,7 @@ RSpec.describe ServicioSanitario::Fecha do
     end
 
     it "Se espera verificar la igualdad usando === " do
-      expect(@fecha === @fecha1).to be false  
+      expect(@fecha === @fecha1).to be true   
     end
   end
 
