@@ -23,6 +23,10 @@ module ServicioSanitario
       [hora, minuto, segundo] <=> [other.hora, other.minuto, other.segundo]
     end
 
+    def each
+      # Iteramos sobre los tres atributos: hora, minuto y segundo
+      [hora, minuto, segundo].each { |element| yield element }
+    end
     
   end
 end
