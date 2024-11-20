@@ -18,6 +18,8 @@ module ServicioSanitario
     def <=>(other)
       tiempo_atencion <=> other.tiempo_atencion
     end
+
+ 
     
   end
 end

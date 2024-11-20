@@ -156,5 +156,41 @@ RSpec.describe ServicioSanitario::NivelSet do
       expect(Module.superclass).to eq(Object)
       expect(Object.superclass).to eq(BasicObject)
     end  
+
+    it "Se espera poder iterar sobre cada elemento con each" do
+      result = []
+      @nivel.each { |element| result << element }
+      expect(result).to eq([:I, 'Reanimacion', 'Inmediato'])  # Nivel, Categoría, Tiempo de atención
+    end
+
+    it "Se espera poder los elementos usando map" do
+      result = [@nivel1, @nivel2, @nivel3, @nivel4, @nivel5].map { |nivel_set| nivel_set.nivel }
+      expect(result).to eq([:I, :II, :III, :IV, :V])  # Mapeamos los niveles de cada instancia
+    end
+
+    it "Se espera poder seleccionar elementos específicos usando select" do
+      result = [@nivel1, @nivel2, @nivel3, @nivel4, @nivel5].select { |nivel_set| nivel_set.categoria == 'Emergencia' }
+      expect(result).to eq([@nivel2])  # Seleccionamos las instancias con la categoría 'Emergencia'
+    end
+
+    it "Se espera poder rechazar elementos específicos usando reject" do
+      result = [@nivel1, @nivel2, @nivel3, @nivel4, @nivel5].reject { |nivel_set| nivel_set.tiempo_atencion == 'Inmediato' }
+      expect(result).to eq([@nivel2, @nivel3, @nivel4, @nivel5])  # Rechazamos la instancia con 'Inmediato'
+    end
+
+    it "Se espera encontrar un elemento usando find" do
+      result = [@nivel1, @nivel2, @nivel3, @nivel4, @nivel5].find { |nivel_set| nivel_set.nivel == :IV }
+      expect(result).to eq(@nivel4)  # Debería encontrar la instancia con el nivel :IV
+    end
+
+    it "Se espera devolver true si existe algún elemento que cumpla con la condición usando any?" do
+      result = [@nivel1, @nivel2, @nivel3, @nivel4, @nivel5].any? { |nivel_set| nivel_set.categoria == 'Urgente' }
+      expect(result).to be true  # Existen instancias con la categoría 'Urgente'
+    end
+
+    it "Se espera  devolver false si no existe ningún elemento que cumpla con la condición usando any?" do
+      result = [@nivel1, @nivel2, @nivel3, @nivel4, @nivel5].any? { |nivel_set| nivel_set.categoria == 'Crítica' }
+      expect(result).to be false  # No existe ninguna instancia con la categoría 'Crítica'
+    end
   end 
 end
