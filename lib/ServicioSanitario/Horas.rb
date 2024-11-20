@@ -3,6 +3,7 @@ module ServicioSanitario
   # Clase que define una hora con los atributos hora, minuto y segundo.
   class Hora
     include Comparable
+    include Enumerable
     # Definimos los atributos de la clase: hora, minuto y segundo
     attr_accessor :hora, :minuto, :segundo
   
@@ -21,6 +22,7 @@ module ServicioSanitario
     def <=>(other)
       [hora, minuto, segundo] <=> [other.hora, other.minuto, other.segundo]
     end
+
     
   end
 end

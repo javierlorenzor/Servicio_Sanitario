@@ -143,7 +143,7 @@ RSpec.describe ServicioSanitario::Hora do
   end 
 
   context "Igualdad de objetos (ENUMERABLE)" do
-    it "Se espera que una fecha incluye el módulo Comparable" do 
+    it "Se espera que una fecha incluye el módulo Enumerable" do 
       expect(ServicioSanitario::Hora.included_modules).to include(Enumerable)
       expect(@hora.is_a?(Module)).to be(false)
       expect(@hora).to be_a(Enumerable ) 
@@ -154,5 +154,8 @@ RSpec.describe ServicioSanitario::Hora do
       expect(Module.superclass).to eq(Object)
       expect(Object.superclass).to eq(BasicObject)
     end  
+
+
+
   end 
 end
