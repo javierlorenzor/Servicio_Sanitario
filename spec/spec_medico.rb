@@ -187,4 +187,67 @@ RSpec.describe ServicioSanitario::Medico do
             expect(@medico1 <= @medico2).to be true  # Médico 2 tiene 1 paciente, médico 1 tiene 2
         end
     end
+
+    context "Recorrer objetos (ENUMERABLE)" do
+        it "Se espera que una fecha incluye el módulo Enumerable" do 
+          expect(ServicioSanitario::Medico.included_modules).to include(Enumerable)
+          expect(@medico1.is_a?(Module)).to be(false)
+          expect(@medico1).to be_a(Enumerable) 
+        end 
+    
+        it "Se espera que la herencia sea correcta" do 
+          expect(Enumerable.class).to eq(Module)
+          expect(Module.superclass).to eq(Object)
+          expect(Object.superclass).to eq(BasicObject)
+        end  
+
+        it "debe iterar sobre los atributos del médico, incluyendo los pacientes" do
+            atributos = []
+            @medico1.pacientes << @paciente1
+            @medico1.each { |attr| atributos << attr }
+            expect(atributos).to contain_exactly("12345", "Alba Perez", "F", @fecha1, "Pediatría", 1)  # Uno de los médicos tiene un paciente
+        end
+    
+        it "debe mapear los atributos del médico a una lista de strings" do
+            @medico1.pacientes << @paciente1
+            atributos = @medico1.map { |attr| attr.to_s }
+            expect(atributos).to eq(["12345", "Alba Perez", "F", "10/5/1980", "Pediatría", "1", "Maria Gomez, ID: 54321, Sexo: F, Fecha de Nacimiento: 10/5/1980, Prioridad: {:nivel=>:II, :categoria=>:Emergencia, :tiempo_atencion=>\"7 minutos\"}, Diagnósticos: "])
+        end
+    
+        it "debe seleccionar los atributos que sean cadenas" do
+            @medico1.pacientes << @paciente1
+            atributos = @medico1.select { |attr| attr.is_a?(String) }
+            expect(atributos).to eq(["12345", "Alba Perez", "F", "Pediatría"])
+        end
+    
+        it "debe rechazar los atributos que no sean cadenas" do
+            atributos = @medico1.reject { |attr| attr.is_a?(String) }
+            expect(atributos).to eq([@fecha1, 0])  # La fecha y el número de pacientes
+        end
+    
+        it "debe encontrar un atributo específico del médico" do
+            atributo = @medico1.find { |attr| attr == "Pediatría" }
+            expect(atributo).to eq("Pediatría")
+        end
+    
+        it "debe devolver true si algún atributo cumple con la condición" do
+            resultado = @medico1.any? { |attr| attr == "Pediatría" }
+            expect(resultado).to be true
+        end
+    
+        it "debe tener la cantidad correcta de pacientes después de agregar pacientes" do
+            @medico1.pacientes << @paciente1
+            @medico2.pacientes << @paciente1
+            expect(@medico1.numero_pacientes).to eq(1)
+            expect(@medico2.numero_pacientes).to eq(1)
+        end
+
+        it "debe iterar sobre los atributos del médico, incluyendo los pacientes" do
+            atributos = []
+            @medico1.each { |attr| atributos << attr }
+            expect(atributos).to contain_exactly(
+              "12345", "Alba Perez", "F", @fecha1, "Pediatría", 1, @paciente1
+            )  # Incluye los pacientes también
+        end
+    end 
 end 

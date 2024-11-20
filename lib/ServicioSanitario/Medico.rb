@@ -24,6 +24,19 @@ module ServicioSanitario
        def <=>(other)
         # Comparar el número de pacientes entre los médicos
         numero_pacientes <=> other.numero_pacientes
+       end
+
+      def each
+        yield @numero_identificacion
+        yield nombre_completo
+        yield @sexo
+        yield obtener_fecha
+        yield @especialidad
+        yield numero_pacientes
+        # Iterar sobre cada paciente
+        @pacientes.each do |paciente|
+          yield paciente
+        end
       end
 
     end 

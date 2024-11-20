@@ -182,7 +182,7 @@ RSpec.describe ServicioSanitario::Persona do
 
   end 
 
-  context "Igualdad de objetos (ENUMERABLE)" do
+  context "Recorrer objetos (ENUMERABLE)" do
     it "Se espera que una fecha incluye el módulo Enumerable" do 
       expect(ServicioSanitario::Persona.included_modules).to include(Enumerable)
       expect(@persona1.is_a?(Module)).to be(false)

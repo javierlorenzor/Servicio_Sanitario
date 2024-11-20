@@ -165,5 +165,7 @@ RSpec.describe ServicioSanitario::Paciente do
           end
 
     end 
+
+    
     
 end

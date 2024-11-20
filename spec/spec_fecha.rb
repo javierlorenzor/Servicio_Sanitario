@@ -135,7 +135,7 @@ RSpec.describe ServicioSanitario::Fecha do
 
   end 
 
-  context "Igualdad de objetos (ENUMERABLE)" do
+  context "Recorrer  objetos (ENUMERABLE)" do
     it "Se espera que una fecha incluye el módulo Enumerable" do 
       expect(ServicioSanitario::Fecha.included_modules).to include(Enumerable)
       expect(@fecha1.is_a?(Module)).to be(false)

@@ -144,7 +144,7 @@ RSpec.describe ServicioSanitario::NivelSet do
     end
   end 
 
-  context "Igualdad de objetos (ENUMERABLE)" do
+  context "Recorrer objetos (ENUMERABLE)" do
     it "Se espera que una fecha incluye el módulo Enumerable" do 
       expect(ServicioSanitario::NivelSet.included_modules).to include(Enumerable)
       expect(@nivel1.is_a?(Module)).to be(false)
