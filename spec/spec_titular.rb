@@ -188,6 +188,7 @@ RSpec.describe ServicioSanitario::Titular do
       @titular2.pacientes << @paciente3 << @paciente4
       expect(@titular1 < @titular2).to be true
     end
+    
   end
 
 end 
