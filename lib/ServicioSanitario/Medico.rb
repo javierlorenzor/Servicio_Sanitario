@@ -21,5 +21,10 @@ module ServicioSanitario
         "#{nombre_completo}, ID: #{@numero_identificacion}, Sexo: #{@sexo}, Fecha de Nacimiento: #{obtener_fecha}, Especialidad: #{@especialidad}, Número de Pacientes: #{numero_pacientes}"
        end
        
+       def <=>(other)
+        # Comparar el número de pacientes entre los médicos
+        numero_pacientes <=> other.numero_pacientes
+      end
+
     end 
 end

@@ -163,6 +163,7 @@ RSpec.describe ServicioSanitario::Medico do
         it "Se espera que el médico con menos pacientes sea considerado menor" do
             @medico1.pacientes << @paciente1
             @medico2.pacientes << @paciente2
+            @medico1.pacientes << @paciente1
             expect(@medico2 < @medico1).to be true  # Médico 2 tiene 1 paciente, médico 1 tiene 2
         end
       
@@ -186,7 +187,7 @@ RSpec.describe ServicioSanitario::Medico do
       
         it "Se espera que el médico con menos pacientes sea considerado menor o igual" do
             @medico2.pacientes << @paciente2
-            expect(@medico2 <= @medico1).to be true  # Médico 2 tiene 1 paciente, médico 1 tiene 2
+            expect(@medico1 <= @medico2).to be true  # Médico 2 tiene 1 paciente, médico 1 tiene 2
         end
     end
 end 
