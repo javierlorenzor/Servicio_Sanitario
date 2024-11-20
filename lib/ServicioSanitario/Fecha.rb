@@ -20,6 +20,12 @@ module ServicioSanitario
         [anio, mes, dia] <=> [other.anio, other.mes, other.dia]
       end
 
+      def each
+        yield dia
+        yield mes
+        yield anio
+      end
+      
     end
 end
   

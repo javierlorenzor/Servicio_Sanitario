@@ -160,8 +160,8 @@ RSpec.describe ServicioSanitario::Fecha do
     end
 
     it "Se espera poder seleccionar fechas específicas usando select" do
-      result = [@fecha, @fecha1, @fecha2, @fecha3].select { |fecha| fecha.anio == 2024 }
-      expect(result).to eq([@fecha, @fecha1, @fecha4])  # Seleccionamos las fechas de 2024
+      result = [@fecha, @fecha1, @fecha2, @fecha3].select { |fecha| fecha.anio == 2001 }
+      expect(result).to eq([@fecha2, @fecha3])  # Seleccionamos las fechas de 2024
     end
 
     it "Se espera poder rechazar fechas específicas usando reject" do
@@ -170,8 +170,8 @@ RSpec.describe ServicioSanitario::Fecha do
     end
 
     it "Se espera poder encontrar una fecha usando find" do
-      result = [@fecha, @fecha1, @fecha2, @fecha3].find { |fecha| fecha.dia == 8 }
-      expect(result).to eq(@fecha4)  # Debería encontrar la fecha con el día 8
+      result = [@fecha, @fecha1, @fecha2, @fecha3].find { |fecha| fecha.dia == 19 }
+      expect(result).to eq(@fecha2)  # Debería encontrar la fecha con el día 8
     end
 
     it "Se espera poder devolver true si existe alguna fecha con cierto atributo usando any?" do
