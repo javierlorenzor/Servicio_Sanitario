@@ -1,6 +1,8 @@
 module ServicioSanitario
     # Clase NivelSet que representa el nivel de atención, categoría y tiempo de atención
     class NivelSet
+      include Comparable
+
       # Atributos de lectura para el nivel, la categoría y el tiempo de atención
       attr_reader :nivel, :categoria, :tiempo_atencion
       
@@ -13,6 +15,8 @@ module ServicioSanitario
       def to_s
         "Nivel: #{@nivel}, Categoría: #{@categoria}, Tiempo de atención: #{@tiempo_atencion}"
       end
+
+      
     end
 end
   

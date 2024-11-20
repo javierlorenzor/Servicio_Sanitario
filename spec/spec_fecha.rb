@@ -93,6 +93,13 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(@fecha).not_to be_a(Enumerable ) 
     end 
 
+    it "se espera que la herencia sea correcta" do 
+      expect(@fecha).to be_a(Comparable)
+      expect(Comparable.class).to eq(Module)
+      expect(Module.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end  
+
     it "Se espera que se cumplan las restricciones de herencia" do 
       expect(ServicioSanitario::Fecha.class).to eq(Class)
       expect(Class.superclass).to eq(Module)

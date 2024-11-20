@@ -106,7 +106,13 @@ RSpec.describe ServicioSanitario::Hora do
       expect(@hora).to be_a(Comparable)
       expect(@hora).not_to be_a(Enumerable ) 
     end 
-    
+
+    it "Se espera que la herencia sea correcta" do 
+      expect(Comparable.class).to eq(Module)
+      expect(Module.superclass).to eq(Object)
+      expect(Object.superclass).to eq(BasicObject)
+    end  
+
     it "Se espera que se verifique la igualdad (==)" do
       expect(@hora == @hora1).to be true
       expect(@hora == @hora2).to be false
