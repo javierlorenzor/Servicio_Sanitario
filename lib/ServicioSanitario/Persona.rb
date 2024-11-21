@@ -1,7 +1,5 @@
 # Módulo principal para la gema ServicioSanitario
 module ServicioSanitario
-    # Clase que representa una persona en el sistema sanitario.
-    # Esta clase sirve como clase base para otras entidades del sistema que comparten atributos comunes.
     class Persona
         include Comparable
         include Enumerable
@@ -9,7 +7,6 @@ module ServicioSanitario
        
         def initialize(numero_identificacion, nombre, apellido, sexo, fecha_nacimiento)
             @numero_identificacion = numero_identificacion
-            #set_nombre_completo(nombre_completo)
             set_nombre_completo("#{nombre} #{apellido}")
             @sexo = sexo
             @fecha_nacimiento = fecha_nacimiento
