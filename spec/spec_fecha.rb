@@ -133,6 +133,11 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(@fecha3 >= @fecha).to be false
     end
 
+    it "Se espera poder comprobar que una fecha este en medio de otras dos " do
+      expect(@fecha3.between?(@fecha2, @fecha4)).to be true # Entre las fechas
+      expect(@fecha4.between?(@fecha2, @fecha3)).to be false # Fuera del rango
+    end
+
   end 
 
   context "Recorrer  objetos (ENUMERABLE)" do
@@ -179,7 +184,7 @@ RSpec.describe ServicioSanitario::Fecha do
       expect(result).to be true  # Existen fechas con el año 2001
     end
 
-    it "dSe espera poder  devolver false si no existe alguna fecha con cierto atributo usando any?" do
+    it "Se espera poder  devolver false si no existe alguna fecha con cierto atributo usando any?" do
       result = [@fecha, @fecha1, @fecha2, @fecha3].any? { |fecha| fecha.dia == 31 }
       expect(result).to be false  # No existe ninguna fecha con el día 31
     end

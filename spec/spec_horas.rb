@@ -140,6 +140,11 @@ RSpec.describe ServicioSanitario::Hora do
       expect(@hora >= @hora2).to be true
       expect(@hora2 >= @hora3).to be false
     end
+
+    it "Se espera poder comprobar between?" do
+      expect(@hora1.between?(@hora2, @hora3)).to be true # Entre las horas
+      expect(@hora3.between?(@hora, @hora2)).to be false # Fuera del rango
+    end
   end 
 
   context "Recorrer objetos (ENUMERABLE)" do

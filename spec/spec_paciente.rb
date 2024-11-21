@@ -166,6 +166,7 @@ RSpec.describe ServicioSanitario::Paciente do
       expect(@paciente1 == @paciente2).to be false
     end
 
+
   end 
 
   context "Recorrer objetos (ENUMERABLE)" do
