@@ -1,5 +1,4 @@
 module ServicioSanitario
-  # Clase NivelSet que representa el nivel de atención, categoría y tiempo de atención
   class NivelSet
     include Comparable
     include Enumerable

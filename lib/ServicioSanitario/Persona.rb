@@ -11,7 +11,7 @@ module ServicioSanitario
             @sexo = sexo
             @fecha_nacimiento = fecha_nacimiento
 
-            # Incrementa el contador cada vez que se crea una nueva instancia
+            
             if defined?(@@instancia_contador)
                 @@instancia_contador += 1
             else
@@ -64,9 +64,9 @@ module ServicioSanitario
 
         def each
             yield @numero_identificacion
-            yield nombre_completo # Accedemos a través de nombre_completo
+            yield nombre_completo 
             yield @sexo
-            yield obtener_fecha # Accedemos a través de obtener_fecha
+            yield obtener_fecha 
         end
   
         private
