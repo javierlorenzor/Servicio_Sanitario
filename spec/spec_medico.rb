@@ -186,6 +186,13 @@ RSpec.describe ServicioSanitario::Medico do
             @medico2.pacientes << @paciente2
             expect(@medico1 <= @medico2).to be true  # Médico 2 tiene 1 paciente, médico 1 tiene 2
         end
+        it "Se espera poder comprobar between?" do
+            @medico2.pacientes << @paciente1
+            @medico3.pacientes << @paciente1
+            @medico3.pacientes << @paciente2
+            expect(@medico2.between?(@medico1, @medico3)).to be true # Entre las horas
+            expect(@medico1.between?(@medico3, @medico1)).to be false # Fuera del rango
+        end
     end
 
     context "Recorrer objetos (ENUMERABLE)" do

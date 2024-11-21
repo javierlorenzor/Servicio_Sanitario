@@ -12,6 +12,8 @@ RSpec.describe ServicioSanitario::Persona do
     @persona1 = ServicioSanitario::Persona.new("12345", "Juan", "Pérez", "M", @fecha1)
     @persona2 = ServicioSanitario::Persona.new("67890", "Ana", "García", "F", @fecha2)
     @persona3 = ServicioSanitario::Persona.new("12345", "Juan", "Pérez", "M", @fecha1)
+    @persona5 = ServicioSanitario::Persona.new("54321", "Victor", "Manuel", "M", @fecha3)
+
     @persona4 = @persona1
   end
 
@@ -230,6 +232,10 @@ RSpec.describe ServicioSanitario::Persona do
       resultado = @persona1.any? { |attr| attr == "Juan Pérez" }
       expect(resultado).to be true
     end
+    it "Se espera poder comprobar between?" do
+      expect(@persona2.between?(@persona2, @persona2)).to be true 
+      expect(@persona1.between?(@persona1, @persona2)).to be false # Fuera del rango
+  end
 
   end 
  end
