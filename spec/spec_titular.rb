@@ -202,5 +202,38 @@ RSpec.describe ServicioSanitario::Titular do
       expect(Module.superclass).to eq(Object)
       expect(Object.superclass).to eq(BasicObject)
     end  
+
+    it "selecciona médicos con más de 1 paciente" do
+      @titular1.pacientes << @paciente1
+      @titular1.pacientes << @paciente2
+      expect([@titular1, @titular2].select { |t| t.numero_pacientes > 1 }).to eq([@titular1])
+    end
+  
+    it "transforma médicos en sus nombres completos" do
+      expect([@titular1, @titular2].map(&:nombre_completo)).to eq(["Alba Pérez", "Miguel Tadeo"])
+    end
+  
+    it "verifica si algún médico tiene más pacientes que el máximo permitido" do
+      expect([@titular1, @titular2].any?(&:carga_max?)).to eq(false)
+    end
+  
+    it "itera sobre los pacientes de un médico titular" do
+
+      @titular1.pacientes << @paciente1
+      @titular1.pacientes << @paciente2
+      nombres = []
+      @titular1.each { |elemento| nombres << elemento if elemento.is_a?(ServicioSanitario::Paciente) }
+      expect(nombres).to eq([@paciente1, @paciente2])
+    end
+  
+    it "encuentra al primer médico con especialidad en Pediatría" do
+      expect([@titular1, @titular2].find { |t| t.especialidad == "Pediatría" }).to eq(@titular1)
+    end
+  
+    it "rechaza médicos con especialidad en Geriatría" do
+      expect([@titular1, @titular2].reject { |t| t.especialidad == "Geriatría" }).to eq([@titular1])
+    end
+
   end 
+
 end 
