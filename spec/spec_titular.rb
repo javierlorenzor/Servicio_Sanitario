@@ -187,6 +187,12 @@ RSpec.describe ServicioSanitario::Titular do
       @titular2.pacientes << @paciente3 << @paciente4
       expect(@titular1 < @titular2).to be true
     end
+    it "Se espera poder comprobar between?" do
+      @titular1.pacientes << @paciente1
+      @titular2.pacientes << @paciente1
+      @titular3.pacientes << @paciente2
+      expect(@titular2.between?(@titular1, @titular3)).to be true # Entre las horas
+  end
     
   end
 
