@@ -166,7 +166,10 @@ RSpec.describe ServicioSanitario::Paciente do
       expect(@paciente1 == @paciente2).to be false
     end
 
-
+    it "Se espera poder comprobar between?" do
+      expect(@paciente5.between?(@paciente1, @paciente2)).to be true 
+      expect(@paciente2.between?(@paciente1, @paciente5)).to be false
+    end
   end 
 
   context "Recorrer objetos (ENUMERABLE)" do

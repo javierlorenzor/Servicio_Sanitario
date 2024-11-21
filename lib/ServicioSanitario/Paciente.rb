@@ -24,24 +24,26 @@ module ServicioSanitario
     end
 
     def <=>(other)
-      # Primero, manejamos el caso especial de la prioridad "Inmediato"
-      if prioridad[:tiempo_atencion] == :Inmediato && other.prioridad[:tiempo_atencion] != :Inmediato
-        return -1
-      elsif other.prioridad[:tiempo_atencion] == :Inmediato && prioridad[:tiempo_atencion] != :Inmediato
-        return 1
-      end
+      # Compara primero por la prioridad (usando la prioridad[:nivel])
+      prioridad_comparacion = self.prioridad[:nivel] <=> other.prioridad[:nivel]
+      return prioridad_comparacion unless prioridad_comparacion == 0
+  
+      # Si la prioridad es la misma, compara por tiempo de atención
+      other.tiempo_atencion <=>  self.tiempo_atencion 
+    end
+  
+    def tiempo_atencion
+      # Usamos el valor de 'tiempo_atencion' dentro del hash de prioridad
+      parse_tiempo(prioridad[:tiempo_atencion])
+    end
+  
+    # Método para convertir el tiempo de atención a un valor numérico
+    def parse_tiempo(tiempo)
+      tiempo = tiempo.to_s.downcase.strip  # Convertimos a cadena antes de procesar
+      return 0 if tiempo == 'inmediato'
     
-      # Si ambos tienen la misma prioridad (incluyendo :Inmediato), los comparamos normalmente
-      if prioridad[:tiempo_atencion] == other.prioridad[:tiempo_atencion]
-        return 0
-      end
-    
-      # Convertir tiempos de atención para comparación (sin :Inmediato)
-      tiempo_self = prioridad[:tiempo_atencion] == :Inmediato ? 0 : prioridad[:tiempo_atencion].to_s.split.first.to_i
-      tiempo_other = other.prioridad[:tiempo_atencion] == :Inmediato ? 0 : other.prioridad[:tiempo_atencion].to_s.split.first.to_i
-    
-      # Comparar los tiempos
-      tiempo_self <=> tiempo_other
+      # Si el tiempo tiene una unidad en minutos, extraemos el número
+      tiempo.scan(/\d+/).first.to_i
     end
         
     def each
