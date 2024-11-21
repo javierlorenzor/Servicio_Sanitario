@@ -48,7 +48,7 @@ RSpec.describe ServicioSanitario::Persona do
     end
   end
 
-   context "Contador de instancias" do
+  context "Contador de instancias" do
      it "Se espera que se incremente el contador cada vez que se crea una nueva instancia" do
        ServicioSanitario::Persona.class_variable_set(:@@instancia_contador, 0)
        expect(ServicioSanitario::Persona.contador_instancias).to eq(0)

@@ -1,12 +1,11 @@
 require_relative 'Persona'
 require_relative 'NivelSet'
 
-# Módulo principal para la gema ServicioSanitario
+
 module ServicioSanitario
-  # Clase que representa a un paciente en el sistema sanitario.
-  # Hereda de `Persona` e incluye atributos y métodos específicos para pacientes.
+
   class Paciente < Persona
-    
+
     attr_accessor :prioridad, :diagnosticos
 
     def initialize(numero_identificacion, nombre, apellido, sexo, fecha_nacimiento, prioridad)
@@ -45,10 +44,13 @@ module ServicioSanitario
       tiempo_self <=> tiempo_other
     end
         
-    def each(&block)
-      # Iterar primero sobre la prioridad y luego sobre los diagnósticos
-      yield @prioridad if block_given?
-      @diagnosticos.each(&block)
+    def each
+      yield @numero_identificacion
+      yield nombre_completo
+      yield @sexo
+      yield obtener_fecha
+      yield @prioridad
+      diagnosticos.each { |diagnostico| yield diagnostico }
     end
 
   end
