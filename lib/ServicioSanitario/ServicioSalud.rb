@@ -21,6 +21,15 @@ module ServicioSanitario
               nil
             end
         end
+
+        def liberar_cama(indice_cama)
+            if @camas.key?(indice_cama)
+              @camas[indice_cama] = nil
+              true
+            else
+              false
+            end
+        end
       
       
     end 
