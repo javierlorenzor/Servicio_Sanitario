@@ -53,6 +53,7 @@ module ServicioSanitario
         def pacientes_asignados
             @medicos.sum { |medico| medico.pacientes.size }
         end
-      
+        
+        
     end 
 end 
