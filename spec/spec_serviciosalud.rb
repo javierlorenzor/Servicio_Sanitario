@@ -82,11 +82,19 @@ RSpec.describe ServicioSanitario::ServicioSalud do
           expect(@servicio.asignar_cama(ServicioSanitario::Persona.new("66666", "Laura", "Díaz", "F", @fecha2))).to eq(nil)
         end
     
-         it "Se espera poder liberar una cama ocupada" do
+        it "Se espera poder liberar una cama ocupada" do
            @servicio.asignar_cama(@paciente1)
            @servicio.liberar_cama(1)
            expect(@servicio.camas[1]).to be_nil
-         end
+        end
     end
+
+    context "Días festivos" do
+        it "Se espera poder verificar si un día es festivo" do
+          expect(@servicio.dia_festivo?("25-12-2024")).to eq(true)
+          expect(@servicio.dia_festivo?("10-10-2024")).to eq(false)
+        end
+    end
+    
 
 end 
