@@ -119,7 +119,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
                # Asignamos camas a los pacientes
              @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
-            expect(@servicio.asignar_medico_a_paciente(@medico1, @paciente1)).to eq(true)
+            expect(@servicio.asignar_medico(@medico1, @paciente1)).to eq(true)
             expect(@medico1.pacientes).to include(@paciente1)
           end
         
@@ -134,7 +134,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             end
         
             # Intentar asignar el paciente3
-            expect(@servicio.asignar_medico_a_paciente(@medico1, @paciente3)).to eq(false)
+            expect(@servicio.asignar_medico(@medico1, @paciente3)).to eq(false)
             expect(@medico1.pacientes).not_to include(@paciente3)
           end
         
@@ -146,7 +146,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             paciente_sin_cama = ServicioSanitario::Persona.new("66666", "Pedro", "Gómez", "M", @fecha2)
             
             # Intentar asignar el médico
-            expect(@servicio.asignar_medico_a_paciente(@medico2, paciente_sin_cama)).to eq(false)
+            expect(@servicio.asignar_medico(@medico2, paciente_sin_cama)).to eq(false)
             expect(@medico2.pacientes).not_to include(paciente_sin_cama)
           end
         
@@ -158,7 +158,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             @medico2.pacientes << @paciente2
         
             # Intentar asignar el mismo paciente a otro médico
-            expect(@servicio.asignar_medico_a_paciente(@medico1, @paciente2)).to eq(false)
+            expect(@servicio.asignar_medico(@medico1, @paciente2)).to eq(false)
             expect(@medico1.pacientes).not_to include(@paciente2)
             expect(@medico2.pacientes).to include(@paciente2)
           end
