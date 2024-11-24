@@ -82,11 +82,11 @@ RSpec.describe ServicioSanitario::ServicioSalud do
           expect(@servicio.asignar_cama(ServicioSanitario::Persona.new("66666", "Laura", "Díaz", "F", @fecha2))).to eq(nil)
         end
     
-        # it "Se espera poder liberar una cama ocupada" do
-        #   @servicio.asignar_cama(@paciente1)
-        #   @servicio.liberar_cama(1)
-        #   expect(@servicio.camas[1]).to be_nil
-        # end
+         it "Se espera poder liberar una cama ocupada" do
+           @servicio.asignar_cama(@paciente1)
+           @servicio.liberar_cama(1)
+           expect(@servicio.camas[1]).to be_nil
+         end
     end
 
 end 
