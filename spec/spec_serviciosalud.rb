@@ -42,9 +42,27 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         )
     end
 
-    context "Inicialización y atributos" do
+    context "Inicialización de atributos y herencia" do
         it "Se espera poder crear una instancia de ServicioSalud" do
           expect(@servicio).not_to be_nil
         end
+
+        it "Inicializa correctamente los atributos" do
+            expect(@servicio.codigo).to eq("SAL001")
+            expect(@servicio.descripcion).to eq("Servicio de Salud General")
+            expect(@servicio.horario_apertura).to eq(@horario_apertura)
+            expect(@servicio.horario_cierre).to eq(@horario_cierre)
+            expect(@servicio.dias_festivos).to eq([@dia_festivo1, @dia_festivo2])
+            expect(@servicio.medicos).to eq([@medico1, @medico2])
+            expect(@servicio.camas).to eq(@camas)
+        end
+        it "Se espera que la instancia pertenezca a la clase determinada" do
+            expect(@servicio).to be_a(ServicioSanitario::ServicioSalud)
+            expect(@servicio).to be_a(Object)
+            expect(@servicio.instance_of?(ServicioSanitario::ServicioSalud)).to be true
+            expect(ServicioSanitario::ServicioSalud.superclass).to eq(Object)
+            expect(Object.superclass).to eq(BasicObject)
+        end
     end 
+
 end 
