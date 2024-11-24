@@ -65,4 +65,25 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
     end 
 
+    context "Gestión de camas" do
+        it "Asigna un paciente a una cama disponible" do
+          expect(@servicio.asignar_cama(@paciente1)).to eq(1)
+          expect(@servicio.camas[1]).to eq(@paciente1)
+        end
+    
+        it "No asigna una cama si no hay disponibilidad" do
+          @servicio.asignar_cama(@paciente1)
+          @servicio.asignar_cama(@paciente2)
+          extra_paciente = ServicioSanitario::Persona.new("55555", "Pedro", "Gómez", "M", @fecha1)
+          expect(@servicio.asignar_cama(extra_paciente)).to eq(3) # Última cama disponible
+          expect(@servicio.asignar_cama(ServicioSanitario::Persona.new("66666", "Laura", "Díaz", "F", @fecha2))).to eq(nil)
+        end
+    
+        it "Libera una cama ocupada" do
+          @servicio.asignar_cama(@paciente1)
+          @servicio.liberar_cama(1)
+          expect(@servicio.camas[1]).to be_nil
+        end
+    end
+
 end 
