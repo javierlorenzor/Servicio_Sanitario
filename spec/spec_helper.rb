@@ -8,7 +8,7 @@ require_relative 'spec_medico'
 require_relative 'spec_persona'
 require_relative 'spec_paciente'
 require_relative 'spec_titular'
-require_relative 'spec_serviciosanitario'
+require_relative 'spec_serviciosalud'
 require_relative 'spec_hospital'
 require_relative 'spec_urgencias'
 

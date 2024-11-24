@@ -157,27 +157,27 @@ RSpec.describe ServicioSanitario::Persona do
       expect(Object.superclass).to eq(BasicObject)
     end  
 
-    it "verifica igualdad (==)" do
+    it "Se espera verificar igualdad (==)" do
       expect(@persona1 == @persona3).to be true
       expect(@persona1 == @persona2).to be false
     end
 
-    it "verifica menor que (<)" do
+    it "Se espera verificar igualdad  menor que (<)" do
       expect(@persona2 < @persona1).to be true # Ana es más joven que Juan
       expect(@persona1 < @persona2).to be false
     end
 
-    it "verifica mayor que (>)" do
+    it "Se espera verificar igualdad mayor que (>)" do
       expect(@persona1 > @persona2).to be true # Juan es mayor que Ana
       expect(@persona2 > @persona1).to be false
     end
 
-    it "verifica menor o igual que (<=)" do
+    it "Se espera verificar igualdad  menor o igual que (<=)" do
       expect(@persona2 <= @persona1).to be true
       expect(@persona1 <= @persona3).to be true
     end
 
-    it "verifica mayor o igual que (>=)" do
+    it "Se espera verificar igualdad  mayor o igual que (>=)" do
       expect(@persona1 >= @persona2).to be true
       expect(@persona1 >= @persona3).to be true
     end

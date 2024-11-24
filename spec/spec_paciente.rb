@@ -190,29 +190,29 @@ RSpec.describe ServicioSanitario::Paciente do
       expect(resultado).to eq([@paciente1, @paciente3])
     end
   
-    it "utiliza map para obtener nombres completos" do
+    it "Se espera utilizar map para obtener nombres completos" do
       nombres = @pacientes.map(&:nombre_completo)
       expect(nombres).to include("Juan Pérez", "Ana García")
     end
   
-    it "utiliza any? para verificar si hay pacientes con diagnósticos" do
+    it "Se espera utilizar any? para verificar si hay pacientes con diagnósticos" do
       @paciente1.diagnosticos << "Gripe"
       tiene_diagnosticos = @pacientes.any? { |p| !p.diagnosticos.empty? }
       expect(tiene_diagnosticos).to be(true)
     end
   
-    it "utiliza each para iterar sobre pacientes y obtener los identificadores" do
+    it "Se espera utilizar each para iterar sobre pacientes y obtener los identificadores" do
       ids = []
       @pacientes.each { |p| ids << p.numero_identificacion }
       expect(ids).to match_array(["12345", "67890", "12345", "12345"])
     end
   
-    it "utiliza find para encontrar un paciente con prioridad NEGRO" do
+    it "Se espera utilizar find para encontrar un paciente con prioridad NEGRO" do
       paciente_negro = @pacientes.find { |p| p.prioridad == ServicioSanitario::NEGRO }
       expect(paciente_negro).to eq(@paciente2)
     end
   
-    it "utiliza reject para excluir pacientes sin diagnósticos" do
+    it "Se espera utilizar reject para excluir pacientes sin diagnósticos" do
       @paciente1.diagnosticos << "Gripe"
       @paciente5.diagnosticos << "Tos"
       con_diagnosticos = @pacientes.reject { |p| p.diagnosticos.empty? }
