@@ -33,7 +33,10 @@ module ServicioSanitario
             end
         end
 
-
+        # Método para contar el número de camas libres
+        def numero_camas_libres
+            @camas.count { |_, ocupado| ocupado.nil? }
+        end
 
       
       
