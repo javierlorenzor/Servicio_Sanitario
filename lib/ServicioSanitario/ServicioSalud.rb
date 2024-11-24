@@ -11,6 +11,7 @@ module ServicioSanitario
             @camas = camas                       # Hash con camas y ocupaciones
         end
 
+        #metodo para asignar un paciente a una cama 
         def asignar_cama(paciente)
             cama_libre = @camas.find { |indice, ocupado| ocupado.nil? }
             if cama_libre
@@ -21,7 +22,8 @@ module ServicioSanitario
               nil
             end
         end
-
+        
+        #método para liberar una cama 
         def liberar_cama(indice_cama)
             if @camas.key?(indice_cama)
               @camas[indice_cama] = nil
@@ -30,6 +32,12 @@ module ServicioSanitario
               false
             end
         end
+
+        # Método para contar el número de camas libres
+        def numero_camas_libres
+            @camas.count { |_, ocupado| ocupado.nil? }
+        end
+
       
       
     end 

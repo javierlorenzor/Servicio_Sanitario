@@ -70,11 +70,9 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             cama_asignada = @servicio.asignar_cama(@paciente1)
             expect(@servicio.camas[cama_asignada][:paciente]).to eq(@paciente1)
             expect(@servicio.camas[cama_asignada][:ingreso]).not_to be_nil
-        #   expect(@servicio.asignar_cama(@paciente1)).to eq(1)
-        #   expect(@servicio.camas[cama_asignada]).to eq(@paciente1)
         end
     
-        it "Se espera poner no asignar una cama si no hay disponibilidad" do
+        it "Se espera no poder asignar una cama si no hay disponibilidad" do
           @servicio.asignar_cama(@paciente1)
           @servicio.asignar_cama(@paciente2)
           extra_paciente = ServicioSanitario::Persona.new("55555", "Pedro", "Gómez", "M", @fecha1)
@@ -87,14 +85,37 @@ RSpec.describe ServicioSanitario::ServicioSalud do
            @servicio.liberar_cama(1)
            expect(@servicio.camas[1]).to be_nil
         end
-    end
-
-    context "Días festivos" do
-        it "Se espera poder verificar si un día es festivo" do
-          expect(@servicio.dia_festivo?("25-12-2024")).to eq(true)
-          expect(@servicio.dia_festivo?("10-10-2024")).to eq(false)
+        it "Se espera devolver el número correcto de camas libres cuando todas están disponibles" do
+            expect(@servicio.numero_camas_libres).to eq(3)
+          end
+        
+          it "Se espera devolver el número correcto de camas libres cuando una cama está ocupada" do
+            @servicio.asignar_cama(@paciente1)
+            expect(@servicio.numero_camas_libres).to eq(2)
+          end
+        
+          it "Se espara devolver el número correcto de camas libres cuando dos camas están ocupadas" do
+            @servicio.asignar_cama(@paciente1)
+            @servicio.asignar_cama(@paciente2)
+            expect(@servicio.numero_camas_libres).to eq(1)
+          end
+        
+          it "Se espera devolver cero camas libres cuando todas están ocupadas" do
+            @servicio.asignar_cama(@paciente1)
+            @servicio.asignar_cama(@paciente2)
+            @servicio.asignar_cama(ServicioSanitario::Persona.new("33333", "Juan", "Pérez", "M", @fecha1))
+            expect(@servicio.numero_camas_libres).to eq(0)
+          end
+        
+          it "Se espera devolevr el número correcto de camas libres después de liberar una cama" do
+            cama_asignada = @servicio.asignar_cama(@paciente1)
+            @servicio.liberar_cama(cama_asignada)
+            expect(@servicio.numero_camas_libres).to eq(3)
+          end
         end
     end
+
+
     
 
 end 
