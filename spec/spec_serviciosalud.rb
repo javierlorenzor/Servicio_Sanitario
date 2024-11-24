@@ -87,35 +87,30 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
         it "Se espera devolver el número correcto de camas libres cuando todas están disponibles" do
             expect(@servicio.numero_camas_libres).to eq(3)
-          end
+        end
         
-          it "Se espera devolver el número correcto de camas libres cuando una cama está ocupada" do
+        it "Se espera devolver el número correcto de camas libres cuando una cama está ocupada" do
             @servicio.asignar_cama(@paciente1)
             expect(@servicio.numero_camas_libres).to eq(2)
-          end
-        
-          it "Se espara devolver el número correcto de camas libres cuando dos camas están ocupadas" do
+        end
+
+        it "Se espara devolver el número correcto de camas libres cuando dos camas están ocupadas" do
             @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
             expect(@servicio.numero_camas_libres).to eq(1)
-          end
-        
-          it "Se espera devolver cero camas libres cuando todas están ocupadas" do
+        end
+    
+        it "Se espera devolver cero camas libres cuando todas están ocupadas" do
             @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
             @servicio.asignar_cama(ServicioSanitario::Persona.new("33333", "Juan", "Pérez", "M", @fecha1))
             expect(@servicio.numero_camas_libres).to eq(0)
-          end
-        
-          it "Se espera devolevr el número correcto de camas libres después de liberar una cama" do
+        end
+    
+        it "Se espera devolevr el número correcto de camas libres después de liberar una cama" do
             cama_asignada = @servicio.asignar_cama(@paciente1)
             @servicio.liberar_cama(cama_asignada)
             expect(@servicio.numero_camas_libres).to eq(3)
-          end
         end
     end
-
-
-    
-
 end 
