@@ -54,6 +54,15 @@ module ServicioSanitario
             @medicos.sum { |medico| medico.pacientes.size }
         end
         
-        
+        def ocupacion_cama(paciente, alta: Time.now)
+            cama_paciente = @camas.find { |_, ocupacion| ocupacion && ocupacion[:paciente] == paciente }
+            if cama_paciente
+              ingreso = cama_paciente[1][:ingreso]
+              ((alta - ingreso) / 3600).round(2) # Duración en horas, redondeada a 2 decimales
+            else
+              nil
+            end
+        end
+
     end 
 end 
