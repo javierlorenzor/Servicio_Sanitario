@@ -138,5 +138,27 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         
     end 
 
-  
+    context "Numero de pacientes" do 
+        it "Se espera devolver el número total de pacientes asignados a los médicos" do
+            expect(@servicio.pacientes_asignados).to eq(3)
+        end
+        
+        it "Se espera devolver 0 si no hay pacientes asignados a médicos" do
+            # Limpiar los pacientes asignados a los médicos
+            @medico1.pacientes.clear
+            @medico2.pacientes.clear
+            expect(@servicio.pacientes_asignados).to eq(0)
+        end
+        
+        it "Se espera devolver el número correcto de pacientes cuando hay múltiples médicos" do
+            # Asignar más pacientes a los médicos
+            paciente4 = ServicioSanitario::Persona.new("44444", "María", "García", "F", @fecha2)
+            paciente5 = ServicioSanitario::Persona.new("55555", "Pedro", "López", "M", @fecha1)
+            @medico1.pacientes << paciente4
+            @medico2.pacientes << paciente5
+        
+            expect(@servicio.pacientes_asignados).to eq(5)
+        end
+
+    end 
 end 
