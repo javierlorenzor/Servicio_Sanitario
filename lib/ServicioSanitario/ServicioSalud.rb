@@ -49,5 +49,10 @@ module ServicioSanitario
             end
         end
 
+        # Método para obtener el número de pacientes asignados a médicos
+        def pacientes_asignados
+            @medicos.sum { |medico| medico.pacientes.size }
+        end
+      
     end 
 end 

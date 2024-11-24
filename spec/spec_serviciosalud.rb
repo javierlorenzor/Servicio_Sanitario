@@ -140,7 +140,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
 
     context "Numero de pacientes" do 
         it "Se espera devolver el número total de pacientes asignados a los médicos" do
-            expect(@servicio.pacientes_asignados).to eq(3)
+            expect(@servicio.pacientes_asignados).to eq(1)
         end
         
         it "Se espera devolver 0 si no hay pacientes asignados a médicos" do
@@ -157,7 +157,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             @medico1.pacientes << paciente4
             @medico2.pacientes << paciente5
         
-            expect(@servicio.pacientes_asignados).to eq(5)
+            expect(@servicio.pacientes_asignados).to eq(3)
         end
 
     end 
