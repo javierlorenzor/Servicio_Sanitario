@@ -10,5 +10,18 @@ module ServicioSanitario
             @medicos = medicos                   # Array de instancias de Medico
             @camas = camas                       # Hash con camas y ocupaciones
         end
+
+        def asignar_cama(paciente)
+            cama_libre = @camas.find { |indice, ocupado| ocupado.nil? }
+            if cama_libre
+              indice = cama_libre[0]
+              @camas[indice] = { paciente: paciente, ingreso: Time.now }
+              indice
+            else
+              nil
+            end
+        end
+      
+      
     end 
 end 
