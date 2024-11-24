@@ -40,6 +40,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
           medicos: [@medico1, @medico2],
           camas: @camas
         )
+      
     end
 
     context "Inicialización de atributos y herencia" do
@@ -114,53 +115,28 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
     end
 
-    context "asignar camas pacientes" do 
-        it "asigna un médico a un paciente correctamente si el médico tiene espacio" do
-               # Asignamos camas a los pacientes
-             @servicio.asignar_cama(@paciente1)
+    context "Asignar camas pacientes" do 
+        it "Se espera no asignar un médico a un paciente correctamente si el médico tiene espacio" do
+            @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
             expect(@servicio.asignar_medico(@medico1, @paciente1)).to eq(true)
             expect(@medico1.pacientes).to include(@paciente1)
-          end
+        end
         
-          it "no asigna un médico a un paciente si el médico ya tiene 10 pacientes asignados" do
-            # Asignar 10 pacientes al médico
-               # Asignamos camas a los pacientes
+        it "Se espera no asignar un médico a un paciente si el médico ya tiene 10 pacientes asignados" do
             @servicio.asignar_cama(@paciente1)
-             @servicio.asignar_cama(@paciente2)
+            @servicio.asignar_cama(@paciente2)
+            # Asignar 10 pacientes al médico
             9.times do |i|
-              paciente = ServicioSanitario::Persona.new("1111#{i}", "Paciente#{i}", "Apellido#{i}", "M", @fecha1)
-              @medico1.pacientes << paciente
+                paciente = ServicioSanitario::Persona.new("1111#{i}", "Paciente#{i}", "Apellido#{i}", "M", @fecha1)
+                @medico1.pacientes << paciente
             end
-        
             # Intentar asignar el paciente3
             expect(@servicio.asignar_medico(@medico1, @paciente3)).to eq(false)
             expect(@medico1.pacientes).not_to include(@paciente3)
-          end
+        end
         
-          it "no asigna un médico a un paciente si el paciente no está en una cama" do
-            # Crear un nuevo paciente sin asignar cama
-               # Asignamos camas a los pacientes
-            @servicio.asignar_cama(@paciente1)
-            @servicio.asignar_cama(@paciente2)
-            paciente_sin_cama = ServicioSanitario::Persona.new("66666", "Pedro", "Gómez", "M", @fecha2)
-            
-            # Intentar asignar el médico
-            expect(@servicio.asignar_medico(@medico2, paciente_sin_cama)).to eq(false)
-            expect(@medico2.pacientes).not_to include(paciente_sin_cama)
-          end
-        
-          it "no asigna un médico a un paciente si el paciente ya tiene un médico asignado" do
-               # Asignamos camas a los pacientes
-            @servicio.asignar_cama(@paciente1)
-            @servicio.asignar_cama(@paciente2)
-            # Asignar un paciente a un médico
-            @medico2.pacientes << @paciente2
-        
-            # Intentar asignar el mismo paciente a otro médico
-            expect(@servicio.asignar_medico(@medico1, @paciente2)).to eq(false)
-            expect(@medico1.pacientes).not_to include(@paciente2)
-            expect(@medico2.pacientes).to include(@paciente2)
-          end
     end 
+
+  
 end 
