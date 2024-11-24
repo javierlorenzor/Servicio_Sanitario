@@ -176,6 +176,21 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
     end 
 
+    context "Metodo to_s" do 
+        it "devuelve la representación en cadena del servicio de salud correctamente" do
+            expected_output = <<~INFO
+              Código: SAL001
+              Descripción: Servicio de Salud General
+              Horario: #{@horario_apertura} - #{@horario_cierre}
+              Días Festivos: #{@dia_festivo1.to_s}, #{@dia_festivo2.to_s}
+              Camas Libres: 1
+              Total de Pacientes Asignados a Médicos: 1
+            INFO
+            expect(@servicio.to_s).to eq(expected_output)
+        end
+    end 
 
+    context "Modulo COMPARABLE" do 
+    end 
 
 end 
