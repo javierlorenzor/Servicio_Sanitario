@@ -58,7 +58,18 @@ RSpec.describe ServicioSanitario::Urgencias do
             expect(@urgencias.medicos).to include(@medico1, @medico2)
             expect(@urgencias.camas).to eq(@camas)
             expect(@urgencias.camas_uci).to eq(5)
-          end
+        end
+
+        it "Se espera que la instancia pertenezca a la clase determinada" do
+            expect(@urgencias).to be_a(ServicioSanitario::Urgencias)
+            expect(@urgencias).to be_a(Object)
+            expect(@urgencias.instance_of?(ServicioSanitario::Urgencias)).to be true
+            expect(ServicioSanitario::Urgencias.superclass).to eq(ServicioSanitario::ServicioSalud)
+            expect(ServicioSanitario::ServicioSalud.superclass).to eq(Object)
+            expect(Object.superclass).to eq(BasicObject)
+        end
+
+
 
     end  
 
