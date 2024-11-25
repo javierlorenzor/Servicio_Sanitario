@@ -5,9 +5,72 @@ require 'ServicioSanitario/Hospital'
 
 RSpec.describe ServicioSanitario::Hospital do
 
+    before(:each) do
+        # Bloque `before` proporcionado por el usuario.
+        @fecha1 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
+        @fecha2 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2004)
+        @dia_festivo1 = ServicioSanitario::Fecha.new(dia: 25, mes: 12, anio: 2024)
+        @dia_festivo2 = ServicioSanitario::Fecha.new(dia: 1, mes: 1, anio: 2025)
+    
+        @horario_apertura = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0)
+        @horario_cierre = ServicioSanitario::Hora.new(hora: 20, minuto: 0, segundo: 0)
+        @paciente1 = ServicioSanitario::Persona.new("11111", "Carlos", "López", "M", @fecha1)
+        @paciente2 = ServicioSanitario::Persona.new("22222", "Lucía", "Martínez", "F", @fecha2)
+        @medico1 = ServicioSanitario::Medico.new("33333", "Alba", "Perez", "F", @fecha1, "Pediatría")
+        @medico2 = ServicioSanitario::Medico.new("44444", "Miguel", "Tadeo", "M", @fecha2, "Pediatría")
+        @medico2.pacientes << @paciente1
+        @camas = { 1 => nil, 2 => nil, 3 => nil }
+    
+        @hospital = ServicioSanitario::Hospital.new(
+          codigo: "HOSP001",
+          descripcion: "Hospital General",
+          horario_apertura: @horario_apertura,
+          horario_cierre: @horario_cierre,
+          dias_festivos: [@dia_festivo1, @dia_festivo2],
+          medicos: [@medico1, @medico2],
+          camas: @camas,
+          numero_plantas: 4
+        )
+    end
+
     context "Inicialización de atributos , to_s y herencia" do
         it "Se espera poder crear una instancia de ServicioSalud" do
           expect(ServicioSanitario::Hospital).not_to be_nil
         end
+
+        it "Se espera que la instancia pertenezca a la clase determinada" do
+            expect(@hospital).to be_a(ServicioSanitario::Hospital)
+            expect(@hospital).to be_a(Object)
+            expect(@hospital.instance_of?(ServicioSanitario::Hospital)).to be true
+            expect(ServicioSanitario::Hospital.superclass).to eq(ServicioSanitario::ServicioSalud)
+            expect(ServicioSanitario::ServicioSalud.superclass).to eq(Object)
+            expect(Object.superclass).to eq(BasicObject)
+        end
+
+        it "Se espera que se inicialicen correctamente un hospital con los parámetros dados" do
+            expect(@hospital.codigo).to eq("HOSP001")
+            expect(@hospital.descripcion).to eq("Hospital General")
+            expect(@hospital.horario_apertura).to eq(@horario_apertura)
+            expect(@hospital.horario_cierre).to eq(@horario_cierre)
+            expect(@hospital.dias_festivos).to contain_exactly(@dia_festivo1, @dia_festivo2)
+            expect(@hospital.medicos).to contain_exactly(@medico1, @medico2)
+            expect(@hospital.camas).to eq(@camas)
+            expect(@hospital.numero_plantas).to eq(4)
+          end
+      
+          it "Se espera que lance un error si faltan parámetros obligatorios" do
+            expect {
+              ServicioSanitario::Hospital.new(
+                codigo: "HOSP002",
+                descripcion: "Hospital Incompleto",
+                horario_apertura: @horario_apertura,
+                horario_cierre: @horario_cierre,
+                dias_festivos: [@dia_festivo1],
+                medicos: [@medico1],
+                camas: @camas
+                # Falta el número de plantas
+              )
+            }.to raise_error(ArgumentError)
+          end
     end 
 end 
