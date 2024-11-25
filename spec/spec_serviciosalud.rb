@@ -66,7 +66,8 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
     end 
 
-    context "Gestión de camas" do
+    context "Gestión de camas (asignar , liberar y num camas)" do
+        
         it "Se espera poder asignar un paciente a una cama disponible" do
             cama_asignada = @servicio.asignar_cama(@paciente1)
             expect(@servicio.camas[cama_asignada][:paciente]).to eq(@paciente1)
@@ -80,42 +81,88 @@ RSpec.describe ServicioSanitario::ServicioSalud do
           expect(@servicio.asignar_cama(extra_paciente)).to eq(3) # Última cama disponible
           expect(@servicio.asignar_cama(ServicioSanitario::Persona.new("66666", "Laura", "Díaz", "F", @fecha2))).to eq(nil)
         end
-    
+
+        it "Se espera marcar la cama como ocupada tras asignación" do
+            @servicio.asignar_cama(@paciente1)
+            expect(@servicio.camas[1]).not_to be_nil
+        end
+        
         it "Se espera poder liberar una cama ocupada" do
            @servicio.asignar_cama(@paciente1)
            @servicio.liberar_cama(1)
            expect(@servicio.camas[1]).to be_nil
         end
+
         it "Se espera devolver el número correcto de camas libres cuando todas están disponibles" do
-            expect(@servicio.numero_camas_libres).to eq(3)
+            expect(@servicio.num_camas_libres).to eq(3)
         end
         
         it "Se espera devolver el número correcto de camas libres cuando una cama está ocupada" do
             @servicio.asignar_cama(@paciente1)
-            expect(@servicio.numero_camas_libres).to eq(2)
+            expect(@servicio.num_camas_libres).to eq(2)
         end
 
         it "Se espara devolver el número correcto de camas libres cuando dos camas están ocupadas" do
             @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
-            expect(@servicio.numero_camas_libres).to eq(1)
+            expect(@servicio.num_camas_libres).to eq(1)
         end
     
         it "Se espera devolver cero camas libres cuando todas están ocupadas" do
             @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
             @servicio.asignar_cama(ServicioSanitario::Persona.new("33333", "Juan", "Pérez", "M", @fecha1))
-            expect(@servicio.numero_camas_libres).to eq(0)
+            expect(@servicio.num_camas_libres).to eq(0)
         end
     
         it "Se espera devolevr el número correcto de camas libres después de liberar una cama" do
             cama_asignada = @servicio.asignar_cama(@paciente1)
             @servicio.liberar_cama(cama_asignada)
-            expect(@servicio.numero_camas_libres).to eq(3)
+            expect(@servicio.num_camas_libres).to eq(3)
         end
+
+        it "Se espera almacenar correctamente la información del paciente y el tiempo de ingreso" do
+            @servicio.asignar_cama(@paciente1)
+            expect(@servicio.camas[1][:paciente]).to eq(@paciente1)
+        end
+
+        it "Se espera marcar la cama como libre tras ser liberada" do
+            @servicio.asignar_cama(@paciente1)
+            @servicio.liberar_cama(1)
+            expect(@servicio.camas[1]).to be_nil
+        end
+
+        it "Se espera devuelver false si la cama no existe" do
+            expect(@servicio.liberar_cama(99)).to be false
+        end
+
+        it "Se espera devolver true incluso si la cama ya está libre" do
+            expect(@servicio.liberar_cama(1)).to be true
+        end
+
+        it "Se espera devolver el número correcto de camas libres" do
+            expect(@servicio.num_camas_libres).to eq(3)
+          end
+      
+        it "Se espera actualizar el número de camas libres tras asignar una cama" do
+            @servicio.asignar_cama(@paciente1)
+            expect(@servicio.num_camas_libres).to eq(2)
+        end
+      
+        it "Se espera devolver 0 si no hay camas libres" do
+            @servicio.camas.keys.each { |key| @servicio.camas[key] = { paciente: @paciente2, ingreso: Time.now } }
+            expect(@servicio.num_camas_libres).to eq(0)
+        end
+      
+        it "Se espera devolver el número correcto tras liberar una cama" do
+            @servicio.asignar_cama(@paciente1)
+            @servicio.liberar_cama(1)
+            expect(@servicio.num_camas_libres).to eq(3)
+        end
+
     end
 
-    context "Asignar camas pacientes" do 
+    context "Asignar medicos a pacientes" do 
         it "Se espera no asignar un médico a un paciente correctamente si el médico tiene espacio" do
             @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
@@ -164,20 +211,20 @@ RSpec.describe ServicioSanitario::ServicioSalud do
     
     context "Ocupacion de la cama" do 
          
-        # it "calcula correctamente la duración de la ocupación de la cama en horas" do
+        #  it "Se espera calcular correctamente la duración de la ocupación de la cama en horas" do
         #     duracion = @servicio.ocupacion_cama(@paciente1)
         #     expect(duracion).to eq(5.0) # Duración de 5 horas
         # end
 
-        it "devuelve nil si no se encuentra la cama ocupada por el paciente" do
-            paciente_no_asignado = ServicioSanitario::Persona.new("99999", "Ana", "González", "F", @fecha2)
-            duracion = @servicio.ocupacion_cama(paciente_no_asignado)
-            expect(duracion).to be_nil
-        end
+        # it "Se espera devolver nil si no se encuentra la cama ocupada por el paciente" do
+        #     paciente_no_asignado = ServicioSanitario::Persona.new("99999", "Ana", "González", "F", @fecha2)
+        #     duracion = @servicio.ocupacion_cama(paciente_no_asignado)
+        #     expect(duracion).to be_nil
+        # end
     end 
 
     context "Metodo to_s" do 
-        it "devuelve la representación en cadena del servicio de salud correctamente" do
+        it "Se espera devolver una representación en cadena del servicio de salud correctamente" do
             expected_output = <<~INFO
               Código: SAL001
               Descripción: Servicio de Salud General

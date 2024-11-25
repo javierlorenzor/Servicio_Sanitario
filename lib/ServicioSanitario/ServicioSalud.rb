@@ -34,7 +34,7 @@ module ServicioSanitario
     end
 
     # Método para contar el número de camas libres
-    def numero_camas_libres
+    def num_camas_libres
       @camas.count { |_, ocupado| ocupado.nil? }
     end
 
@@ -54,7 +54,7 @@ module ServicioSanitario
       @medicos.sum { |medico| medico.pacientes.size }
     end
     
-    #ocupacion de camas tiempo 
+    # Método para calcular la duración de la ocupación de una cama en horas
     def ocupacion_cama(paciente, alta: Time.now)
       # Buscar la cama ocupada por el paciente
       cama_paciente = @camas.find { |_, ocupacion| ocupacion && ocupacion[:paciente] == paciente }
@@ -73,7 +73,7 @@ module ServicioSanitario
         Descripción: #{@descripcion}
         Horario: #{@horario_apertura} - #{@horario_cierre}
         Días Festivos: #{@dias_festivos.map(&:to_s).join(', ')}
-        Camas Libres: #{numero_camas_libres}
+        Camas Libres: #{num_camas_libres}
         Total de Pacientes Asignados a Médicos: #{pacientes_asignados}
       INFO
     end
