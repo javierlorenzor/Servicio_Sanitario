@@ -14,6 +14,49 @@ RSpec.describe ServicioSanitario do
     @fecha2 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
     @fecha3 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2001)
     @fecha4 = ServicioSanitario::Fecha.new(dia: 8, mes: 11, anio: 2024)
+
+    
+    @dia_festivo1 = ServicioSanitario::Fecha.new(dia: 25, mes: 12, anio: 2024)
+    @dia_festivo2 = ServicioSanitario::Fecha.new(dia: 1, mes: 1, anio: 2025)
+
+    # Instancias de Hora
+    @horario_apertura = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0)
+    @horario_cierre = ServicioSanitario::Hora.new(hora: 20, minuto: 0, segundo: 0)
+
+
+    # Instancias de Persona y Médico
+    @paciente1 = ServicioSanitario::Persona.new("11111", "Carlos", "López", "M", @fecha1)
+    @paciente2 = ServicioSanitario::Persona.new("22222", "Lucía", "Martínez", "F", @fecha2)
+
+    @medico1 = ServicioSanitario::Medico.new("33333", "Alba", "Perez", "F", @fecha1, "Pediatría")
+    @medico2 = ServicioSanitario::Medico.new("44444", "Miguel", "Tadeo", "M", @fecha2, "Pediatría")
+
+    # Asignación de paciente a médico
+    @medico2.pacientes << @paciente1
+
+    # Configuración de camas y servicio
+    @camas = { 1 => nil, 2 => nil, 3 => nil }
+
+    @servicio = ServicioSanitario::ServicioSalud.new(
+      codigo: "SAL001",
+      descripcion: "Servicio de Salud General",
+      horario_apertura: @horario_apertura,
+      horario_cierre: @horario_cierre,
+      dias_festivos: [@dia_festivo1, @dia_festivo2],
+      medicos: [@medico1, @medico2],
+      camas: @camas
+    )
+
+    @camas2 = { 1 => nil, 2 => nil }
+    @servicio2 = ServicioSanitario::ServicioSalud.new(
+        codigo: "SAL002",
+        descripcion: "Servicio de Salud Pediátrica",
+        horario_apertura: @horario_apertura,
+        horario_cierre: @horario_cierre,
+        dias_festivos: [@dia_festivo1],
+        medicos: [@medico1],
+        camas: @camas2
+    )
   end
 
   context "Pruebas por defecto gema" do
@@ -129,36 +172,44 @@ RSpec.describe ServicioSanitario do
   end 
 
   context "Pruebas metodo fusion de Servisios sanitarios " do
-    it 'fusiona correctamente los nombres de los servicios' do
-      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
-      expect(fusionado.nombre).to eq("Servicio A & Servicio B")
+    it "Se espera que fusione correctamente los códigos y descripciones de los servicios" do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio, @servicio2)
+      expect(fusionado.codigo).to eq("SAL001-SAL002")
+      expect(fusionado.descripcion).to eq("Servicio de Salud General & Servicio de Salud Pediátrica")
     end
 
-    it 'suma correctamente el número de camas' do
-      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
-      expect(fusionado.num_camas).to eq(220)
+    it "Se espera que combine correctamente los días festivos sin duplicados" do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio, @servicio2)
+      expect(fusionado.dias_festivos).to contain_exactly(@dia_festivo1, @dia_festivo2)
     end
 
-    it 'suma correctamente el número de camas ocupadas' do
-      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
-      expect(fusionado.camas_ocupadas).to eq(110)
+    it "Se espera combinar correctamente las camas disponibles" do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio, @servicio2)
+      expect(fusionado.camas.keys).to contain_exactly(1, 2, 3)
     end
 
-    it 'combina correctamente las listas de pacientes' do
-      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
-      expect(fusionado.pacientes).to contain_exactly("Paciente 1", "Paciente 2", "Paciente 3", "Paciente 4")
-    end
-
-    it 'combina correctamente las listas del personal médico' do
-      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
-      expect(fusionado.personal_medico).to contain_exactly("Doctor 1", "Doctor 2", "Doctor 3", "Doctor 4")
-    end
-
-    it 'levanta un error si alguno de los objetos no es un ServicioSalud' do
+    it "Se espera dar un error si uno de los servicios no es una instancia válida" do
       expect {
-        ServicioSanitario.fusionar_servicios(@servicio1, "No es un servicio")
+        ServicioSanitario.fusionar_servicios(@servicio, "No es un servicio")
       }.to raise_error(ArgumentError, "Ambos argumentos deben ser instancias de ServicioSalud")
     end
+
+    it "Se espera que tome el horario de apertura más temprano y el horario de cierre más tardío" do
+      servicio_fusionado = ServicioSanitario.fusionar_servicios(@servicio, @servicio2)
+      expect(servicio_fusionado.horario_apertura).to eq(@horario_apertura)
+      expect(servicio_fusionado.horario_cierre).to eq(@horario_cierre)
+    end
+
+    it "Se espera que combine y elimine duplicados de días festivos" do
+      servicio_fusionado = ServicioSanitario.fusionar_servicios(@servicio, @servicio2)
+      expect(servicio_fusionado.dias_festivos).to match_array([@dia_festivo1, @dia_festivo2])
+    end
+
+    it "Se espera que combine las listas de médicos" do
+      servicio_fusionado = ServicioSanitario.fusionar_servicios(@servicio, @servicio2)
+      expect(servicio_fusionado.medicos).to match_array([@medico1, @medico2, @medico1])
+    end
+
   end 
 
 end

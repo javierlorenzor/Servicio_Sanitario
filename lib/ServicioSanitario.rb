@@ -58,7 +58,28 @@ module ServicioSanitario
   #Freeze sirve para evitar que se cambie el el valor por accidente 
   VERSION = '1.0.0'.freeze
 
- 
+  # Método para fusionar dos servicios de salud
+  def self.fusionar_servicios(servicio1, servicio2)
+    # Verifica que ambos objetos sean del mismo tipo
+    unless servicio1.is_a?(ServicioSalud) && servicio2.is_a?(ServicioSalud)
+      raise ArgumentError, "Ambos argumentos deben ser instancias de ServicioSalud"
+    end
+
+    # Crear un nuevo servicio fusionado
+    servicio_fusionado = ServicioSalud.new(
+      codigo: "#{servicio1.codigo}-#{servicio2.codigo}",
+      descripcion: "#{servicio1.descripcion} & #{servicio2.descripcion}",
+      horario_apertura: [servicio1.horario_apertura, servicio2.horario_apertura].min,
+      horario_cierre: [servicio1.horario_cierre, servicio2.horario_cierre].max,
+      dias_festivos: (servicio1.dias_festivos + servicio2.dias_festivos).uniq,
+      medicos: servicio1.medicos + servicio2.medicos,
+      camas: servicio1.camas.merge(servicio2.camas) { |_, cama1, cama2| cama1 || cama2 }
+    )
+
+    servicio_fusionado
+  end
+
+
   class Error < StandardError; end
 
   
