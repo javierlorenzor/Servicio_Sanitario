@@ -42,6 +42,16 @@ RSpec.describe ServicioSanitario::Urgencias do
           camas: @camas,
           camas_uci: 5  # Asumimos que hay 5 camas UCI
         )
+        @urgencias2 = ServicioSanitario::Urgencias.new(
+            codigo: "URG002",
+            descripcion: "Urgencias Especializadas",
+            horario_apertura: @horario_apertura,
+            horario_cierre: @horario_cierre,
+            dias_festivos: [@dia_festivo1],
+            medicos: [@medico1],
+            camas: @camas,
+            camas_uci: 3
+        )
     end
     
     context "Inicialización y herencia " do
@@ -82,7 +92,52 @@ RSpec.describe ServicioSanitario::Urgencias do
             expect(@urgencias.to_s).to eq(expected_output)
         end
 
+    end
 
-    end  
+    context "Modulo COMPARABLE" do 
+        it "Se espera que una fecha incluye el módulo Comparable" do 
+            expect(ServicioSanitario::Urgencias.included_modules).to include(Comparable)
+            expect(@urgencias.is_a?(Module)).to be(false)
+            expect(@urgencias).to be_a(Comparable)
+            expect(@urgencias).not_to be_a(Enumerable)
+        end 
+
+        it "Se espera que la herencia sea correcta" do 
+            expect(Comparable.class).to eq(Module)
+            expect(Module.superclass).to eq(Object)
+            expect(Object.superclass).to eq(BasicObject)
+        end  
+
+        it "Se espera poder comparar servicios con <=>" do
+            expect(@urgencias <=> @urgencias1).to eq(1)  
+        end
+        
+        it "Se espera poder comparar usando la igualdad  <" do
+            expect(@urgencias1 < @urgencias2).to be true
+        end
+        
+        it "Se espera poder comparar usando la igualdad  >" do
+            expect(@urgencias2 > @urgencias1).to be true
+        end
+        
+        it "Se espera poder comparar usando la igualdad  <=" do
+            expect(@urgencias1 <= @urgencias2).to be true
+        end
+        
+        it "Se espera poder comparar usando la igualdad  >=" do
+            expect(@urgencias2 >= @urgencias1).to be true
+        end
+        
+        it "Se espera poder comparar usando la igualdad  ==" do
+            expect(@urgencias1 == @urgencias2).to be false
+        end
+        
+        it "Se espera poder comparar usando la igualdad  between?" do
+            expect(@urgencias1.camas_uci).to be_between(3, 5).inclusive
+        end
+        
+        
+    end 
+
 
 end 
