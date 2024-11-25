@@ -128,4 +128,37 @@ RSpec.describe ServicioSanitario do
     end
   end 
 
+  context "Pruebas metodo fusion de Servisios sanitarios " do
+    it 'fusiona correctamente los nombres de los servicios' do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
+      expect(fusionado.nombre).to eq("Servicio A & Servicio B")
+    end
+
+    it 'suma correctamente el número de camas' do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
+      expect(fusionado.num_camas).to eq(220)
+    end
+
+    it 'suma correctamente el número de camas ocupadas' do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
+      expect(fusionado.camas_ocupadas).to eq(110)
+    end
+
+    it 'combina correctamente las listas de pacientes' do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
+      expect(fusionado.pacientes).to contain_exactly("Paciente 1", "Paciente 2", "Paciente 3", "Paciente 4")
+    end
+
+    it 'combina correctamente las listas del personal médico' do
+      fusionado = ServicioSanitario.fusionar_servicios(@servicio1, @servicio2)
+      expect(fusionado.personal_medico).to contain_exactly("Doctor 1", "Doctor 2", "Doctor 3", "Doctor 4")
+    end
+
+    it 'levanta un error si alguno de los objetos no es un ServicioSalud' do
+      expect {
+        ServicioSanitario.fusionar_servicios(@servicio1, "No es un servicio")
+      }.to raise_error(ArgumentError, "Ambos argumentos deben ser instancias de ServicioSalud")
+    end
+  end 
+
 end

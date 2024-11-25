@@ -355,7 +355,5 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(@servicio3.between?(@servicio, @servicio2)).to be false 
         end
         
-      
     end 
-
 end 
