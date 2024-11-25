@@ -183,7 +183,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
               Descripción: Servicio de Salud General
               Horario: #{@horario_apertura} - #{@horario_cierre}
               Días Festivos: #{@dia_festivo1.to_s}, #{@dia_festivo2.to_s}
-              Camas Libres: 1
+              Camas Libres: 3
               Total de Pacientes Asignados a Médicos: 1
             INFO
             expect(@servicio.to_s).to eq(expected_output)
