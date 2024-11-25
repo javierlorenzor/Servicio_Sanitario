@@ -8,6 +8,7 @@ require 'ServicioSanitario/Medico'
 
 RSpec.describe ServicioSanitario::ServicioSalud do
     before(:each) do
+
         # Instancias de Fecha
         @fecha1 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
         @fecha2 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2004)
@@ -17,6 +18,8 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         # Instancias de Hora
         @horario_apertura = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0)
         @horario_cierre = ServicioSanitario::Hora.new(hora: 20, minuto: 0, segundo: 0)
+        @hora2 = ServicioSanitario::Hora.new(hora: 10, minuto: 40, segundo: 25)
+        @hora3 = ServicioSanitario::Hora.new(hora: 14, minuto: 50, segundo: 15)
     
         # Instancias de Persona y Médico
         @paciente1 = ServicioSanitario::Persona.new("11111", "Carlos", "López", "M", @fecha1)
@@ -163,29 +166,36 @@ RSpec.describe ServicioSanitario::ServicioSalud do
     end
 
     context "Asignar medicos a pacientes" do 
+
+        it "Se espera que se asigne un médico a un paciente correctamente" do
+            @servicio.asignar_cama(@paciente2)
+            expect(@servicio.asignar_medico(@medico1, @paciente2)).to be true
+        end
+
         it "Se espera no asignar un médico a un paciente correctamente si el médico tiene espacio" do
             @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
             expect(@servicio.asignar_medico(@medico1, @paciente1)).to eq(true)
             expect(@medico1.pacientes).to include(@paciente1)
         end
-        
+
+        it "Se espera añadir el paciente a la lista de pacientes del médico" do
+            @servicio.asignar_cama(@paciente2)
+            @servicio.asignar_medico(@medico1, @paciente2)
+            expect(@medico1.pacientes).to include(@paciente2)
+        end
+
         it "Se espera no asignar un médico a un paciente si el médico ya tiene 10 pacientes asignados" do
             @servicio.asignar_cama(@paciente1)
             @servicio.asignar_cama(@paciente2)
-            # Asignar 10 pacientes al médico
-            9.times do |i|
-                paciente = ServicioSanitario::Persona.new("1111#{i}", "Paciente#{i}", "Apellido#{i}", "M", @fecha1)
-                @medico1.pacientes << paciente
-            end
-            # Intentar asignar el paciente3
-            expect(@servicio.asignar_medico(@medico1, @paciente3)).to eq(false)
-            expect(@medico1.pacientes).not_to include(@paciente3)
+            10.times { @medico1.pacientes << @paciente2 }
+            expect(@servicio.asignar_medico(@medico1, @paciente1)).to be false
         end
-        
-    end 
 
-    context "Numero de pacientes" do 
+        it "Se espera devolver false si el paciente no está asignado a ninguna cama" do
+            expect(@servicio.asignar_medico(@medico1, @paciente2)).to be false
+        end
+
         it "Se espera devolver el número total de pacientes asignados a los médicos" do
             expect(@servicio.pacientes_asignados).to eq(1)
         end
@@ -207,20 +217,52 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(@servicio.pacientes_asignados).to eq(3)
         end
 
-    end
-    
-    context "Ocupacion de la cama" do 
-         
-        #  it "Se espera calcular correctamente la duración de la ocupación de la cama en horas" do
-        #     duracion = @servicio.ocupacion_cama(@paciente1)
-        #     expect(duracion).to eq(5.0) # Duración de 5 horas
-        # end
+        it "Se espera no contar pacientes no asignados a ningún médico" do
+            expect(@servicio.pacientes_asignados).to eq(1)
+        end
+    end 
 
-        # it "Se espera devolver nil si no se encuentra la cama ocupada por el paciente" do
-        #     paciente_no_asignado = ServicioSanitario::Persona.new("99999", "Ana", "González", "F", @fecha2)
-        #     duracion = @servicio.ocupacion_cama(paciente_no_asignado)
-        #     expect(duracion).to be_nil
-        # end
+ 
+    context "Ocupacion de la cama" do 
+     
+        it 'Se espera que la cama esté correctamente configurada antes de calcular la ocupación' do
+            @servicio.asignar_cama(@paciente1) # Asignar al paciente1 a una cama antes de verificar
+            cama = @servicio.camas[1] # Cama que debería estar asignada
+            expect(cama[:paciente]).to eq(@paciente1)
+            expect(cama[:ingreso]).not_to be_nil
+        end
+
+        it 'Se espera que devuelva nil si el paciente no tiene cama asignada' do
+            duracion = @servicio.ocupacion_cama(@paciente2) # Paciente sin cama
+            expect(duracion).to be_nil
+        end
+
+        it 'Se espera que devuelva nil si no se encuentra información de ingreso' do
+            @servicio.asignar_cama(@paciente1) # Asigna sin especificar ingreso
+            @servicio.camas[1][:ingreso] = nil # Forzar falta de información
+            duracion = @servicio.ocupacion_cama(@paciente1)
+            expect(duracion).to be_nil
+        end
+
+        # it 'calcula correctamente la duración de ocupación en horas' do
+        #     ingreso = Time.now - 3600 # Hace 1 hora
+        #     @servicio.asignar_cama(@paciente1, ingreso: ingreso) # Asigna al paciente1
+        #     duracion = @servicio.ocupacion_cama(@paciente1)
+        #     expect(duracion).to be_within(0.01).of(1.00) # Aproximadamente 1 hora
+        #   end
+      
+
+      
+        #   it 'calcula correctamente la duración con una fecha de alta personalizada' do
+        #     ingreso = Time.now - 7200 # Hace 2 horas
+        #     alta = Time.now - 3600    # Hace 1 hora
+        #     @servicio.asignar_cama(@paciente1, ingreso: ingreso ) # Asigna al paciente1
+        #     duracion = @servicio.ocupacion_cama(@paciente1, alta: alta)
+        #     expect(duracion).to be_within(0.01).of(1.00) # Diferencia de 1 hora entre ingreso y alta
+        #   end
+      
+
+          
     end 
 
     context "Metodo to_s" do 

@@ -54,18 +54,18 @@ module ServicioSanitario
       @medicos.sum { |medico| medico.pacientes.size }
     end
     
-    # Método para calcular la duración de la ocupación de una cama en horas
     def ocupacion_cama(paciente, alta: Time.now)
-      # Buscar la cama ocupada por el paciente
-      cama_paciente = @camas.find { |_, ocupacion| ocupacion && ocupacion[:paciente] == paciente }
-      
+      # Verificar si hay camas asignadas al paciente
+      cama_paciente = @camas.find { |_, ocupacion| ocupacion && ocupacion[:paciente].equal?(paciente) }
+    
       if cama_paciente
-        ingreso = cama_paciente[1][:ingreso]  # Hora de ingreso
-        ((alta - ingreso) / 3600).round(2)  # Duración en horas (redondeada a 2 decimales)
-      else
-        nil  # Si no se encuentra la cama ocupada por el paciente
+        ingreso = cama_paciente[1][:ingreso] # Hora de ingreso
+        return ((alta - ingreso) / 3600).round(2) if ingreso
       end
+    
+      nil # Devuelve nil si no se encuentra la cama o falta información
     end
+    
 
     def to_s
       <<~INFO
