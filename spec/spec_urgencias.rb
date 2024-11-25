@@ -42,7 +42,7 @@ RSpec.describe ServicioSanitario::Urgencias do
           camas: @camas,
           camas_uci: 5  # Asumimos que hay 5 camas UCI
         )
-        @urgencias2 = ServicioSanitario::Urgencias.new(
+        @urgencias1 = ServicioSanitario::Urgencias.new(
             codigo: "URG002",
             descripcion: "Urgencias Especializadas",
             horario_apertura: @horario_apertura,
@@ -54,7 +54,7 @@ RSpec.describe ServicioSanitario::Urgencias do
         )
     end
     
-    context "Inicialización y herencia " do
+    context "Inicialización , herencia y to_s " do
         it "Se espera poder crear una instancia de ServicioSalud" do
           expect(@urgencias).not_to be_nil
         end
@@ -113,30 +113,29 @@ RSpec.describe ServicioSanitario::Urgencias do
         end
         
         it "Se espera poder comparar usando la igualdad  <" do
-            expect(@urgencias1 < @urgencias2).to be true
+            expect(@urgencias < @urgencias1).to be false
         end
         
         it "Se espera poder comparar usando la igualdad  >" do
-            expect(@urgencias2 > @urgencias1).to be true
+            expect(@urgencias > @urgencias1).to be true
         end
         
         it "Se espera poder comparar usando la igualdad  <=" do
-            expect(@urgencias1 <= @urgencias2).to be true
+            expect(@urgencias1 <= @urgencias).to be true
         end
         
         it "Se espera poder comparar usando la igualdad  >=" do
-            expect(@urgencias2 >= @urgencias1).to be true
+            expect(@urgencias1 >= @urgencias).to be false
         end
         
         it "Se espera poder comparar usando la igualdad  ==" do
-            expect(@urgencias1 == @urgencias2).to be false
+            expect(@urgencias == @urgencias1).to be false
         end
         
         it "Se espera poder comparar usando la igualdad  between?" do
-            expect(@urgencias1.camas_uci).to be_between(3, 5).inclusive
+            expect(@urgencias.camas_uci).to be_between(3, 5).inclusive
         end
-        
-        
+         
     end 
 
 
