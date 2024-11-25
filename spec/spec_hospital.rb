@@ -78,14 +78,16 @@ RSpec.describe ServicioSanitario::Hospital do
               Código: HOSP001
               Descripción: Hospital General
               Horario: 08:00:00 - 20:00:00
-              Días festivos: 25/12/2024, 01/01/2025
-              Médicos: Alba Perez (Pediatría), Miguel Tadeo (Pediatría)
-              Número de plantas: 4
-              Camas disponibles: 3
+              Días Festivos: 25/12/2024, 1/1/2025
+              Camas Libres: 3
+              Total de Pacientes Asignados a Médicos: 1
+              Número de Plantas: 4
             OUTPUT
-      
+          
             expect(@hospital.to_s).to eq(expected_output.strip)
-        end
+          end
+      
+
 
         it "Se espera que la salida del to_s sea un string" do 
             expect(@hospital.to_s).to be_a(String)

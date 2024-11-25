@@ -8,5 +8,9 @@ module ServicioSanitario
         @numero_plantas = numero_plantas # Número de plantas del hospital
         end
 
+        def to_s
+            super + "Número de Plantas: #{@numero_plantas}"
+        end
+      
     end 
 end 
