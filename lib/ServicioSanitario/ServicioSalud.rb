@@ -16,7 +16,7 @@ module ServicioSanitario
       cama_libre = @camas.find { |indice, ocupado| ocupado.nil? }
       if cama_libre
         indice = cama_libre[0]
-        @camas[indice] = { paciente: paciente, ingreso: Time.now }
+        @camas[indice] = { paciente: paciente, ingreso: ServicioSanitario::Hora }
         indice
       else
         nil
@@ -54,19 +54,25 @@ module ServicioSanitario
       @medicos.sum { |medico| medico.pacientes.size }
     end
     
-    def ocupacion_cama(paciente, alta: Time.now)
-      # Verificar si hay camas asignadas al paciente
-      cama_paciente = @camas.find { |_, ocupacion| ocupacion && ocupacion[:paciente].equal?(paciente) }
+    def ocupacion_cama(paciente, alta: nil)
+      alta ||= ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0)  # Si no se pasa una fecha de alta, usar una hora predeterminada
+    
+      # Buscar la cama ocupada por el paciente
+      cama_paciente = @camas.find { |_, ocupado| ocupado && ocupado[:paciente] == paciente }
     
       if cama_paciente
-        ingreso = cama_paciente[1][:ingreso] # Hora de ingreso
-        return ((alta - ingreso) / 3600).round(2) if ingreso
-      end
+        ingreso = cama_paciente[1][:ingreso] # Hora de ingreso (instancia de Hora)
+        
+        # Si la hora de alta no es proporcionada, usar la hora predeterminada (o puedes usar Time.now para probar)
+        hora_alta = alta || ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0)
     
-      nil # Devuelve nil si no se encuentra la cama o falta información
+        # Usamos el método diferencia_horas para calcular la diferencia entre hora de ingreso y hora de alta
+        ServicioSanitario.diferencia_horas(ingreso, hora_alta)
+      else
+        nil # Si no se encuentra la cama ocupada por el paciente
+      end
     end
     
-
     def to_s
       <<~INFO
         Código: #{@codigo}

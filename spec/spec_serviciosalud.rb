@@ -46,7 +46,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
       
     end
 
-    context "Inicialización de atributos y herencia" do
+    context "Inicialización de atributos , to_s y herencia" do
         it "Se espera poder crear una instancia de ServicioSalud" do
           expect(@servicio).not_to be_nil
         end
@@ -66,6 +66,17 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(@servicio.instance_of?(ServicioSanitario::ServicioSalud)).to be true
             expect(ServicioSanitario::ServicioSalud.superclass).to eq(Object)
             expect(Object.superclass).to eq(BasicObject)
+        end
+        it "Se espera devolver una representación en cadena del servicio de salud correctamente" do
+            expected_output = <<~INFO
+              Código: SAL001
+              Descripción: Servicio de Salud General
+              Horario: #{@horario_apertura} - #{@horario_cierre}
+              Días Festivos: #{@dia_festivo1.to_s}, #{@dia_festivo2.to_s}
+              Camas Libres: 3
+              Total de Pacientes Asignados a Médicos: 1
+            INFO
+            expect(@servicio.to_s).to eq(expected_output)
         end
     end 
 
@@ -222,12 +233,11 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
     end 
 
- 
     context "Ocupacion de la cama" do 
      
         it 'Se espera que la cama esté correctamente configurada antes de calcular la ocupación' do
-            @servicio.asignar_cama(@paciente1) # Asignar al paciente1 a una cama antes de verificar
-            cama = @servicio.camas[1] # Cama que debería estar asignada
+            @servicio.asignar_cama(@paciente1) 
+            cama = @servicio.camas[1] 
             expect(cama[:paciente]).to eq(@paciente1)
             expect(cama[:ingreso]).not_to be_nil
         end
@@ -237,46 +247,38 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(duracion).to be_nil
         end
 
-        it 'Se espera que devuelva nil si no se encuentra información de ingreso' do
-            @servicio.asignar_cama(@paciente1) # Asigna sin especificar ingreso
-            @servicio.camas[1][:ingreso] = nil # Forzar falta de información
+        it 'Se espera calcular correctamente la duración de ocupación en horas' do
+            ingreso = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0) 
+            @servicio.asignar_cama(@paciente1) 
+            @servicio.camas[1][:ingreso] = ingreso 
             duracion = @servicio.ocupacion_cama(@paciente1)
+            expect(duracion).to eq("4 horas, 0 minutos, 0 segundos") 
+        end
+
+        it 'Se espera calcular correctamente la ocupación cuando se pasa una hora de alta' do
+            ingreso = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0) 
+            alta = ServicioSanitario::Hora.new(hora: 15, minuto: 30, segundo: 0) #
+            @servicio.asignar_cama(@paciente1) # Asigna al paciente1
+            @servicio.camas[1][:ingreso] = ingreso 
+            duracion = @servicio.ocupacion_cama(@paciente1, alta: alta)
+            expect(duracion).to eq("7 horas, 30 minutos, 0 segundos") 
+        end
+        
+         
+        it 'Se espera calcular correctamente la ocupación cuando no se pasa una hora de alta' do
+            ingreso = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0) 
+            @servicio.asignar_cama(@paciente1) #
+            @servicio.camas[1][:ingreso] = ingreso 
+            duracion = @servicio.ocupacion_cama(@paciente1)
+            expect(duracion).to eq("4 horas, 0 minutos, 0 segundos") 
+        end
+        
+         
+        it 'Se espera devolver nil si no se encuentra la cama ocupada por el paciente' do
+            duracion = @servicio.ocupacion_cama(@paciente2) 
             expect(duracion).to be_nil
         end
-
-        # it 'calcula correctamente la duración de ocupación en horas' do
-        #     ingreso = Time.now - 3600 # Hace 1 hora
-        #     @servicio.asignar_cama(@paciente1, ingreso: ingreso) # Asigna al paciente1
-        #     duracion = @servicio.ocupacion_cama(@paciente1)
-        #     expect(duracion).to be_within(0.01).of(1.00) # Aproximadamente 1 hora
-        #   end
-      
-
-      
-        #   it 'calcula correctamente la duración con una fecha de alta personalizada' do
-        #     ingreso = Time.now - 7200 # Hace 2 horas
-        #     alta = Time.now - 3600    # Hace 1 hora
-        #     @servicio.asignar_cama(@paciente1, ingreso: ingreso ) # Asigna al paciente1
-        #     duracion = @servicio.ocupacion_cama(@paciente1, alta: alta)
-        #     expect(duracion).to be_within(0.01).of(1.00) # Diferencia de 1 hora entre ingreso y alta
-        #   end
-      
-
-          
-    end 
-
-    context "Metodo to_s" do 
-        it "Se espera devolver una representación en cadena del servicio de salud correctamente" do
-            expected_output = <<~INFO
-              Código: SAL001
-              Descripción: Servicio de Salud General
-              Horario: #{@horario_apertura} - #{@horario_cierre}
-              Días Festivos: #{@dia_festivo1.to_s}, #{@dia_festivo2.to_s}
-              Camas Libres: 3
-              Total de Pacientes Asignados a Médicos: 1
-            INFO
-            expect(@servicio.to_s).to eq(expected_output)
-        end
+            
     end 
 
     context "Modulo COMPARABLE" do 
