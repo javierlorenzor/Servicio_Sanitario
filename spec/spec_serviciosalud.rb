@@ -43,6 +43,28 @@ RSpec.describe ServicioSanitario::ServicioSalud do
           medicos: [@medico1, @medico2],
           camas: @camas
         )
+
+        @camas2 = { 1 => nil, 2 => nil }
+        @servicio2 = ServicioSanitario::ServicioSalud.new(
+            codigo: "SAL002",
+            descripcion: "Servicio de Salud Pediátrica",
+            horario_apertura: @horario_apertura,
+            horario_cierre: @horario_cierre,
+            dias_festivos: [@dia_festivo1],
+            medicos: [@medico1],
+            camas: @camas2
+        )
+
+        @camas3 = { 1 => nil, 2 => nil, 3 => nil, 4 => nil }
+        @servicio3 = ServicioSanitario::ServicioSalud.new(
+            codigo: "SAL003",
+            descripcion: "Servicio de Salud Geriátrica",
+            horario_apertura: @horario_apertura,
+            horario_cierre: @horario_cierre,
+            dias_festivos: [@dia_festivo1, @dia_festivo2],
+            medicos: [@medico2],
+            camas: @camas3
+        )
       
     end
 
@@ -294,6 +316,46 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(Module.superclass).to eq(Object)
             expect(Object.superclass).to eq(BasicObject)
         end  
+        
+        it 'debe permitir comparar servicios con <=>' do
+            expect(@servicio1 <=> @servicio2).to eq(1)  # servicio1 tiene más camas libres que servicio2
+            expect(@servicio2 <=> @servicio3).to eq(-1) # servicio2 tiene menos camas libres que servicio3
+            expect(@servicio1 <=> @servicio1).to eq(0)  # servicio1 es igual a sí mismo
+        end
+        
+        it 'debe permitir el uso de <' do
+            expect(@servicio2 < @servicio1).to be true   # servicio2 tiene menos camas libres que servicio1
+            expect(@servicio1 < @servicio3).to be true   # servicio1 tiene menos camas libres que servicio3
+        end
+        
+        it 'debe permitir el uso de >' do
+            expect(@servicio1 > @servicio2).to be true   # servicio1 tiene más camas libres que servicio2
+            expect(@servicio3 > @servicio2).to be true   # servicio3 tiene más camas libres que servicio2
+        end
+        
+        it 'debe permitir el uso de <=' do
+            expect(@servicio2 <= @servicio1).to be true  # servicio2 tiene menos camas libres que servicio1
+            expect(@servicio1 <= @servicio3).to be true  # servicio1 tiene menos camas libres que servicio3
+            expect(@servicio1 <= @servicio1).to be true  # servicio1 es igual a sí mismo
+        end
+        
+        it 'debe permitir el uso de >=' do
+            expect(@servicio1 >= @servicio2).to be true  # servicio1 tiene más camas libres que servicio2
+            expect(@servicio3 >= @servicio2).to be true  # servicio3 tiene más camas libres que servicio2
+            expect(@servicio1 >= @servicio1).to be true  # servicio1 es igual a sí mismo
+        end
+        
+        it 'debe permitir el uso de ==' do
+            expect(@servicio1 == @servicio1).to be true  # servicio1 es igual a sí mismo
+            expect(@servicio1 == @servicio2).to be false # servicio1 tiene más camas libres que servicio2
+        end
+        
+        it 'debe permitir el uso de between?' do
+            expect(@servicio2.between?(@servicio1, @servicio3)).to be true # servicio2 tiene entre servicio1 y servicio3 en cuanto a camas libres
+            expect(@servicio1.between?(@servicio2, @servicio3)).to be true # servicio1 tiene entre servicio2 y servicio3 en cuanto a camas libres
+            expect(@servicio3.between?(@servicio1, @servicio2)).to be false # servicio3 tiene más camas libres que servicio1 y servicio2
+        end
+        
       
     end 
 
