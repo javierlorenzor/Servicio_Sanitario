@@ -85,5 +85,12 @@ module ServicioSanitario
       INFO
     end
 
+    # Implementación del método de comparación basado en el número de camas libres
+    def <=>(other)
+      # Asegúrate de que otro_servicio no sea nil y tenga el método `num_camas_libres`
+      return nil unless other.is_a?(ServicioSanitario::ServicioSalud)
+      
+      self.num_camas_libres <=> other.num_camas_libres
+    end
   end 
 end 

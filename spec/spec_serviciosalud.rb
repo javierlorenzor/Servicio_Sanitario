@@ -257,19 +257,19 @@ RSpec.describe ServicioSanitario::ServicioSalud do
 
     context "Ocupacion de la cama" do 
      
-        it 'Se espera que la cama esté correctamente configurada antes de calcular la ocupación' do
+        it "Se espera que la cama esté correctamente configurada antes de calcular la ocupación" do
             @servicio.asignar_cama(@paciente1) 
             cama = @servicio.camas[1] 
             expect(cama[:paciente]).to eq(@paciente1)
             expect(cama[:ingreso]).not_to be_nil
         end
 
-        it 'Se espera que devuelva nil si el paciente no tiene cama asignada' do
+        it "Se espera que devuelva nil si el paciente no tiene cama asignada" do
             duracion = @servicio.ocupacion_cama(@paciente2) # Paciente sin cama
             expect(duracion).to be_nil
         end
 
-        it 'Se espera calcular correctamente la duración de ocupación en horas' do
+        it "Se espera calcular correctamente la duración de ocupación en horas" do
             ingreso = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0) 
             @servicio.asignar_cama(@paciente1) 
             @servicio.camas[1][:ingreso] = ingreso 
@@ -277,7 +277,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(duracion).to eq("4 horas, 0 minutos, 0 segundos") 
         end
 
-        it 'Se espera calcular correctamente la ocupación cuando se pasa una hora de alta' do
+        it "Se espera calcular correctamente la ocupación cuando se pasa una hora de alta" do
             ingreso = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0) 
             alta = ServicioSanitario::Hora.new(hora: 15, minuto: 30, segundo: 0) #
             @servicio.asignar_cama(@paciente1) # Asigna al paciente1
@@ -287,7 +287,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
         
          
-        it 'Se espera calcular correctamente la ocupación cuando no se pasa una hora de alta' do
+        it "Se espera calcular correctamente la ocupación cuando no se pasa una hora de alta" do
             ingreso = ServicioSanitario::Hora.new(hora: 8, minuto: 0, segundo: 0) 
             @servicio.asignar_cama(@paciente1) #
             @servicio.camas[1][:ingreso] = ingreso 
@@ -296,7 +296,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
         
          
-        it 'Se espera devolver nil si no se encuentra la cama ocupada por el paciente' do
+        it "Se espera devolver nil si no se encuentra la cama ocupada por el paciente" do
             duracion = @servicio.ocupacion_cama(@paciente2) 
             expect(duracion).to be_nil
         end
@@ -317,43 +317,42 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(Object.superclass).to eq(BasicObject)
         end  
         
-        it 'debe permitir comparar servicios con <=>' do
-            expect(@servicio1 <=> @servicio2).to eq(1)  # servicio1 tiene más camas libres que servicio2
+        it "Se espera poder comparar servicios con <=>" do
+            expect(@servicio <=> @servicio2).to eq(1)  # servicio1 tiene más camas libres que servicio2
             expect(@servicio2 <=> @servicio3).to eq(-1) # servicio2 tiene menos camas libres que servicio3
-            expect(@servicio1 <=> @servicio1).to eq(0)  # servicio1 es igual a sí mismo
+            expect(@servicio <=> @servicio).to eq(0)  # servicio1 es igual a sí mismo
         end
         
-        it 'debe permitir el uso de <' do
-            expect(@servicio2 < @servicio1).to be true   # servicio2 tiene menos camas libres que servicio1
-            expect(@servicio1 < @servicio3).to be true   # servicio1 tiene menos camas libres que servicio3
+        it "Se espera poder comparar usando la igualdad  <" do
+            expect(@servicio2 < @servicio).to be true  
+            expect(@servicio < @servicio3).to be true   
         end
         
-        it 'debe permitir el uso de >' do
-            expect(@servicio1 > @servicio2).to be true   # servicio1 tiene más camas libres que servicio2
-            expect(@servicio3 > @servicio2).to be true   # servicio3 tiene más camas libres que servicio2
+        it "Se espera poder comparar usando la igualdad  >" do
+            expect(@servicio > @servicio2).to be true   
+            expect(@servicio3 > @servicio2).to be true   
         end
         
-        it 'debe permitir el uso de <=' do
-            expect(@servicio2 <= @servicio1).to be true  # servicio2 tiene menos camas libres que servicio1
-            expect(@servicio1 <= @servicio3).to be true  # servicio1 tiene menos camas libres que servicio3
-            expect(@servicio1 <= @servicio1).to be true  # servicio1 es igual a sí mismo
+        it "Se espera poder comparar usando la igualdad  <=" do
+            expect(@servicio2 <= @servicio).to be true  
+            expect(@servicio <= @servicio3).to be true  
+            expect(@servicio <= @servicio).to be true  
         end
         
-        it 'debe permitir el uso de >=' do
-            expect(@servicio1 >= @servicio2).to be true  # servicio1 tiene más camas libres que servicio2
-            expect(@servicio3 >= @servicio2).to be true  # servicio3 tiene más camas libres que servicio2
-            expect(@servicio1 >= @servicio1).to be true  # servicio1 es igual a sí mismo
+        it "Se espera poder comparar usando la igualdad  >=" do
+            expect(@servicio >= @servicio2).to be true  
+            expect(@servicio3 >= @servicio2).to be true  
+            expect(@servicio >= @servicio).to be true  
         end
         
-        it 'debe permitir el uso de ==' do
-            expect(@servicio1 == @servicio1).to be true  # servicio1 es igual a sí mismo
-            expect(@servicio1 == @servicio2).to be false # servicio1 tiene más camas libres que servicio2
+        it "Se espera poder comparar usando la igualdad  ==" do
+            expect(@servicio == @servicio).to be true  
+            expect(@servicio == @servicio2).to be false
         end
         
-        it 'debe permitir el uso de between?' do
-            expect(@servicio2.between?(@servicio1, @servicio3)).to be true # servicio2 tiene entre servicio1 y servicio3 en cuanto a camas libres
-            expect(@servicio1.between?(@servicio2, @servicio3)).to be true # servicio1 tiene entre servicio2 y servicio3 en cuanto a camas libres
-            expect(@servicio3.between?(@servicio1, @servicio2)).to be false # servicio3 tiene más camas libres que servicio1 y servicio2
+        it "Se espera poder comparar usando la igualdad  between?" do
+            expect(@servicio.between?(@servicio2, @servicio3)).to be true 
+            expect(@servicio3.between?(@servicio, @servicio2)).to be false 
         end
         
       
