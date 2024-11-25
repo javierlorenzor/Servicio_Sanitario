@@ -31,6 +31,16 @@ RSpec.describe ServicioSanitario::Hospital do
           camas: @camas,
           numero_plantas: 4
         )
+        @hospital2 = ServicioSanitario::Hospital.new(
+            codigo: "HOSP002",
+            descripcion: "Hospital Especializado",
+            horario_apertura: @horario_apertura,
+            horario_cierre: @horario_cierre,
+            dias_festivos: [@dia_festivo1],
+            medicos: [@medico1],
+            camas: { 1 => nil, 2 => nil }, 
+            numero_plantas: 6
+        )
     end
 
     context "Inicialización de atributos , to_s y herencia" do
@@ -107,5 +117,33 @@ RSpec.describe ServicioSanitario::Hospital do
             expect(Module.superclass).to eq(Object)
             expect(Object.superclass).to eq(BasicObject)
         end  
+
+        it "Se espera comparar correctamente con <" do
+            expect(@hospital2 < @hospital1).to be true
+        end
+        
+        it "Se espera comparar correctamente con >" do
+            expect(@hospital1 > @hospital2).to be true
+        end
+        
+        it "Se espera comparar correctamente con <=" do
+            expect(@hospital2 <= @hospital1).to be true
+            expect(@hospital1 <= @hospital1).to be true
+        end
+        
+        it "Se espera comparar correctamente con >=" do
+            expect(@hospital1 >= @hospital2).to be true
+            expect(@hospital1 >= @hospital1).to be true
+        end
+        
+        it "Se espera comparar correctamente con ==" do
+            expect(@hospital1 == @hospital2).to be false
+            expect(@hospital1 == @hospital1).to be true
+        end
+        
+        it "Se espera verificar si está en un rango con between?" do
+            expect(@hospital1.between?(@hospital2, @hospital1)).to be true
+            expect(@hospital2.between?(@hospital1, @hospital2)).to be false
+        end
     end 
 end 
