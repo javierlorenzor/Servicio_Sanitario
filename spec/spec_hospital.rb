@@ -72,5 +72,23 @@ RSpec.describe ServicioSanitario::Hospital do
               )
             }.to raise_error(ArgumentError)
           end
+
+        it "devuelve una representación en cadena del hospital" do
+            expected_output = <<~OUTPUT
+              Código: HOSP001
+              Descripción: Hospital General
+              Horario: 08:00:00 - 20:00:00
+              Días festivos: 25/12/2024, 01/01/2025
+              Médicos: Alba Perez (Pediatría), Miguel Tadeo (Pediatría)
+              Número de plantas: 4
+              Camas disponibles: 3
+            OUTPUT
+      
+            expect(@hospital.to_s).to eq(expected_output.strip)
+        end
+
+        it "Se espera que la salida del to_s sea un string" do 
+            expect(@hospital.to_s).to be_a(String)
+        end 
     end 
 end 
