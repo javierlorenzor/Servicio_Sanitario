@@ -40,13 +40,13 @@ RSpec.describe ServicioSanitario::Urgencias do
           dias_festivos: [@dia_festivo1, @dia_festivo2],
           medicos: [@medico1, @medico2],
           camas: @camas,
-          num_camas_uci: 5  # Asumimos que hay 5 camas UCI
+          camas_uci: 5  # Asumimos que hay 5 camas UCI
         )
     end
     
     context "Inicialización y herencia " do
         it "Se espera poder crear una instancia de ServicioSalud" do
-          expect(ServicioSanitario::Urgencias.new).not_to be_nil
+          expect(@urgencias).not_to be_nil
         end
 
         it "Se espera poder inicializar correctamente las propiedades del servicio de urgencias" do
@@ -57,7 +57,7 @@ RSpec.describe ServicioSanitario::Urgencias do
             expect(@urgencias.dias_festivos).to include(@dia_festivo1, @dia_festivo2)
             expect(@urgencias.medicos).to include(@medico1, @medico2)
             expect(@urgencias.camas).to eq(@camas)
-            expect(@urgencias.num_camas_uci).to eq(5)
+            expect(@urgencias.camas_uci).to eq(5)
           end
 
     end  
