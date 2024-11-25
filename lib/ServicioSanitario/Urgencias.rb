@@ -8,6 +8,10 @@ module ServicioSanitario
           @camas_uci = camas_uci
         end
       
+        def to_s
+            super + "Camas UCI Disponibles:#{@camas_uci}\n"
+        end
+      
       
     end
 end 

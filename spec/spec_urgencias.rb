@@ -69,35 +69,18 @@ RSpec.describe ServicioSanitario::Urgencias do
             expect(Object.superclass).to eq(BasicObject)
         end
 
-        it "retorna una cadena que incluye el código del servicio" do
-            expect(@urgencias.to_s).to include("Código: URG001")
-          end
-      
-          it "retorna una cadena que incluye la descripción del servicio" do
-            expect(@urgencias.to_s).to include("Descripción: Urgencias Generales")
-          end
-      
-          it "retorna una cadena que incluye el horario de apertura y cierre" do
-            expect(@urgencias.to_s).to include("Horario: #{@horario_apertura} - #{@horario_cierre}")
-          end
-      
-          it "retorna una cadena que incluye los días festivos" do
-            festivos_str = [@dia_festivo1, @dia_festivo2].map(&:to_s).join(", ")
-            expect(@urgencias.to_s).to include("Días festivos: #{festivos_str}")
-          end
-      
-          it "retorna una cadena que incluye los nombres de los médicos" do
-            medicos_str = [@medico1, @medico2].map(&:nombre).join(", ")
-            expect(@urgencias.to_s).to include("Médicos: #{medicos_str}")
-          end
-      
-          it "retorna una cadena que incluye el número de camas y camas UCI" do
-            expect(@urgencias.to_s).to include("Camas: 3 disponibles, Camas UCI: 5")
-          end
-      
-          it "retorna un resultado que es una cadena" do
-            expect(@urgencias.to_s).to be_a(String)
-          end
+        it "Se espera devolver una representación en cadena de Urgencias correctamente" do
+            expected_output = <<~INFO
+                Código: URG001
+                Descripción: Urgencias Generales
+                Horario: #{@horario_apertura} - #{@horario_cierre}
+                Días Festivos: #{@dia_festivo1.to_s}, #{@dia_festivo2.to_s}
+                Camas Libres: 3
+                Total de Pacientes Asignados a Médicos: 1
+                Camas UCI Disponibles:5
+            INFO
+            expect(@urgencias.to_s).to eq(expected_output)
+        end
 
 
     end  
