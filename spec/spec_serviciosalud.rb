@@ -282,6 +282,19 @@ RSpec.describe ServicioSanitario::ServicioSalud do
     end 
 
     context "Modulo COMPARABLE" do 
+        it "Se espera que una fecha incluye el módulo Comparable" do 
+            expect(ServicioSanitario::ServicioSalud.included_modules).to include(Comparable)
+            expect(@servicio.is_a?(Module)).to be(false)
+            expect(@servicio).to be_a(Comparable)
+            expect(@servicio).not_to be_a(Enumerable)
+        end 
+
+        it "Se espera que la herencia sea correcta" do 
+            expect(Comparable.class).to eq(Module)
+            expect(Module.superclass).to eq(Object)
+            expect(Object.superclass).to eq(BasicObject)
+        end  
+      
     end 
 
 end 
