@@ -119,31 +119,31 @@ RSpec.describe ServicioSanitario::Hospital do
         end  
 
         it "Se espera comparar correctamente con <" do
-            expect(@hospital2 < @hospital1).to be true
+            expect(@hospital2 < @hospital).to be true
         end
         
         it "Se espera comparar correctamente con >" do
-            expect(@hospital1 > @hospital2).to be true
+            expect(@hospital > @hospital2).to be true
         end
         
         it "Se espera comparar correctamente con <=" do
-            expect(@hospital2 <= @hospital1).to be true
-            expect(@hospital1 <= @hospital1).to be true
+            expect(@hospital2 <= @hospital).to be true
+            expect(@hospital <= @hospital).to be true
         end
         
         it "Se espera comparar correctamente con >=" do
-            expect(@hospital1 >= @hospital2).to be true
-            expect(@hospital1 >= @hospital1).to be true
+            expect(@hospital >= @hospital2).to be true
+            expect(@hospital >= @hospital).to be true
         end
         
         it "Se espera comparar correctamente con ==" do
-            expect(@hospital1 == @hospital2).to be false
-            expect(@hospital1 == @hospital1).to be true
+            expect(@hospital == @hospital2).to be false
+            expect(@hospital == @hospital).to be true
         end
         
         it "Se espera verificar si está en un rango con between?" do
-            expect(@hospital1.between?(@hospital2, @hospital1)).to be true
-            expect(@hospital2.between?(@hospital1, @hospital2)).to be false
+            expect(@hospital.between?(@hospital2, @hospital)).to be true
+            expect(@hospital2.between?(@hospital, @hospital2)).to be false
         end
     end 
 end 
