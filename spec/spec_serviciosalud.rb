@@ -89,6 +89,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
             expect(ServicioSanitario::ServicioSalud.superclass).to eq(Object)
             expect(Object.superclass).to eq(BasicObject)
         end
+        
         it "Se espera devolver una representación en cadena del servicio de salud correctamente" do
             expected_output = <<~INFO
               Código: SAL001
