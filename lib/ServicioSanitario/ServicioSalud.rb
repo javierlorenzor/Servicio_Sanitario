@@ -1,5 +1,6 @@
 module ServicioSanitario
   class ServicioSalud
+    include Comparable
     attr_accessor :codigo, :descripcion, :horario_apertura, :horario_cierre, :dias_festivos, :medicos, :camas
     def initialize(codigo:, descripcion:, horario_apertura:, horario_cierre:, dias_festivos:, medicos:, camas:)
       @codigo = codigo
