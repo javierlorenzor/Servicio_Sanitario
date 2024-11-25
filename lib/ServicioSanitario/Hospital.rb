@@ -25,6 +25,5 @@ module ServicioSanitario
             self.numero_plantas <=> (other.respond_to?(:numero_plantas) ? other.numero_plantas : 0)
         end
       
-      
     end 
 end 

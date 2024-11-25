@@ -52,6 +52,7 @@ RSpec.describe ServicioSanitario::Urgencias do
             camas: @camas,
             camas_uci: 3
         )
+        
     end
     
     context "Inicialización , herencia y to_s " do
