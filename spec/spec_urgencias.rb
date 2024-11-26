@@ -139,8 +139,8 @@ RSpec.describe ServicioSanitario::Urgencias do
          
     end 
 
-    context "polimorfismo" do
-        it "responde a los métodos de la clase base ServicioSalud" do
+    context "POLIMORFISMO" do
+        it "Se espera que responda a los métodos de la clase base ServicioSalud" do
             expect(@urgencias).to respond_to(:codigo) 
             expect(@urgencias).to respond_to(:to_s)
             expect(@urgencias).to respond_to(:descripcion)
@@ -151,28 +151,27 @@ RSpec.describe ServicioSanitario::Urgencias do
             expect(@urgencias).to respond_to(:liberar_cama)
         end
     
-        it "sobrescribe correctamente el método to_s" do
+        it "Se espera que se sobrescriba correctamente el método to_s" do
             expect(@urgencias.to_s).to include("Código: URG001")
             expect(@urgencias.to_s).to include("Descripción: Urgencias Generales")
         end
     
-        it "implementa el método <=> para comparar urgencias" do
-            expect(@urgencias <=> @urgencias1).to eq(1) # @urgencias tiene más camas libres
+        it "Se espera que implemente el método <=> para comparar urgencias" do
+            expect(@urgencias <=> @urgencias1).to eq(1) 
         end
     
-        it "responde a métodos específicos de la subclase Urgencia" do
+        it "Se espera que responda a métodos específicos de la subclase Urgencia" do
             expect(@urgencias).to respond_to(:camas_uci)
-            
+
         end
       
-      
-        it "calcula correctamente el número de camas libres" do
+        it "Se espera que se pueda calcular correctamente el número de camas libres" do
             expect(@urgencias.num_camas_libres).to eq(3)
             @urgencias.asignar_cama("Paciente crítico")
             expect(@urgencias.num_camas_libres).to eq(2)
         end
       
-        it "puede asignar camas y liberar camas correctamente" do
+        it "Se espera que se pueda asignar camas y liberar camas correctamente" do
             cama_asignada = @urgencias.asignar_cama("Paciente crítico")
             expect(cama_asignada).not_to be_nil
             expect(@urgencias.num_camas_libres).to eq(2)
@@ -180,16 +179,13 @@ RSpec.describe ServicioSanitario::Urgencias do
             expect(@urgencias.num_camas_libres).to eq(3)
         end
       
-        it "sobrescribe correctamente el operador de comparación (<=>)" do
-            expect(@urgencias <=> @urgencias1).to eq(1) # @urgencias tiene más camas libres
+        it "Se espera que se sobrescriba correctamente el operador de comparación (<=>)" do
+            expect(@urgencias <=> @urgencias1).to eq(1)
         end
       
-        it "funciona en colecciones polimórficas" do
+        it "Se espera que funciona en colecciones polimórficas" do
             lista_urgencias = [@urgencias1, @urgencias]
-            expect(lista_urgencias.sort).to eq([@urgencias1, @urgencias]) # Ordenadas por número de camas libres
+            expect(lista_urgencias.sort).to eq([@urgencias1, @urgencias]) 
         end
-       
     end
-
-
 end 
