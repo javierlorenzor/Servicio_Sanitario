@@ -139,5 +139,51 @@ RSpec.describe ServicioSanitario::Urgencias do
          
     end 
 
+    context "polimorfismo" do
+        it "responde a los métodos de la clase base ServicioSalud" do
+            expect(@urgencias).to respond_to(:codigo) 
+            expect(@urgencias).to respond_to(:to_s)
+            expect(@urgencias).to respond_to(:descripcion)
+            expect(@urgencias).to respond_to(:horario_apertura)
+            expect(@urgencias).to respond_to(:horario_cierre)
+            expect(@urgencias).to respond_to(:num_camas_libres)
+            expect(@urgencias).to respond_to(:asignar_cama)
+            expect(@urgencias).to respond_to(:liberar_cama)
+        end
+    
+        it "sobrescribe correctamente el método to_s" do
+            expect(@urgencias.to_s).to include("Código: URG001")
+            expect(@urgencias.to_s).to include("Descripción: Urgencias Generales")
+        end
+    
+        it "implementa el método <=> para comparar urgencias" do
+            expect(@urgencias <=> @urgencias1).to eq(1) # @urgencias tiene más camas libres
+        end
+    
+        it "responde a métodos específicos de la subclase Urgencia" do
+            expect(@urgencias).to respond_to(:nivel_prioridad)
+        end
+      
+      
+        it "calcula correctamente el número de camas libres" do
+            expect(@urgencias.num_camas_libres).to eq(3)
+            @urgencias.asignar_cama("Paciente crítico")
+            expect(@urgencias.num_camas_libres).to eq(2)
+        end
+      
+        it "puede asignar camas y liberar camas correctamente" do
+            cama_asignada = @urgencias.asignar_cama("Paciente crítico")
+            expect(cama_asignada).not_to be_nil
+            expect(@urgencias.num_camas_libres).to eq(2)
+            expect(@urgencias.liberar_cama(cama_asignada)).to eq(true)
+            expect(@urgencias.num_camas_libres).to eq(3)
+        end
+      
+        it "sobrescribe correctamente el operador de comparación (<=>)" do
+            expect(@urgencias <=> @urgencias1).to eq(1) # @urgencias tiene más camas libres
+        end
+       
+    end
+
 
 end 
