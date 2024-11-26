@@ -147,7 +147,7 @@ RSpec.describe ServicioSanitario::Hospital do
         end
     end 
 
-    context "Polimorfismo y métodos comunes" do
+    context "POLIMORFISMO" do
       it "Se espera responder a los métodos de la clase base ServicioSalud" do
         expect(@hospital).to respond_to(:codigo) 
         expect(@hospital).to respond_to(:descripcion) 
