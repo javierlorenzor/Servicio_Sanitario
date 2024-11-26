@@ -146,4 +146,48 @@ RSpec.describe ServicioSanitario::Hospital do
             expect(@hospital2.between?(@hospital, @hospital2)).to be false
         end
     end 
+
+    context "Polimorfismo y métodos comunes" do
+      it "Se espera responder a los métodos de la clase base ServicioSalud" do
+        expect(@hospital).to respond_to(:codigo) 
+        expect(@hospital).to respond_to(:descripcion) 
+        expect(@hospital).to respond_to(:horario_apertura) 
+        expect(@hospital).to respond_to(:horario_cierre) 
+        expect(@hospital).to respond_to(:num_camas_libres) 
+        expect(@hospital).to respond_to(:to_s)
+        expect(@hospital).to respond_to(:asignar_cama)
+        expect(@hospital).to respond_to(:liberar_cama)
+      end
+  
+      it "Se espera sobrescribir correctamente el método to_s" do
+        expect(@hospital.to_s).to include("Código: HOSP001")
+        expect(@hospital.to_s).to include("Número de Plantas: 4")
+      end
+  
+      it "Se espera implementar el método <=> para comparar hospitales" do
+        expect(@hospital <=> @hospital2).to eq(1) 
+      end
+  
+      it "Se espera responder a métodos específicos de la subclase Hospital" do
+        expect(@hospital).to respond_to(:numero_plantas)
+      end
+
+      it "Se espera calcular correctamente el número de camas libres" do
+        expect(@hospital.num_camas_libres).to eq(3)
+        @hospital.asignar_cama(@paciente1)
+        expect(@hospital.num_camas_libres).to eq(2)
+      end
+  
+      it "Se espera poder asignar camas y liberar camas correctamente" do
+        cama_asignada = @hospital.asignar_cama(@paciente1)
+        expect(cama_asignada).not_to be_nil
+        expect(@hospital.num_camas_libres).to eq(2)
+        expect(@hospital.liberar_cama(cama_asignada)).to eq(true)
+        expect(@hospital.num_camas_libres).to eq(3)
+      end
+  
+      it "Se espera que sobrescriba correctamente el operador de comparación (<=>)" do
+        expect(@hospital <=> @hospital2).to eq(1)
+      end
+    end 
 end 
