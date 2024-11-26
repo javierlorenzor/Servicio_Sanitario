@@ -161,7 +161,8 @@ RSpec.describe ServicioSanitario::Urgencias do
         end
     
         it "responde a métodos específicos de la subclase Urgencia" do
-            expect(@urgencias).to respond_to(:nivel_prioridad)
+            expect(@urgencias).to respond_to(:camas_uci)
+            
         end
       
       
@@ -181,6 +182,11 @@ RSpec.describe ServicioSanitario::Urgencias do
       
         it "sobrescribe correctamente el operador de comparación (<=>)" do
             expect(@urgencias <=> @urgencias1).to eq(1) # @urgencias tiene más camas libres
+        end
+      
+        it "funciona en colecciones polimórficas" do
+            lista_urgencias = [@urgencias1, @urgencias]
+            expect(lista_urgencias.sort).to eq([@urgencias1, @urgencias]) # Ordenadas por número de camas libres
         end
        
     end
