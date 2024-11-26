@@ -57,6 +57,30 @@ RSpec.describe ServicioSanitario do
         medicos: [@medico1],
         camas: @camas2
     )
+ 
+    @camas3 = { 1 => nil, 2 => nil, 3 => nil }
+    @urgencias = ServicioSanitario::Urgencias.new(
+      codigo: "URG001",
+      descripcion: "Urgencias Generales",
+      horario_apertura: @horario_apertura,
+      horario_cierre: @horario_cierre,
+      dias_festivos: [@dia_festivo1, @dia_festivo2],
+      medicos: [@medico1, @medico2],
+      camas: @camas3,
+      camas_uci: 5  
+    )
+
+    @camas4 = { 1 => nil, 2 => nil, 3 => nil }
+    @hospital = ServicioSanitario::Hospital.new(
+      codigo: "HOSP001",
+      descripcion: "Hospital General",
+      horario_apertura: @horario_apertura,
+      horario_cierre: @horario_cierre,
+      dias_festivos: [@dia_festivo1, @dia_festivo2],
+      medicos: [@medico1, @medico2],
+      camas: @camas4,
+      numero_plantas: 4
+    )
   end
 
   context "Pruebas por defecto gema" do
@@ -212,4 +236,46 @@ RSpec.describe ServicioSanitario do
 
   end 
 
+  context "POLIMORFISMO " do
+    it "Se espera que fusione correctamente dos servicios del mismo tipo" do
+      servicio_fusionado = ServicioSanitario.fusionar_servicios(@servicio, @servicio2)
+
+      expect(servicio_fusionado.codigo).to eq("SAL001-SAL002")
+      expect(servicio_fusionado.descripcion).to eq("Servicio de Salud General & Servicio de Salud Pediátrica")
+      expect(servicio_fusionado.dias_festivos).to contain_exactly(@dia_festivo1, @dia_festivo2)
+      expect(servicio_fusionado.medicos).to include(@medico1, @medico2)
+      expect(servicio_fusionado.num_camas_libres).to eq(3) 
+    end
+
+    it "Se espera que lance un error si se intenta fusionar objetos que no son instancias de ServicioSalud" do
+      expect {
+        ServicioSanitario.fusionar_servicios(@fecha, @fecha1)
+      }.to raise_error(ArgumentError, "Ambos argumentos deben ser instancias de ServicioSalud")
+    end
+
+    it "Se espera que lance un error si se intenta fusionar objetos que no son instancias de ServicioSalud" do
+      expect {
+        ServicioSanitario.fusionar_servicios(@hora, @hora1)
+      }.to raise_error(ArgumentError, "Ambos argumentos deben ser instancias de ServicioSalud")
+    end
+
+    it "Se espera que fusione  Hospital y  Urgencias correctamente" do
+      servicio_fusionado = ServicioSanitario.fusionar_servicios(@hospital, @urgencias)
+
+      expect(servicio_fusionado).to be_a(ServicioSanitario::ServicioSalud)
+      expect(servicio_fusionado.codigo).to eq("HOSP001-URG001")
+      expect(servicio_fusionado.descripcion).to eq("Hospital General & Urgencias Generales")
+      expect(servicio_fusionado.medicos).to include(@medico1, @medico2)
+      expect(servicio_fusionado.num_camas_libres).to eq(3) 
+      expect(servicio_fusionado.dias_festivos).to eq([@dia_festivo1, @dia_festivo2])
+    end
+
+    it "Se espera que ignore atributos específicos de Hospital y Urgencias en la fusión" do
+      servicio_fusionado = ServicioSanitario.fusionar_servicios(@hospital, @urgencias)
+
+      # Asegura que los atributos específicos de cada clase no están presentes en el servicio fusionado
+      expect(servicio_fusionado).not_to respond_to(:camas_uci)
+      expect(servicio_fusionado).not_to respond_to(:numero_plantas)
+    end
+  end 
 end

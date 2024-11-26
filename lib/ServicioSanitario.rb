@@ -60,7 +60,6 @@ module ServicioSanitario
 
   # Método para fusionar dos servicios de salud
   def self.fusionar_servicios(servicio1, servicio2)
-    # Verifica que ambos objetos sean del mismo tipo
     unless servicio1.is_a?(ServicioSalud) && servicio2.is_a?(ServicioSalud)
       raise ArgumentError, "Ambos argumentos deben ser instancias de ServicioSalud"
     end
