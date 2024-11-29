@@ -42,7 +42,7 @@ module ServicioSanitario
     #metodo apra asignar un medico a un paciente 
     def asignar_medico(medico, paciente)
       cama_paciente = @camas.find { |_, ocupacion| ocupacion && ocupacion[:paciente] == paciente }
-      if cama_paciente && medico.pacientes.size < 10 # Ejemplo de límite de pacientes
+      if cama_paciente && medico.pacientes.size < 10 
         medico.pacientes << paciente
         true
       else
