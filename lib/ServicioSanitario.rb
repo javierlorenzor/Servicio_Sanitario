@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 require_relative "ServicioSanitario/version"
 
-# El módulo ServicioSanitario define diferentes constantes y métodos relacionados con la atención médica.
 module ServicioSanitario
 
   # Definición de constantes para los diferentes niveles de atención, cada una con su nivel, categoría y tiempo de atención
@@ -79,7 +78,46 @@ module ServicioSanitario
   end
 
 
-  class Error < StandardError; end
-
+  # Función 1: Calcular el índice de capacidad de respuesta de un servicio sanitario
+  def self.indice_capacidad_respuesta(servicio)
+    # Calcular el tiempo medio de ocupación (en minutos)
+    tiempos_ocupacion = servicio.camas.values.map do |ocupacion|
+      if ocupacion && ocupacion[:paciente] && ocupacion[:hora_entrada]
+        servicio.ocupacion_cama(ocupacion[:hora_entrada])  # Asumiendo que ocupacion_cama calcula el tiempo de ocupación
+      else
+        nil
+      end
+    end.compact
   
+    tiempo_medio_ocupacion = tiempos_ocupacion.sum / tiempos_ocupacion.size.to_f
+  
+    # Calcular el ratio de facultativos por paciente
+    num_medicos = servicio.medicos.size
+    num_pacientes = servicio.pacientes_asignados
+    ratio_facultativos_paciente = num_medicos / num_pacientes.to_f
+  
+    # Clasificar tiempo medio de ocupación
+    tiempo_categoria = if tiempo_medio_ocupacion >= 30.0
+                         1 # Aceptable
+                       elsif tiempo_medio_ocupacion >= 15.0
+                         2 # Bueno
+                       else
+                         3 # Excelente
+                       end
+  
+    # Clasificar ratio de facultativos por paciente
+    ratio_categoria = if ratio_facultativos_paciente.between?(1.0 / 5.0, 1.0 / 3.0)
+                        1 # Aceptable
+                      elsif ratio_facultativos_paciente.between?(1.0 / 2.0, 1.0 / 3.0)
+                        2 # Bueno
+                      else
+                        3 # Excelente
+                      end
+  
+    # Retornar el menor de los dos valores para representar el índice de capacidad
+    [tiempo_categoria, ratio_categoria].min
+  end
+  
+
+  class Error < StandardError; end 
 end

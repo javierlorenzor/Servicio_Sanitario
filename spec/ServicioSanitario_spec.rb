@@ -8,13 +8,14 @@ RSpec.describe ServicioSanitario do
     @hora1 = ServicioSanitario::Hora.new(hora: 12, minuto: 30, segundo: 45)
     @hora2 = ServicioSanitario::Hora.new(hora: 10, minuto: 40, segundo: 25)
     @hora3 = ServicioSanitario::Hora.new(hora: 14, minuto: 50, segundo: 15)
+    @hora4 = ServicioSanitario::Hora.new(hora: 10, minuto: 10, segundo: 25)
 
     @fecha = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
     @fecha1 = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
     @fecha2 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
     @fecha3 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2001)
-    @fecha4 = ServicioSanitario::Fecha.new(dia: 8, mes: 11, anio: 2024)
-
+    @hora4 = ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0)    # Hora de entrada para prueba de 40 minutos de ocupación
+    @hora5 = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0)    
     
     @dia_festivo1 = ServicioSanitario::Fecha.new(dia: 25, mes: 12, anio: 2024)
     @dia_festivo2 = ServicioSanitario::Fecha.new(dia: 1, mes: 1, anio: 2025)
@@ -81,6 +82,19 @@ RSpec.describe ServicioSanitario do
       camas: @camas4,
       numero_plantas: 4
     )
+    @camas5 = { 1 => nil, 2 => nil, 3 => nil }
+    @servicio3 = ServicioSanitario::ServicioSalud.new(
+    codigo: "SAL001",
+    descripcion: "Servicio de Salud General",
+    horario_apertura: @hora_apertura,
+    horario_cierre: @hora_cierre,
+    dias_festivos: [@dia_festivo1, @dia_festivo2],
+    medicos: [@medico1, @medico2],
+    camas: @camas
+  )
+
+  # Añadir pacientes a las camas (si es necesario para la prueba)
+  @camas[1] = { paciente: @paciente1, hora_entrada: @hora1 }
   end
 
   context "Pruebas por defecto gema" do
@@ -244,7 +258,7 @@ RSpec.describe ServicioSanitario do
       expect(servicio_fusionado.descripcion).to eq("Servicio de Salud General & Servicio de Salud Pediátrica")
       expect(servicio_fusionado.dias_festivos).to contain_exactly(@dia_festivo1, @dia_festivo2)
       expect(servicio_fusionado.medicos).to include(@medico1, @medico2)
-      expect(servicio_fusionado.num_camas_libres).to eq(3) 
+      expect(servicio_fusionado.num_camas_libres).to eq(2) 
     end
 
     it "Se espera que lance un error si se intenta fusionar objetos que no son instancias de ServicioSalud" do
@@ -277,5 +291,46 @@ RSpec.describe ServicioSanitario do
       expect(servicio_fusionado).not_to respond_to(:camas_uci)
       expect(servicio_fusionado).not_to respond_to(:numero_plantas)
     end
+  end 
+
+  context "Pruebas indice de capacidad de respuesta " do
+    it "debería devolver 3 (exelente) si el tiempo de ocupación es <= 15 minutos y el ratio es exelente " do
+      # Establecemos los valores necesarios para los cálculos de la función
+      @servicio.camas = { 1 => { paciente: @paciente1 }, 2 => nil, 3 => { paciente: @paciente2 } }
+      @servicio.instance_variable_set(:@pacientes_asignados, 6) # 6 pacientes
+
+      # Definir una ocupación media mayor o igual a 30 minutos
+      expect(ServicioSanitario.indice_capacidad_respuesta(@servicio3)).to eq(3)  # Aceptable
+    end
+    it 'debería devolver 1 (aceptable) si el tiempo de ocupación es >= 30 minutos y el ratio es aceptable' do
+      # Asignación de camas y pacientes
+      @camas5[1] = { paciente: @paciente1, hora_entrada: @hora4 }
+
+      # Aquí establecemos un tiempo de ocupación de más de 30 minutos
+      # Para este ejemplo, simulamos que la ocupación es de 40 minutos y que el ratio de facultativos es adecuado
+      resultado = ServicioSanitario.indice_capacidad_respuesta(@servicio3)
+
+      expect(resultado).to eq(1)  # Aceptable
+    end
+
+    it 'debería devolver 2 (bueno) si el tiempo de ocupación es entre 15 y 30 minutos y el ratio es bueno' do
+      # Simulamos una ocupación de 25 minutos y ratio de facultativos adecuado
+      @camas5[1] = { paciente: @paciente2, hora_entrada: @hora5 }
+
+      resultado = ServicioSanitario.indice_capacidad_respuesta(@servicio3)
+
+      expect(resultado).to eq(2)  # Bueno
+    end
+
+    it 'debería devolver 3 (excelente) si el tiempo de ocupación es < 15 minutos y el ratio es excelente' do
+      # Simulamos que el tiempo de ocupación es menor a 15 minutos y el ratio es excelente
+      @camas5[1] = { paciente: @paciente1, hora_entrada: @hora1 }
+
+      resultado = ServicioSanitario.indice_capacidad_respuesta(@servicio3)
+
+      expect(resultado).to eq(3)  # Excelente
+    end
+
+    
   end 
 end
