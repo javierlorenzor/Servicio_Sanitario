@@ -161,35 +161,7 @@ module ServicioSanitario
     end
   end 
 
-  def self.porcent_especialidad(servicios)
-    resultado = {}
-  
-    servicios.each do |servicio|
-      next if servicio.nil?  # Ignoramos servicios nil
-  
-      especialidades = Hash.new(0)
-  
-      # Asegúrate de que el servicio tenga médicos antes de intentar recorrerlos
-      if servicio.medicos.any?
-        servicio.medicos.each do |medico|
-          especialidades[medico.especialidad] += 1
-        end
-  
-        total_medicos = servicio.medicos.size
-        resultado[servicio.codigo] = {}  # Inicializamos el hash de resultados para cada servicio
-  
-        especialidades.each do |especialidad, cantidad|
-          porcentaje = (cantidad.to_f / total_medicos) * 100
-          resultado[servicio.codigo][especialidad] = porcentaje
-        end
-      else
-        # Si no tiene médicos, asignamos un valor predeterminado (0% para todas las especialidades)
-        resultado[servicio.codigo] = {"Ninguna" => 0}
-      end
-    end
-  
-    resultado
-  end
+ 
 
   class Error < StandardError; end 
 end

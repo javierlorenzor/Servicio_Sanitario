@@ -467,10 +467,6 @@ RSpec.describe ServicioSanitario do
       expect(resultado["SAL005"]["Pediatría"]).to eq(40.0)
       expect(resultado["SAL005"]["General"]).to eq(20.0)
     end
-
-
-
-
   end 
 
 end
