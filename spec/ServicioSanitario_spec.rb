@@ -437,6 +437,15 @@ RSpec.describe ServicioSanitario do
 
   end 
 
-
+  context "Pruebas para porcentaje de medicos por especialidad" do 
+    it "calcula correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
+      @servicio.asignar_medico(@medico1, @paciente2)
+      @servicio.asignar_medico(@medico1, @paciente2)
+      resultado = ServicioSanitario.porcent_especialidad([@servicio1, @servicio2])
+    
+      expect(resultado["SAL001"]["Pediatría"]).to eq(100.0)
+      expect(resultado["SAL002"]["Pediatría"]).to eq(0)
+    end
+  end 
 
 end
