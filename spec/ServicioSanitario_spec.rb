@@ -325,5 +325,21 @@ RSpec.describe ServicioSanitario do
     
   end 
 
+  context "Pruebas selecion de mejor servicio" do 
+    it "selecciona el servicio con el mayor índice de capacidad de respuesta" do
+      @servicio.medicos << @medico1
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio(@servicio, @servicio2)
+      expect(mejor_servicio).to eq(@servicio)
+    end
   
+    it "maneja correctamente cuando hay un empate en el índice" do
+      @servicio2.medicos << @medico2 # Ambos servicios tendrán el mismo índice
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio(@servicio, @servicio2)
+      expect(mejor_servicio).to eq(@servicio) # El primero por defecto
+    end
+  
+    it "lanza un error si algún argumento no es un servicio válido" do
+      expect { ServicioSanitario.seleccionar_mejor_servicio(@servicio, "No es un servicio") }.to raise_error(ArgumentError)
+    end
+  end 
 end
