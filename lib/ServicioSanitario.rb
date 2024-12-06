@@ -151,5 +151,15 @@ module ServicioSanitario
     mejor_servicio_uci
   end
 
+  # Función única para calcular el porcentaje de camas libres de cada servicio
+  def self.porcent_camas(servicios)
+    servicios.each_with_object({}) do |servicio, resultados|
+      total_camas = servicio.camas.size.to_f
+      num_camas_libres = servicio.camas.count { |_, paciente| paciente.nil? }
+      porcentaje_libres = (num_camas_libres / total_camas) * 100
+      resultados[servicio.codigo] = porcentaje_libres.round
+    end
+  end 
+
   class Error < StandardError; end 
 end

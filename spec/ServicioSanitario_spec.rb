@@ -32,6 +32,10 @@ RSpec.describe ServicioSanitario do
 
     @medico1 = ServicioSanitario::Medico.new("33333", "Alba", "Perez", "F", @fecha1, "Pediatría")
     @medico2 = ServicioSanitario::Medico.new("44444", "Miguel", "Tadeo", "M", @fecha2, "Pediatría")
+    @medico3 = ServicioSanitario::Medico.new("55555", "Sofía", "Lopez", "F", @fecha3, "Cardiología")
+    @medico4 = ServicioSanitario::Medico.new("66666", "Luis", "Gómez", "M", @fecha4, "Cardiología")
+    @medico5 = ServicioSanitario::Medico.new("66666", "Oscar", "Lorenzo", "M", @fecha4, "General")
+
 
     # Asignación de paciente a médico
     @medico2.pacientes << @paciente1
@@ -92,10 +96,21 @@ RSpec.describe ServicioSanitario do
     dias_festivos: [@dia_festivo1, @dia_festivo2],
     medicos: [@medico1, @medico2],
     camas: @camas
-  )
+    )
 
-  # Añadir pacientes a las camas (si es necesario para la prueba)
-  @camas[1] = { paciente: @paciente1, hora_entrada: @hora1 }
+    @camas5 = { 1 => nil, 2 => nil, 3 => nil }
+    @servicio4 = ServicioSanitario::ServicioSalud.new(
+      codigo: "SAL004",
+      descripcion: "Servicio de Salud General",
+      horario_apertura: @hora_apertura,
+      horario_cierre: @hora_cierre,
+      dias_festivos: [@dia_festivo1, @dia_festivo2],
+      medicos: [@medico1, @medico2],
+      camas: @camas5
+  
+    )
+
+    @camas[1] = { paciente: @paciente1, hora_entrada: @hora1 }
   end
 
   context "Pruebas por defecto gema" do
@@ -392,14 +407,36 @@ RSpec.describe ServicioSanitario do
   end 
 
   context "Pruebas porcentaje camas libres" do 
-    it "Se espera que calcule correctamente el porcentaje de camas libres para un servicio con algunas camas libres" do
-      @servicio.asignar_cama(@paciente1)
-      @servicio.asignar_cama(@paciente2)
-      @servicio.asignar_cama(ServicioSanitario::Persona.new("33333", "Juan", "Pérez", "M", @fecha1))
-
-      resultado = ServicioSanitario.calcular_porcentaje_camas_libres([@servicio])
+    it "Se espera que calcule correctamente el porcentaje de camas libres para un servicio con una cama libre" do
+      @servicio4.asignar_cama(@paciente1)
+      @servicio4.asignar_cama(@paciente2)
+      resultado = ServicioSanitario.porcent_camas([@servicio4])
       
-      expect(resultado["SAL001"]).to eq(66.67)
+      expect(resultado["SAL004"]).to eq(33)
     end
+
+    it "Se espera que calcule correctamente el porcentaje de camas libres para un servicio con ninguna de las camas libre" do
+      @servicio4.asignar_cama(@paciente1)
+      @servicio4.asignar_cama(@paciente2)
+      @servicio4.asignar_cama(@paciente2)
+      resultado = ServicioSanitario.porcent_camas([@servicio4])
+      
+      expect(resultado["SAL004"]).to eq(0)
+    end
+
+    it "Se espera que calcule correctamente el porcentaje de camas libres para un servicio con una cama libre" do
+      @servicio4.asignar_cama(@paciente1)
+      resultado = ServicioSanitario.porcent_camas([@servicio4])
+      expect(resultado["SAL004"]).to eq(67)
+    end
+
+    it "Se espera que calcule correctamente el porcentaje de camas libres para un servicio con todas las camas libres" do
+      resultado = ServicioSanitario.porcent_camas([@servicio4])
+      expect(resultado["SAL004"]).to eq(100)
+    end
+
   end 
+
+
+
 end
