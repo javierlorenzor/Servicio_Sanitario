@@ -78,46 +78,53 @@ module ServicioSanitario
   end
 
 
-  # Función 1: Calcular el índice de capacidad de respuesta de un servicio sanitario
-  def self.indice_capacidad_respuesta(servicio)
-    # Calcular el tiempo medio de ocupación (en minutos)
-    tiempos_ocupacion = servicio.camas.values.map do |ocupacion|
-      if ocupacion && ocupacion[:paciente] && ocupacion[:hora_entrada]
-        servicio.ocupacion_cama(ocupacion[:hora_entrada])  # Asumiendo que ocupacion_cama calcula el tiempo de ocupación
+  def self.calcular_indice_respuesta(servicio)
+    # 1. Calcular el tiempo medio de ocupación (en minutos)
+    tiempos_ocupacion = servicio.camas.values.map do |cama|
+      if cama
+        paciente = cama[:paciente]
+        ingreso = cama[:ingreso]
+        alta = ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0) # Aquí puedes usar la hora actual
+        # Diferencia en minutos entre ingreso y alta
+        horas, minutos, _ = ServicioSanitario.diferencia_horas(ingreso, alta).split(/[^0-9]+/).map(&:to_i)
+        horas * 60 + minutos
       else
         nil
       end
     end.compact
-  
-    tiempo_medio_ocupacion = tiempos_ocupacion.sum / tiempos_ocupacion.size.to_f
-  
-    # Calcular el ratio de facultativos por paciente
-    num_medicos = servicio.medicos.size
-    num_pacientes = servicio.pacientes_asignados
-    ratio_facultativos_paciente = num_medicos / num_pacientes.to_f
-  
+
+    tiempo_promedio_ocupacion = tiempos_ocupacion.sum / tiempos_ocupacion.size.to_f
+
     # Clasificar tiempo medio de ocupación
-    tiempo_categoria = if tiempo_medio_ocupacion >= 30.0
-                         1 # Aceptable
-                       elsif tiempo_medio_ocupacion >= 15.0
-                         2 # Bueno
-                       else
-                         3 # Excelente
-                       end
-  
-    # Clasificar ratio de facultativos por paciente
-    ratio_categoria = if ratio_facultativos_paciente.between?(1.0 / 5.0, 1.0 / 3.0)
+    tiempo_puntaje = if tiempo_promedio_ocupacion >= 30.0
+                       1 # Aceptable
+                     elsif tiempo_promedio_ocupacion > 15.0
+                       2 # Bueno
+                     else
+                       3 # Excelente
+                     end
+
+    # 2. Calcular el ratio de facultativos por paciente
+    total_pacientes = servicio.pacientes_asignados
+    total_medicos = servicio.medicos.size
+
+    if total_pacientes.zero?
+      ratio_puntaje = 3 # Excelente por defecto si no hay pacientes
+    else
+      ratio = total_medicos.to_f / total_pacientes
+      ratio_puntaje = if ratio >= 1.0 / 5 && ratio <= 1.0 / 3
                         1 # Aceptable
-                      elsif ratio_facultativos_paciente.between?(1.0 / 2.0, 1.0 / 3.0)
+                      elsif ratio > 1.0 / 3 && ratio <= 1.0 / 2
                         2 # Bueno
                       else
                         3 # Excelente
                       end
-  
-    # Retornar el menor de los dos valores para representar el índice de capacidad
-    [tiempo_categoria, ratio_categoria].min
+    end
+
+    # 3. Calcular el índice de capacidad de respuesta como promedio de los dos puntajes
+    indice_respuesta = (tiempo_puntaje + ratio_puntaje) / 2.0
+    indice_respuesta.round
   end
   
-
   class Error < StandardError; end 
 end
