@@ -358,4 +358,35 @@ RSpec.describe ServicioSanitario do
     end
 
   end 
+
+  context " Pruebas que selecionar el mejor servicio UCI" do
+    it "Se espera seleccionar el servicio de urgencias con mayor índice de capacidad de respuesta" do
+      servicios = [@servicio, @servicio2, @servicio3, @urgencias]
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio_uci(servicios)
+      expect(mejor_servicio).to eq(@urgencias)
+    end
+
+    it "Se espera devolver nil si no hay servicios con camas UCI" do
+      servicios_sin_uci = [@servicio, @servicio2, @servicio3]  # No hay servicios de urgencias con camas UCI
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio_uci(servicios_sin_uci)
+      expect(mejor_servicio).to be_nil
+    end
+
+    it "Se espera seleccionar el servicio correcto cuando hay varios servicios con camas UCI" do
+      # Crear otro servicio de urgencias con camas UCI, pero con menor capacidad de respuesta
+      otro_servicio_urgencias = ServicioSanitario::Urgencias.new(
+        codigo: "URG002",
+        descripcion: "Urgencias Especializadas",
+        horario_apertura: @horario_apertura,
+        horario_cierre: @horario_cierre,
+        dias_festivos: [@dia_festivo1],
+        medicos: [@medico1],
+        camas: @camas2,
+        camas_uci: 3
+      )
+
+      servicios = [@servicio, @servicio2, @servicio3, @urgencias, otro_servicio_urgencias]
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio_uci(servicios)
+      expect(mejor_servicio).to eq(@urgencias)
+    end
 end
