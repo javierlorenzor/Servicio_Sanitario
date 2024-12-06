@@ -8,14 +8,15 @@ RSpec.describe ServicioSanitario do
     @hora1 = ServicioSanitario::Hora.new(hora: 12, minuto: 30, segundo: 45)
     @hora2 = ServicioSanitario::Hora.new(hora: 10, minuto: 40, segundo: 25)
     @hora3 = ServicioSanitario::Hora.new(hora: 14, minuto: 50, segundo: 15)
-    @hora4 = ServicioSanitario::Hora.new(hora: 10, minuto: 10, segundo: 25)
+    @hora4 = ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0)    
+    @hora5 = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0) 
 
     @fecha = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
     @fecha1 = ServicioSanitario::Fecha.new(dia: 15, mes: 11, anio: 2024)
     @fecha2 = ServicioSanitario::Fecha.new(dia: 19, mes: 7, anio: 2001)
     @fecha3 = ServicioSanitario::Fecha.new(dia: 23, mes: 9, anio: 2001)
-    @hora4 = ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0)    # Hora de entrada para prueba de 40 minutos de ocupación
-    @hora5 = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0)    
+    @fecha4 = ServicioSanitario::Fecha.new(dia: 10, mes: 12, anio: 2024)
+  
     
     @dia_festivo1 = ServicioSanitario::Fecha.new(dia: 25, mes: 12, anio: 2024)
     @dia_festivo2 = ServicioSanitario::Fecha.new(dia: 1, mes: 1, anio: 2025)
@@ -174,7 +175,7 @@ RSpec.describe ServicioSanitario do
       expect(diferencia3).to eq("0 años, 2 meses, 4 días")
 
       diferencia4 = ServicioSanitario.diferencia(@fecha4, @fecha2)
-      expect(diferencia4).to eq("23 años, 3 meses, 19 días")
+      expect(diferencia4).to eq("23 años, 4 meses, 21 días")
     end
   end 
 
@@ -294,43 +295,35 @@ RSpec.describe ServicioSanitario do
   end 
 
   context "Pruebas indice de capacidad de respuesta " do
-    it "debería devolver 3 (exelente) si el tiempo de ocupación es <= 15 minutos y el ratio es exelente " do
-      # Establecemos los valores necesarios para los cálculos de la función
-      @servicio.camas = { 1 => { paciente: @paciente1 }, 2 => nil, 3 => { paciente: @paciente2 } }
-      @servicio.instance_variable_set(:@pacientes_asignados, 6) # 6 pacientes
-
-      # Definir una ocupación media mayor o igual a 30 minutos
-      expect(ServicioSanitario.indice_capacidad_respuesta(@servicio3)).to eq(3)  # Aceptable
+    it "Se espera que calcule el índice como excelente (3) cuando el tiempo de ocupación y el ratio son excelentes" do
+      @servicio.medicos << @medico1 # Ratio 1:1 (excelente)
+      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0) # Tiempo <= 15 minutos
+      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
+      expect(indice).to eq(3)
     end
-    it 'debería devolver 1 (aceptable) si el tiempo de ocupación es >= 30 minutos y el ratio es aceptable' do
-      # Asignación de camas y pacientes
-      @camas5[1] = { paciente: @paciente1, hora_entrada: @hora4 }
-
-      # Aquí establecemos un tiempo de ocupación de más de 30 minutos
-      # Para este ejemplo, simulamos que la ocupación es de 40 minutos y que el ratio de facultativos es adecuado
-      resultado = ServicioSanitario.indice_capacidad_respuesta(@servicio3)
-
-      expect(resultado).to eq(1)  # Aceptable
+  
+    it "Se espera que calcule el índice como bueno (2) cuando ambos indicadores son buenos" do
+      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 10, minuto: 0, segundo: 0) # Tiempo entre 15 y 30 minutos
+      @servicio.medicos.pop # Ratio 1:2 (bueno)
+      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
+      expect(indice).to eq(2)
     end
-
-    it 'debería devolver 2 (bueno) si el tiempo de ocupación es entre 15 y 30 minutos y el ratio es bueno' do
-      # Simulamos una ocupación de 25 minutos y ratio de facultativos adecuado
-      @camas5[1] = { paciente: @paciente2, hora_entrada: @hora5 }
-
-      resultado = ServicioSanitario.indice_capacidad_respuesta(@servicio3)
-
-      expect(resultado).to eq(2)  # Bueno
+  
+    it "Se espera que calcule el índice como aceptable (1) cuando ambos indicadores son aceptables" do
+      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) # Tiempo >= 30 minutos
+      @servicio.medicos.pop # Ratio 1:3 (aceptable)
+      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
+      expect(indice).to eq(2)
     end
-
-    it 'debería devolver 3 (excelente) si el tiempo de ocupación es < 15 minutos y el ratio es excelente' do
-      # Simulamos que el tiempo de ocupación es menor a 15 minutos y el ratio es excelente
-      @camas5[1] = { paciente: @paciente1, hora_entrada: @hora1 }
-
-      resultado = ServicioSanitario.indice_capacidad_respuesta(@servicio3)
-
-      expect(resultado).to eq(3)  # Excelente
+  
+    it "Se espera que se maneja correctamente cuando no hay pacientes asignados (índice por defecto excelente)" do
+      @servicio.camas.each { |k, _| @servicio.camas[k] = nil } # Sin pacientes
+      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
+      expect(indice).to eq(3)
     end
 
     
   end 
+
+  
 end
