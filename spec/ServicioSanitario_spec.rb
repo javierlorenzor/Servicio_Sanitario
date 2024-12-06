@@ -389,4 +389,17 @@ RSpec.describe ServicioSanitario do
       mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio_uci(servicios)
       expect(mejor_servicio).to eq(@urgencias)
     end
+  end 
+
+  context "Pruebas porcentaje camas libres" do 
+    it "Se espera que calcule correctamente el porcentaje de camas libres para un servicio con algunas camas libres" do
+      @servicio.asignar_cama(@paciente1)
+      @servicio.asignar_cama(@paciente2)
+      @servicio.asignar_cama(ServicioSanitario::Persona.new("33333", "Juan", "Pérez", "M", @fecha1))
+
+      resultado = ServicioSanitario.calcular_porcentaje_camas_libres([@servicio])
+      
+      expect(resultado["SAL001"]).to eq(66.67)
+    end
+  end 
 end

@@ -137,5 +137,19 @@ module ServicioSanitario
     servicios.max_by { |servicio| calcular_indice_respuesta(servicio) }
   end
 
+  def self.seleccionar_mejor_servicio_uci(servicios)
+    # Filtrar servicios de urgencias que tienen camas UCI
+    servicios_uci = servicios.select { |servicio| servicio.is_a?(Urgencias) && servicio.camas_uci > 0 }
+
+    # Si no hay servicios con camas UCI, devolvemos nil o un mensaje adecuado
+    return nil if servicios_uci.empty?
+
+    # Seleccionar el servicio con el mayor índice de capacidad de respuesta
+    mejor_servicio_uci = servicios_uci.max_by { |servicio| calcular_indice_respuesta(servicio) }
+
+    # Devolver el servicio con el mayor índice de capacidad de respuesta
+    mejor_servicio_uci
+  end
+
   class Error < StandardError; end 
 end
