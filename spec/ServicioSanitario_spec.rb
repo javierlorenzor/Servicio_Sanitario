@@ -89,7 +89,7 @@ RSpec.describe ServicioSanitario do
     )
 
     @servicio3 = ServicioSanitario::ServicioSalud.new(
-    codigo: "SAL001",
+    codigo: "SAL003",
     descripcion: "Servicio de Salud General",
     horario_apertura: @hora_apertura,
     horario_cierre: @hora_cierre,
@@ -105,7 +105,17 @@ RSpec.describe ServicioSanitario do
       horario_apertura: @hora_apertura,
       horario_cierre: @hora_cierre,
       dias_festivos: [@dia_festivo1, @dia_festivo2],
-      medicos: [@medico1, @medico2],
+      medicos: [@medico3, @medico4, @medico1 , @medico2],
+      camas: @camas5
+  
+    )
+    @servicio5 = ServicioSanitario::ServicioSalud.new(
+      codigo: "SAL005",
+      descripcion: "Servicio de Salud General",
+      horario_apertura: @hora_apertura,
+      horario_cierre: @hora_cierre,
+      dias_festivos: [@dia_festivo1, @dia_festivo2],
+      medicos: [@medico3, @medico4, @medico1 , @medico2 , @medico5],
       camas: @camas5
   
     )
@@ -438,14 +448,29 @@ RSpec.describe ServicioSanitario do
   end 
 
   context "Pruebas para porcentaje de medicos por especialidad" do 
-    it "calcula correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
-      @servicio.asignar_medico(@medico1, @paciente2)
-      @servicio.asignar_medico(@medico1, @paciente2)
-      resultado = ServicioSanitario.porcent_especialidad([@servicio1, @servicio2])
-    
+    it "Se espera que calcula correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
+      resultado = ServicioSanitario.porcent_especialidad([@servicio, @servicio3])
       expect(resultado["SAL001"]["Pediatría"]).to eq(100.0)
-      expect(resultado["SAL002"]["Pediatría"]).to eq(0)
+      expect(resultado["SAL003"]["Pediatría"]).to eq(100.0)
     end
+
+    it " Se espera que calculae correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
+      resultado = ServicioSanitario.porcent_especialidad([@servicio, @servicio4])
+      expect(resultado["SAL001"]["Pediatría"]).to eq(100.0)
+      expect(resultado["SAL004"]["Cardiología"]).to eq(50.0)
+    end
+
+    it " Se espera que calculae correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
+      resultado = ServicioSanitario.porcent_especialidad([@servicio, @servicio5])
+      expect(resultado["SAL001"]["Pediatría"]).to eq(100.0)
+      expect(resultado["SAL005"]["Cardiología"]).to eq(40.0)
+      expect(resultado["SAL005"]["Pediatría"]).to eq(40.0)
+      expect(resultado["SAL005"]["General"]).to eq(20.0)
+    end
+
+
+
+
   end 
 
 end
