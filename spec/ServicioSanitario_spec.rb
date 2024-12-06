@@ -83,7 +83,7 @@ RSpec.describe ServicioSanitario do
       camas: @camas4,
       numero_plantas: 4
     )
-    @camas5 = { 1 => nil, 2 => nil, 3 => nil }
+
     @servicio3 = ServicioSanitario::ServicioSalud.new(
     codigo: "SAL001",
     descripcion: "Servicio de Salud General",
@@ -326,20 +326,36 @@ RSpec.describe ServicioSanitario do
   end 
 
   context "Pruebas selecion de mejor servicio" do 
-    it "selecciona el servicio con el mayor índice de capacidad de respuesta" do
+    it "Se espera que seleccione el servicio con el mayor índice de capacidad de respuesta" do
       @servicio.medicos << @medico1
+      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0)
       mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio(@servicio, @servicio2)
       expect(mejor_servicio).to eq(@servicio)
     end
   
-    it "maneja correctamente cuando hay un empate en el índice" do
-      @servicio2.medicos << @medico2 # Ambos servicios tendrán el mismo índice
-      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio(@servicio, @servicio2)
+    it "Se espera que maneje correctamente cuando hay un empate en el índice" do
+      @servicio.medicos << @medico1
+      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0)
+      @servicio3.medicos << @medico1
+      @servicio3.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0)
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio(@servicio, @servicio3)
       expect(mejor_servicio).to eq(@servicio) # El primero por defecto
     end
   
-    it "lanza un error si algún argumento no es un servicio válido" do
+    it "Se espera que lance un error si algún argumento no es un servicio válido" do
       expect { ServicioSanitario.seleccionar_mejor_servicio(@servicio, "No es un servicio") }.to raise_error(ArgumentError)
     end
+    it "Se espera que devuelva nil si no se pasan servicios" do
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio
+      expect(mejor_servicio).to be_nil
+    end
+  
+    it "Se espera que seleccione correctamente el único servicio si solo hay uno" do
+      @servicio.medicos << @medico1
+      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0)
+      mejor_servicio = ServicioSanitario.seleccionar_mejor_servicio(@servicio)
+      expect(mejor_servicio).to eq(@servicio)
+    end
+
   end 
 end

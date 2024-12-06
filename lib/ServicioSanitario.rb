@@ -125,6 +125,17 @@ module ServicioSanitario
     indice_respuesta = (tiempo_puntaje + ratio_puntaje) / 2.0
     indice_respuesta.round
   end
-  
+
+  # Método para seleccionar el servicio con el mayor índice de capacidad de respuesta
+  def self.seleccionar_mejor_servicio(*servicios)
+    # Verificar que todos los argumentos sean instancias de ServicioSalud
+    unless servicios.all? { |servicio| servicio.is_a?(ServicioSalud) }
+      raise ArgumentError, "Todos los elementos deben ser instancias de ServicioSalud"
+    end
+
+    # Calcular el índice para cada servicio y seleccionar el mejor
+    servicios.max_by { |servicio| calcular_indice_respuesta(servicio) }
+  end
+
   class Error < StandardError; end 
 end
