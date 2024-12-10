@@ -85,12 +85,59 @@ module ServicioSanitario
       INFO
     end
 
-    # Implementación del método de comparación basado en el número de camas libres
+    # Método para calcular el índice de capacidad de respuesta
+    def calcular_indice_respuesta
+      # Calcular el tiempo medio de ocupación (en minutos)
+      tiempos_ocupacion = @camas.values.map do |cama|
+        if cama
+          ingreso = cama[:ingreso]
+          alta = ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0) # Aquí puedes usar la hora actual
+          # Diferencia en minutos entre ingreso y alta
+          horas, minutos, _ = ServicioSanitario.diferencia_horas(ingreso, alta).split(/[^0-9]+/).map(&:to_i)
+          horas * 60 + minutos
+        else
+          nil
+        end
+      end.compact
+
+      tiempo_promedio_ocupacion = tiempos_ocupacion.sum / tiempos_ocupacion.size.to_f
+
+      # Clasificar tiempo medio de ocupación
+      tiempo_puntaje = if tiempo_promedio_ocupacion >= 30.0
+                        1 # Aceptable
+                      elsif tiempo_promedio_ocupacion > 15.0
+                        2 # Bueno
+                      else
+                        3 # Excelente
+                      end
+
+      # Calcular el ratio de facultativos por paciente
+      total_pacientes = pacientes_asignados
+      total_medicos = @medicos.size
+
+      if total_pacientes.zero?
+        ratio_puntaje = 3 # Excelente por defecto si no hay pacientes
+      else
+        ratio = total_medicos.to_f / total_pacientes
+        ratio_puntaje = if ratio >= 1.0 / 5 && ratio <= 1.0 / 3
+                          1 # Aceptable
+                        elsif ratio > 1.0 / 3 && ratio <= 1.0 / 2
+                          2 # Bueno
+                        else
+                          3 # Excelente
+                        end
+      end
+
+      # Calcular el índice de capacidad de respuesta como promedio de los dos puntajes
+      indice_respuesta = (tiempo_puntaje + ratio_puntaje) / 2.0
+      indice_respuesta.round
+    end
+
+    # Implementación del operador de comparación basado en el índice de respuesta
     def <=>(other)
-      # Asegúrate de que otro_servicio no sea nil y tenga el método `num_camas_libres`
       return nil unless other.is_a?(ServicioSanitario::ServicioSalud)
-      
-      self.num_camas_libres <=> other.num_camas_libres
+
+      calcular_indice_respuesta <=> other.calcular_indice_respuesta
     end
   end 
 end 

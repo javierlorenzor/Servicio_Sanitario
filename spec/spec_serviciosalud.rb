@@ -319,19 +319,19 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end  
         
         it "Se espera poder comparar servicios con <=>" do
-            expect(@servicio <=> @servicio2).to eq(1)  # servicio1 tiene más camas libres que servicio2
-            expect(@servicio2 <=> @servicio3).to eq(-1) # servicio2 tiene menos camas libres que servicio3
+            expect(@servicio <=> @servicio2).to eq(0)  # servicio1 tiene más camas libres que servicio2
+            expect(@servicio2 <=> @servicio3).to eq(0) # servicio2 tiene menos camas libres que servicio3
             expect(@servicio <=> @servicio).to eq(0)  # servicio1 es igual a sí mismo
         end
         
         it "Se espera poder comparar usando la igualdad  <" do
-            expect(@servicio2 < @servicio).to be true  
-            expect(@servicio < @servicio3).to be true   
+            expect(@servicio2 < @servicio).to be false
+            expect(@servicio < @servicio3).to be false   
         end
         
         it "Se espera poder comparar usando la igualdad  >" do
-            expect(@servicio > @servicio2).to be true   
-            expect(@servicio3 > @servicio2).to be true   
+            expect(@servicio > @servicio2).to be false  
+            expect(@servicio3 > @servicio2).to be false  
         end
         
         it "Se espera poder comparar usando la igualdad  <=" do
@@ -348,12 +348,12 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         
         it "Se espera poder comparar usando la igualdad  ==" do
             expect(@servicio == @servicio).to be true  
-            expect(@servicio == @servicio2).to be false
+            expect(@servicio == @servicio2).to be true
         end
         
         it "Se espera poder comparar usando la igualdad  between?" do
             expect(@servicio.between?(@servicio2, @servicio3)).to be true 
-            expect(@servicio3.between?(@servicio, @servicio2)).to be false 
+            expect(@servicio3.between?(@servicio, @servicio2)).to be true
         end
         
     end 
