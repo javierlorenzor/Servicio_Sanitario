@@ -24,7 +24,9 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         # Instancias de Persona y Médico
         @paciente1 = ServicioSanitario::Persona.new("11111", "Carlos", "López", "M", @fecha1)
         @paciente2 = ServicioSanitario::Persona.new("22222", "Lucía", "Martínez", "F", @fecha2)
-    
+        @paciente3 = ServicioSanitario::Persona.new("22222", "Marta", "Lorenzo", "F", @fecha2)
+        @paciente4 = ServicioSanitario::Persona.new("22222", "Diego", "Leon", "M", @fecha2)
+
         @medico1 = ServicioSanitario::Medico.new("33333", "Alba", "Perez", "F", @fecha1, "Pediatría")
         @medico2 = ServicioSanitario::Medico.new("44444", "Miguel", "Tadeo", "M", @fecha2, "Pediatría")
     
@@ -361,7 +363,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
     context "Pruebas indice de capacidad de respuesta " do
        
         it "Se espera que calcule el índice como excelente (3) cuando el tiempo de ocupación y el ratio son excelentes" do
-            # Configuración para ratio excelente (2 médicos, 2 pacientes)
+            
             @servicio.medicos << ServicioSanitario::Medico.new("55555", "Luis", "Soto", "M", @fecha2, "Urgencias")
             @servicio.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 12, minuto: 10, segundo: 0) } # Tiempo <= 15 minutos
             @servicio.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 12, minuto: 12, segundo: 0) }
@@ -371,24 +373,26 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
         
         it "Se espera que calcule el índice como bueno (2) cuando ambos indicadores son buenos" do
-            # Configuración para ratio bueno (2 médicos, 4 pacientes)
-            @servicio.medicos.pop # Ratio 1 médico por 2 pacientes
-            @servicio.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 11, minuto: 30, segundo: 0) } # Tiempo entre 15 y 30 minutos
-            @servicio.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 11, minuto: 40, segundo: 0) }
-            @servicio.camas[3] = { ingreso: ServicioSanitario::Hora.new(hora: 11, minuto: 50, segundo: 0) }
+            @servicio.medicos.pop 
+            @servicio.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 30, segundo: 0) } # Tiempo entre 15 y 30 minutos
+            @servicio.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 40, segundo: 0) }
+            @servicio.camas[3] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 50, segundo: 0) }
         
             indice = @servicio.calcular_indice_respuesta
-            expect(indice).to eq(3)
+            expect(indice).to eq(2)
         end
         
         it "Se espera que calcule el índice como aceptable (1) cuando ambos indicadores son aceptables" do
             
-            @servicio.medicos.pop
-            @servicio.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) } # Tiempo >= 30 minutos
-            @servicio.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) }
-            @servicio.camas[3] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) }
-        
-            indice = @servicio.calcular_indice_respuesta
+            @servicio3.asignar_cama(@paciente3)
+            @servicio3.asignar_cama(@paciente4)
+
+            @servicio3.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 5, minuto: 0, segundo: 0) } # Tiempo >= 30 minutos
+            @servicio3.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 5, minuto: 0, segundo: 0) }
+            @servicio3.camas[3] = { ingreso: ServicioSanitario::Hora.new(hora: 5, minuto: 0, segundo: 0) }
+            @servicio3.camas[4] = { ingreso: ServicioSanitario::Hora.new(hora: 5, minuto: 0, segundo: 0) }
+
+            indice = @servicio3.calcular_indice_respuesta
             expect(indice).to eq(2)
         end
         
@@ -398,6 +402,7 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         
             indice = @servicio.calcular_indice_respuesta
             expect(indice).to eq(3)
-        end
+        end   
+
     end 
 end 

@@ -91,7 +91,7 @@ module ServicioSanitario
       tiempos_ocupacion = @camas.values.map do |cama|
         if cama
           ingreso = cama[:ingreso]
-          alta = ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0) # Aquí puedes usar la hora actual
+          alta = ServicioSanitario::Hora.new(hora: 12, minuto: 0, segundo: 0) # Hora fija para cálculo
           # Diferencia en minutos entre ingreso y alta
           horas, minutos, _ = ServicioSanitario.diferencia_horas(ingreso, alta).split(/[^0-9]+/).map(&:to_i)
           horas * 60 + minutos
@@ -99,9 +99,11 @@ module ServicioSanitario
           nil
         end
       end.compact
-
+    
+    
+    
       tiempo_promedio_ocupacion = tiempos_ocupacion.sum / tiempos_ocupacion.size.to_f
-
+    
       # Clasificar tiempo medio de ocupación
       tiempo_puntaje = if tiempo_promedio_ocupacion >= 30.0
                         1 # Aceptable
@@ -110,11 +112,13 @@ module ServicioSanitario
                       else
                         3 # Excelente
                       end
-
+    
+    
       # Calcular el ratio de facultativos por paciente
       total_pacientes = pacientes_asignados
       total_medicos = @medicos.size
-
+    
+    
       if total_pacientes.zero?
         ratio_puntaje = 3 # Excelente por defecto si no hay pacientes
       else
@@ -127,11 +131,15 @@ module ServicioSanitario
                           3 # Excelente
                         end
       end
-
+    
+    
       # Calcular el índice de capacidad de respuesta como promedio de los dos puntajes
       indice_respuesta = (tiempo_puntaje + ratio_puntaje) / 2.0
+      
+    
       indice_respuesta.round
     end
+    
 
     # Implementación del operador de comparación basado en el índice de respuesta
     def <=>(other)
