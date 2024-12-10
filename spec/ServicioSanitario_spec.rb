@@ -319,7 +319,6 @@ RSpec.describe ServicioSanitario do
     end
   end 
 
-
   context "Pruebas selecion de mejor servicio" do 
     it "Se espera que seleccione el servicio con el mayor índice de capacidad de respuesta" do
       @servicio.medicos << @medico1
