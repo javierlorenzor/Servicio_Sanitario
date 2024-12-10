@@ -319,36 +319,6 @@ RSpec.describe ServicioSanitario do
     end
   end 
 
-  context "Pruebas indice de capacidad de respuesta " do
-    it "Se espera que calcule el índice como excelente (3) cuando el tiempo de ocupación y el ratio son excelentes" do
-      @servicio.medicos << @medico1 # Ratio 1:1 (excelente)
-      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 12, minuto: 15, segundo: 0) # Tiempo <= 15 minutos
-      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
-      expect(indice).to eq(3)
-    end
-  
-    it "Se espera que calcule el índice como bueno (2) cuando ambos indicadores son buenos" do
-      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 10, minuto: 0, segundo: 0) # Tiempo entre 15 y 30 minutos
-      @servicio.medicos.pop # Ratio 1:2 (bueno)
-      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
-      expect(indice).to eq(2)
-    end
-  
-    it "Se espera que calcule el índice como aceptable (1) cuando ambos indicadores son aceptables" do
-      @servicio.camas[1][:ingreso] = ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) # Tiempo >= 30 minutos
-      @servicio.medicos.pop # Ratio 1:3 (aceptable)
-      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
-      expect(indice).to eq(2)
-    end
-  
-    it "Se espera que se maneja correctamente cuando no hay pacientes asignados (índice por defecto excelente)" do
-      @servicio.camas.each { |k, _| @servicio.camas[k] = nil } # Sin pacientes
-      indice = ServicioSanitario.calcular_indice_respuesta(@servicio)
-      expect(indice).to eq(3)
-    end
-
-    
-  end 
 
   context "Pruebas selecion de mejor servicio" do 
     it "Se espera que seleccione el servicio con el mayor índice de capacidad de respuesta" do

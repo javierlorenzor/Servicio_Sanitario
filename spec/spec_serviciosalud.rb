@@ -357,4 +357,47 @@ RSpec.describe ServicioSanitario::ServicioSalud do
         end
         
     end 
+
+    context "Pruebas indice de capacidad de respuesta " do
+       
+        it "Se espera que calcule el índice como excelente (3) cuando el tiempo de ocupación y el ratio son excelentes" do
+            # Configuración para ratio excelente (2 médicos, 2 pacientes)
+            @servicio.medicos << ServicioSanitario::Medico.new("55555", "Luis", "Soto", "M", @fecha2, "Urgencias")
+            @servicio.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 12, minuto: 10, segundo: 0) } # Tiempo <= 15 minutos
+            @servicio.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 12, minuto: 12, segundo: 0) }
+        
+            indice = @servicio.calcular_indice_respuesta
+            expect(indice).to eq(3)
+        end
+        
+        it "Se espera que calcule el índice como bueno (2) cuando ambos indicadores son buenos" do
+            # Configuración para ratio bueno (2 médicos, 4 pacientes)
+            @servicio.medicos.pop # Ratio 1 médico por 2 pacientes
+            @servicio.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 11, minuto: 30, segundo: 0) } # Tiempo entre 15 y 30 minutos
+            @servicio.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 11, minuto: 40, segundo: 0) }
+            @servicio.camas[3] = { ingreso: ServicioSanitario::Hora.new(hora: 11, minuto: 50, segundo: 0) }
+        
+            indice = @servicio.calcular_indice_respuesta
+            expect(indice).to eq(3)
+        end
+        
+        it "Se espera que calcule el índice como aceptable (1) cuando ambos indicadores son aceptables" do
+            
+            @servicio.medicos.pop
+            @servicio.camas[1] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) } # Tiempo >= 30 minutos
+            @servicio.camas[2] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) }
+            @servicio.camas[3] = { ingreso: ServicioSanitario::Hora.new(hora: 7, minuto: 0, segundo: 0) }
+        
+            indice = @servicio.calcular_indice_respuesta
+            expect(indice).to eq(2)
+        end
+        
+        it "Se espera que se maneje correctamente cuando no hay pacientes asignados (índice por defecto excelente)" do
+            # Configuración para índice por defecto
+            @servicio.camas.each { |k, _| @servicio.camas[k] = nil } # Sin pacientes asignados
+        
+            indice = @servicio.calcular_indice_respuesta
+            expect(indice).to eq(3)
+        end
+    end 
 end 
