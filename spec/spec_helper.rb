@@ -11,6 +11,8 @@ require_relative 'spec_titular'
 require_relative 'spec_serviciosalud'
 require_relative 'spec_hospital'
 require_relative 'spec_urgencias'
+require_relative 'spec_serviciosanitariodsl'
+
 
 
 RSpec.configure do |config|
