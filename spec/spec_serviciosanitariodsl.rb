@@ -70,5 +70,14 @@ describe ServicioSanitario::ServicioSanitarioDSL do
     expect(usuarios[1].nombre_completo).to eq('Paciente Tos')
   end
 
+  it 'Se espera poder formatear correctamente el estado del sistema' do
+    estado = @sistema.to_s
+    expect(estado).to include('Servicios:')
+    expect(estado).to include('Usuarios:')
+    expect(estado).to include('Hospital LPP')
+    expect(estado).to include('Dr. Poo')
+    expect(estado).to include('Paciente Tos')
+  end
+
 
 end
