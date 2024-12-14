@@ -3,6 +3,7 @@ module ServicioSanitario
     def initialize(&block)
       @servicios = []
       @usuarios = []
+      @medicos = {}
 
       if block_given?
         if block.arity == 1
@@ -21,7 +22,7 @@ module ServicioSanitario
           horario_apertura: horario_apertura,
           horario_cierre: horario_cierre, 
           dias_festivos: dias_festivos, 
-          medicos: medicos,
+          medicos:  medicos.map { |nombre| @medicos[nombre] },
           camas: camas, 
           numero_plantas: numero_plantas
         )
@@ -32,7 +33,7 @@ module ServicioSanitario
           horario_apertura: horario_apertura,
           horario_cierre: horario_cierre, 
           dias_festivos: dias_festivos, 
-          medicos: medicos, 
+          medicos:  medicos.map { |nombre| @medicos[nombre] },
           camas: camas
         )
       end
@@ -41,7 +42,8 @@ module ServicioSanitario
 
     def usuario(tipo, numero_identificacion:, nombre:, apellido:, sexo:, fecha_nacimiento:, especialidad: nil, prioridad: nil)
       usuario = if tipo == :medico
-                  Medico.new(numero_identificacion, nombre , apellido, sexo, fecha_nacimiento, especialidad)
+                  medico = Medico.new(numero_identificacion, nombre , apellido, sexo, fecha_nacimiento, especialidad)
+                  @medicos["#{nombre} #{apellido}"] = medico
                 elsif tipo == :paciente
                   Paciente.new(numero_identificacion, nombre, apellido, sexo, fecha_nacimiento, prioridad)
                 else
@@ -50,6 +52,17 @@ module ServicioSanitario
       @usuarios << usuario
     end
 
+    def to_s
+      output = "Servicios:\n"
+      output << @servicios.map(&:to_s).join("\n")
+      output << "\nUsuarios:\n"
+      
+      @usuarios.each do |usuario|
+        output << "#{usuario.to_s}\n"
+      end
+      
+      output
+    end
 
   end
 end

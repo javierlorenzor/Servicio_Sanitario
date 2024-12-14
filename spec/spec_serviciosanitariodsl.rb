@@ -149,34 +149,27 @@ describe ServicioSanitario::ServicioSanitarioDSL do
   end 
 
   context "Pruebas to_s" do 
-    it "Se espera que el método to_s liste correctamente todos los servicios y usuarios" do
-      # Obtenemos el resultado de to_s
-      resultado = @sistema.to_s
-  
-      # Comprobamos que la salida contiene los servicios registrados
-      expect(resultado).to include("Hospital LPP")
-      expect(resultado).to include("Urgencias LPP")
-  
-      # Comprobamos que la salida contiene los médicos
-      expect(resultado).to include("Dr. Poo")
-      expect(resultado).to include("Dr. Fup")
-      expect(resultado).to include("Dr. Struct")
-      expect(resultado).to include("Dr. Single")
-  
-      # Comprobamos que la salida contiene los pacientes
-      expect(resultado).to include("Paciente Tos")
-      expect(resultado).to include("Paciente Caida")
+    it "Se espera que se devuelva la información de los servicios correctamente" do
+      servicios = @sistema.instance_variable_get(:@servicios)
+      expect(servicios[0].to_s).to eq("Hospital LPP, CIF: CIF012345678, Horario: 05:00:00 - 22:00:00, Días Festivos: [2024-12-01], Médicos: [Dr. Poo, Dr. Fup], Camas: {1 => ocupado, 2 => libre}, Número de Plantas: 5")
+      expect(servicios[1].to_s).to eq("Urgencias LPP, CIF: CIF876543210, Horario: 00:00:00 - 24:00:00, Días Festivos: [], Médicos: [Dr. Struct, Dr. Single], Camas: {1 => ocupado}")
     end
-  
-    it "Se espera que el método to_s genere una cadena en el formato correcto" do
-      # Verificamos que el formato de la cadena sea correcto
-      resultado = @sistema.to_s
-  
-      # Asegurarnos de que la sección de servicios esté bien formada
-      expect(resultado).to match(/Servicios:\n.*\nUsuarios:\n.*\n/)
+
+    it "Se espera que se devuelva la información de los medicos correctamente" do
+      medicos = @sistema.instance_variable_get(:@usuarios).select { |usuario| usuario.is_a?(ServicioSanitario::Medico) }
+      
+      expect(medicos[0].to_s).to eq("Dr. Poo, ID: 2005001, Sexo: mujer, Fecha de Nacimiento: 1/1/1990, Especialidad: geriatría, Número de Pacientes: 0")
+      expect(medicos[1].to_s).to eq("Dr. Fup, ID: 2005002, Sexo: hombre, Fecha de Nacimiento: 1/1/1995, Especialidad: general, Número de Pacientes: 0")
+      expect(medicos[2].to_s).to eq("Dr. Struct, ID: 2005003, Sexo: mujer, Fecha de Nacimiento: 1/1/1980, Especialidad: pediatría, Número de Pacientes: 0")
+      expect(medicos[3].to_s).to eq("Dr. Single, ID: 2005004, Sexo: hombre, Fecha de Nacimiento: 1/1/1975, Especialidad: general, Número de Pacientes: 0")
+
+    end
+    it "Se espera que se devuelva la información de los pacientes correctamente" do
+      pacientes = @sistema.instance_variable_get(:@usuarios).select { |usuario| usuario.is_a?(ServicioSanitario::Paciente) }
+      
+      expect(pacientes[0].to_s).to eq("Paciente Tos, ID: 2024001, Sexo: hombre, Fecha de Nacimiento: 2/12/1935, Prioridad: {:nivel=>:II, :categoria=>:Emergencia, :tiempo_atencion=>\"7 minutos\"}, Diagnósticos: ")
+      expect(pacientes[1].to_s).to eq("Paciente Caida, ID: 2024002, Sexo: mujer, Fecha de Nacimiento: 1/11/2020, Prioridad: {:nivel=>:II, :categoria=>:Emergencia, :tiempo_atencion=>\"7 minutos\"}, Diagnósticos: ")
     end
   end 
-  
-
 
 end
