@@ -15,6 +15,9 @@
 │   │   ├── Paciente.rb
 │   │   ├── Medico.rb
 │   │   ├── Titular.rb
+│   │   ├── ServicioSalud.rb
+│   │   ├── Urgencias.rb
+│   │   ├── ServicioSanitarioDSL.rb
 │   │   └── version.rb
 │   └── ServicioSanitario.rb
 ├── Rakefile
@@ -31,6 +34,9 @@
     ├── spec_medico.rb
     ├── spec_paciente.rb
     ├── spec_titular.rb
+    ├── spec_urgencias.rb
+    ├── spec_hospital.rb
+    ├── spec_serviciosanitariodsl.rb
     └── spec_nivelset.rb
 ```
 
@@ -40,7 +46,7 @@
 - **`doc/`**: Carpeta generada por YARD que contiene la documentación HTML del proyecto.
 - **`lib/`**: Contiene el código fuente del proyecto.
   - **`ServicioSanitario/`**: Módulo que contiene las clases 
-        - `Fecha`, `Horas`, `NivelSet`, `Persona` , `Medico` , `Titular` , `Paciente`
+        - `Fecha`, `Horas`, `NivelSet`, `Persona` , `Medico` , `Titular` , `Paciente` , `Urgencias`, `Hospital`, `ServiciosaludDSL`
   - **`ServicioSanitario.rb`**: Archivo principal que carga el módulo `ServicioSanitario` y contiene constantes y metodos.
 - **`spec/`**: Carpeta de pruebas que incluye archivos de pruebas RSpec para cada clase.
   - **`spec_helper.rb`**: Configuración común para todas las pruebas.
@@ -49,14 +55,14 @@
 - **`README.md`**: Archivo de documentación principal del proyecto.
 - **`ServicioSanitario.gemspec`**: Especificación de la gema `ServicioSanitario`.
 
-## Proyect
+## Proyecto
 La gema **ServicioSanitario** implementa un sistema de triaje estructurado, utilizado para priorizar la atención de pacientes según la gravedad y urgencia de sus necesidades. El proceso de "triaje" permite una gestión eficaz del riesgo clínico en situaciones donde la demanda médica supera los recursos disponibles. Para lograr esto, se basa en escalas de prioridad que clasifican a los pacientes en varios niveles de atención.
 
 ## Usage
 
 El archivo Rakefile en la raíz del proyecto permite la ejecución de tareas automáticas, como la generación de documentación o la ejecución de pruebas. Este archivo está configurado para simplificar los flujos de trabajo, proporcionando comandos predefinidos que pueden invocarse fácilmente desde la terminal. Para la ejecución usar **rake** 
 
-## Development
+## Desarollo
 
 La gema sigue el enfoque de desarrollo orientado a pruebas **(TDD: Test Driven Development)**, donde las pruebas se crean antes de la implementación de las funcionalidades. Esto garantiza que cada parte del código cumpla con los requisitos definidos y ayuda a detectar errores desde las primeras etapas del desarrollo
 
