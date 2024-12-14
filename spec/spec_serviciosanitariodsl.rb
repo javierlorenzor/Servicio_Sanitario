@@ -47,7 +47,14 @@ describe ServicioSanitario::ServicioSanitarioDSL do
     expect(servicios[1].descripcion).to eq('Urgencias LPP')
   end
 
-  
+  it "Se espera que se pueda registrar usuarios correctamente" do
+    usuarios = @sistema.instance_variable_get(:@usuarios)
+    expect(usuarios.size).to eq(2)
+    expect(usuarios[0].nombre).to eq('Dr.')
+    expect(usuarios[0].apellido).to eq('Poo')
+    expect(usuarios[1].nombre).to eq('Paciente')
+    expect(usuarios[1].apellido).to eq('Tos')
+  end
 
 
 end
