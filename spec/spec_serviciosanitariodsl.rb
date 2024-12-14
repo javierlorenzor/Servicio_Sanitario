@@ -148,6 +148,34 @@ describe ServicioSanitario::ServicioSanitarioDSL do
     end  
   end 
 
+  context "Pruebas to_s" do 
+    it "Se espera que el método to_s liste correctamente todos los servicios y usuarios" do
+      # Obtenemos el resultado de to_s
+      resultado = @sistema.to_s
+  
+      # Comprobamos que la salida contiene los servicios registrados
+      expect(resultado).to include("Hospital LPP")
+      expect(resultado).to include("Urgencias LPP")
+  
+      # Comprobamos que la salida contiene los médicos
+      expect(resultado).to include("Dr. Poo")
+      expect(resultado).to include("Dr. Fup")
+      expect(resultado).to include("Dr. Struct")
+      expect(resultado).to include("Dr. Single")
+  
+      # Comprobamos que la salida contiene los pacientes
+      expect(resultado).to include("Paciente Tos")
+      expect(resultado).to include("Paciente Caida")
+    end
+  
+    it "Se espera que el método to_s genere una cadena en el formato correcto" do
+      # Verificamos que el formato de la cadena sea correcto
+      resultado = @sistema.to_s
+  
+      # Asegurarnos de que la sección de servicios esté bien formada
+      expect(resultado).to match(/Servicios:\n.*\nUsuarios:\n.*\n/)
+    end
+  end 
   
 
 
