@@ -33,9 +33,18 @@ describe ServicioSanitario::ServicioSanitarioDSL do
   end
 
   it 'debería inicializar correctamente el sistema' do
-    
+    expect(@sistema.instance_variable_get(:@servicios)).not_to be_empty
+    expect(@sistema.instance_variable_get(:@usuarios)).to be_empty
   end
+  it 'debería registrar servicios correctamente' do
+    servicios = @sistema.instance_variable_get(:@servicios)
 
+    expect(servicios.size).to eq(2)
+    expect(servicios[0].codigo).to eq('CIF012345678')
+    expect(servicios[0].descripcion).to eq('Hospital LPP')
+    expect(servicios[1].codigo).to eq('CIF876543210')
+    expect(servicios[1].descripcion).to eq('Urgencias LPP')
+  end
 
 
 end
