@@ -32,11 +32,12 @@ describe ServicioSanitario::ServicioSanitarioDSL do
     end
   end
 
-  it 'debería inicializar correctamente el sistema' do
+  it "Se espera que se inicialice correctamente el sistema" do
     expect(@sistema.instance_variable_get(:@servicios)).not_to be_empty
     expect(@sistema.instance_variable_get(:@usuarios)).to be_empty
   end
-  it 'debería registrar servicios correctamente' do
+
+  it "Se espera que se registren los servicios correctamente" do
     servicios = @sistema.instance_variable_get(:@servicios)
 
     expect(servicios.size).to eq(2)
@@ -45,6 +46,8 @@ describe ServicioSanitario::ServicioSanitarioDSL do
     expect(servicios[1].codigo).to eq('CIF876543210')
     expect(servicios[1].descripcion).to eq('Urgencias LPP')
   end
+
+  
 
 
 end

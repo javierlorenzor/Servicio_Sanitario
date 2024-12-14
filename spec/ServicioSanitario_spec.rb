@@ -417,19 +417,19 @@ RSpec.describe ServicioSanitario do
   end 
 
   context "Pruebas para porcentaje de medicos por especialidad" do 
-    it "Se espera que calcula correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
+    it "Se espera que calcula correctamente el porcentaje de facultativos por especialidad " do
       resultado = ServicioSanitario.porcent_especialidad([@servicio, @servicio3])
       expect(resultado["SAL001"]["Pediatría"]).to eq(100.0)
       expect(resultado["SAL003"]["Pediatría"]).to eq(100.0)
     end
 
-    it " Se espera que calculae correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
+    it " Se espera que calculae correctamente el porcentaje de facultativos por especialidad " do
       resultado = ServicioSanitario.porcent_especialidad([@servicio, @servicio4])
       expect(resultado["SAL001"]["Pediatría"]).to eq(100.0)
       expect(resultado["SAL004"]["Cardiología"]).to eq(50.0)
     end
 
-    it " Se espera que calculae correctamente el porcentaje de facultativos por especialidad para varios servicios con distintas especialidades" do
+    it " Se espera que calculae correctamente el porcentaje de facultativos por especialidad " do
       resultado = ServicioSanitario.porcent_especialidad([@servicio, @servicio5])
       expect(resultado["SAL001"]["Pediatría"]).to eq(100.0)
       expect(resultado["SAL005"]["Cardiología"]).to eq(40.0)
