@@ -29,12 +29,28 @@ describe ServicioSanitario::ServicioSanitarioDSL do
         dias_festivos: [], 
         medicos: ['Dr.Struct', 'Dr.Single'], 
         camas: {1 => 'ocupado'}
+
+      usuario :medico, 
+        numero_identificacion: 2005001, 
+        nombre: 'Dr.', 
+        apellido: 'Poo', 
+        sexo: 'mujer', 
+        fecha_nacimiento: ServicioSanitario::Fecha.new(dia: 1, mes: 1, anio: 1990), 
+        especialidad: 'geriatría'
+
+      usuario :paciente, 
+        numero_identificacion: 2024001, 
+        nombre: 'Paciente', 
+        apellido: 'Tos', 
+        sexo: 'hombre', 
+        fecha_nacimiento: ServicioSanitario::Fecha.new(dia: 2, mes: 12, anio: 1935), 
+        prioridad: ServicioSanitario::ROJO
     end
   end
 
   it "Se espera que se inicialice correctamente el sistema" do
     expect(@sistema.instance_variable_get(:@servicios)).not_to be_empty
-    expect(@sistema.instance_variable_get(:@usuarios)).to be_empty
+    expect(@sistema.instance_variable_get(:@usuarios)).not_to be_empty
   end
 
   it "Se espera que se registren los servicios correctamente" do
@@ -50,10 +66,8 @@ describe ServicioSanitario::ServicioSanitarioDSL do
   it "Se espera que se pueda registrar usuarios correctamente" do
     usuarios = @sistema.instance_variable_get(:@usuarios)
     expect(usuarios.size).to eq(2)
-    expect(usuarios[0].nombre).to eq('Dr.')
-    expect(usuarios[0].apellido).to eq('Poo')
-    expect(usuarios[1].nombre).to eq('Paciente')
-    expect(usuarios[1].apellido).to eq('Tos')
+    expect(usuarios[0].nombre_completo).to eq('Dr. Poo')
+    expect(usuarios[1].nombre_completo).to eq('Paciente Tos')
   end
 
 
