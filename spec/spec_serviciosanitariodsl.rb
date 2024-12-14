@@ -151,8 +151,9 @@ describe ServicioSanitario::ServicioSanitarioDSL do
   context "Pruebas to_s" do 
     it "Se espera que se devuelva la información de los servicios correctamente" do
       servicios = @sistema.instance_variable_get(:@servicios)
-      expect(servicios[0].to_s).to eq("Hospital LPP, CIF: CIF012345678, Horario: 05:00:00 - 22:00:00, Días Festivos: [2024-12-01], Médicos: [Dr. Poo, Dr. Fup], Camas: {1 => ocupado, 2 => libre}, Número de Plantas: 5")
-      expect(servicios[1].to_s).to eq("Urgencias LPP, CIF: CIF876543210, Horario: 00:00:00 - 24:00:00, Días Festivos: [], Médicos: [Dr. Struct, Dr. Single], Camas: {1 => ocupado}")
+      
+      expect(servicios[0].to_s).to eq("Código: CIF012345678\nDescripción: Hospital LPP\nHorario: 05:00:00 - 22:00:00\nDías Festivos: 1/12/2024\nCamas Libres: 1\nTotal de Pacientes Asignados a Médicos: 0\nNúmero de Plantas: 5")
+      expect(servicios[1].to_s).to eq("Código: CIF876543210\nDescripción: Urgencias LPP\nHorario: 00:00:00 - 24:00:00\nDías Festivos: \nCamas Libres: 0\nTotal de Pacientes Asignados a Médicos: 0\n")
     end
 
     it "Se espera que se devuelva la información de los medicos correctamente" do

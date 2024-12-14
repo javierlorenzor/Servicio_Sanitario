@@ -15,6 +15,11 @@ module ServicioSanitario
     end
 
     def servicio(tipo, codigo:, descripcion:, horario_apertura:, horario_cierre:, dias_festivos: [], medicos: [], camas: {}, numero_plantas: nil)
+      medicos.each do |nombre|
+        @medicos[nombre] ||= Medico.new(nil, nombre.split.first, nombre.split.last, 'mujer', nil, nil)
+        @medicos[nombre].pacientes ||= []  # Aseguramos que el arreglo de pacientes esté inicializado
+      end
+      
       servicio = if tipo == :hospital
         Hospital.new(
           codigo: codigo, 
